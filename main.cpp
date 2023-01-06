@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:40 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/06 19:20:03 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/06 19:32:28 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,6 @@
 int main ()
 {
   const ft::vector<int> bar(4, 20);
-  bar.at(100);
+  std::cout << bar.front() << std::endl;
   return 0;
 }

@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:56 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/06 19:20:37 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/06 19:34:51 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,10 @@ namespace ft
 			const_reference operator[] (size_type n) const;
 			reference at (size_type n);
 			const_reference at (size_type n) const;
+			reference front();
+			const_reference front() const;
+			reference back();
+			const_reference back() const;
 	};
 
 	template < class T, class Alloc>
@@ -135,14 +139,7 @@ namespace ft
 	bool vector<T, Alloc>::empty() const{
 		return !(_end - _begin);
 	}
-	
-	template < class T, class Alloc>
-	vector<T, Alloc>::~vector(){
-		for(pointer i = _begin; i < _end; i++)
-			_alloc.destroy(i);
-		_alloc.deallocate(_begin, this->size());
-	}
-	
+
 	template < class T, class Alloc>
 	void vector<T, Alloc>::reserve (size_type n){
 		if (n > this->capacity())
@@ -177,6 +174,33 @@ namespace ft
 		if (n >= this->size())
 			throw std::out_of_range("vector");
 		return (*this)[n];
+	}
+
+	template < class T, class Alloc>
+	typename vector<T, Alloc>::reference vector<T, Alloc>::front(){
+		return *_begin;
+	}
+
+	template < class T, class Alloc>
+	typename vector<T, Alloc>::const_reference vector<T, Alloc>::front() const{
+		return *_begin;
+	}
+
+	template < class T, class Alloc>
+	typename vector<T, Alloc>::reference vector<T, Alloc>::back(){
+		return *_end;
+	}
+
+	template < class T, class Alloc>
+	typename vector<T, Alloc>::const_reference vector<T, Alloc>::back() const{
+		return *_end;
+	}
+
+	template < class T, class Alloc>
+	vector<T, Alloc>::~vector(){
+		for(pointer i = _begin; i < _end; i++)
+			_alloc.destroy(i);
+		_alloc.deallocate(_begin, this->size());
 	}
 }
 	// template < class T, class Alloc>
