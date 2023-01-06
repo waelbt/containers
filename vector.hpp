@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:56 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/06 22:01:54 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/06 22:11:04 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ namespace ft
 			size_type max_size() const;
 			size_type capacity() const;
 			bool empty() const;
-			void resize (size_type n, value_type val = value_type());
+			//void resize (size_type n, value_type val = value_type());
 			void reserve (size_type n);
 
 			reference operator[] (size_type n);
@@ -76,6 +76,8 @@ namespace ft
 			// template <class InputIterator>
   			// void assign (InputIterator first, InputIterator last);
 			void assign (size_type n, const value_type& val);
+			void push_back (const value_type& val);
+			void clear();
 
 			allocator_type get_allocator() const;
 	};
@@ -103,8 +105,7 @@ namespace ft
 		if (this != &x)
 		{
 			// not all the allocator protected
-			for(pointer i = _begin; i < _end; i++)
-				_alloc.destroy(i);
+			this->clear();
 			if (x.size() > this->capacity())
 			{
 				_alloc.deallocate(_begin, this->capacity());
@@ -134,12 +135,12 @@ namespace ft
 		return  (SIZE_MAX / sizeof(T));
 	}
 	
-	template < class T, class Alloc>
-	void vector<T, Alloc>::resize (size_type n, value_type val){
-		(void )n;
-		(void )val;
-		//i will implement inserte or erase first
-	}
+	// template < class T, class Alloc>
+	// void vector<T, Alloc>::resize (size_type n, value_type val){
+	// 	(void )n;
+	// 	(void )val;
+	// 	//i will implement inserte or erase first
+	// }
 
 	template < class T, class Alloc>
 	bool vector<T, Alloc>::empty() const{
@@ -204,8 +205,7 @@ namespace ft
 
 	template < class T, class Alloc>
 	void vector<T, Alloc>::assign (size_type n, const value_type& val){
-		for (pointer i = _begin; i < _end; i++){
-			_alloc.destroy(i);}
+		this->clear();
 		if (this->capacity() < n)
 		{
 			_alloc.deallocate(_begin, this->capacity());
@@ -222,10 +222,20 @@ namespace ft
 		return _alloc;
 	}
 
+	// template < class T, class Alloc>
+	// void vector<T, Alloc>::push_back (const value_type& val){
+	// 	if ()
+	// }
+
 	template < class T, class Alloc>
-	vector<T, Alloc>::~vector(){
+	void vector<T, Alloc>::clear(){
 		for(pointer i = _begin; i < _end; i++)
 			_alloc.destroy(i);
+	}
+	
+	template < class T, class Alloc>
+	vector<T, Alloc>::~vector(){
+		this->clear();
 		_alloc.deallocate(_begin, this->capacity());
 	}
 }
