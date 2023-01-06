@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:56 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/06 18:01:37 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/06 19:20:37 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,14 @@ namespace ft
 			size_type size() const;
 			size_type max_size() const;
 			size_type capacity() const;
+			bool empty() const;
 			void resize (size_type n, value_type val = value_type());
+			void reserve (size_type n);
+
+			reference operator[] (size_type n);
+			const_reference operator[] (size_type n) const;
+			reference at (size_type n);
+			const_reference at (size_type n) const;
 	};
 
 	template < class T, class Alloc>
@@ -119,7 +126,14 @@ namespace ft
 	
 	template < class T, class Alloc>
 	void vector<T, Alloc>::resize (size_type n, value_type val){
+		(void )n;
+		(void )val;
 		//i will implement inserte or erase first
+	}
+
+	template < class T, class Alloc>
+	bool vector<T, Alloc>::empty() const{
+		return !(_end - _begin);
 	}
 	
 	template < class T, class Alloc>
@@ -128,10 +142,43 @@ namespace ft
 			_alloc.destroy(i);
 		_alloc.deallocate(_begin, this->size());
 	}
+	
+	template < class T, class Alloc>
+	void vector<T, Alloc>::reserve (size_type n){
+		if (n > this->capacity())
+		{
+			vector<T, Alloc> tmp(*this);
+			this->~vector();
+			_begin = _alloc.allocate(n);
+			_end_cap = _begin + n;
+			*this = tmp;
+		}
+	}
+	
+	template < class T, class Alloc>
+	typename vector<T, Alloc>::reference vector<T, Alloc>::operator[] (size_type n){
+		return *(_begin + n);
+	}
+
+	template < class T, class Alloc>
+	typename vector<T, Alloc>::const_reference vector<T, Alloc>::operator[] (size_type n) const{
+		return *(_begin + n);
+	}
+
+	template < class T, class Alloc>
+	typename vector<T, Alloc>::reference vector<T, Alloc>::at (size_type n){
+		if (n >= this->size())
+			throw std::out_of_range("vector");
+		return (*this)[n];
+	}
+
+	template < class T, class Alloc>
+	typename vector<T, Alloc>::const_reference vector<T, Alloc>::at (size_type n) const{
+		if (n >= this->size())
+			throw std::out_of_range("vector");
+		return (*this)[n];
+	}
 }
-
-
-
 	// template < class T, class Alloc>
 	// typename vector<T, Alloc>::iterator vector<T, Alloc>::begin(){
 	// 	return iterator(_begin);
