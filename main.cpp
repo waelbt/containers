@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:40 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/06 19:32:28 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/06 22:02:09 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,11 @@
 // 	return 0;	
 // }
 
-int main ()
+int main (void)
 {
-  const ft::vector<int> bar(4, 20);
-  std::cout << bar.front() << std::endl;
+  ft::vector<int> vec(10, 100);
+  std::cout << vec.size() << " " << vec.capacity() << std::endl;
+  vec.assign(7, 13);
+  std::cout << vec.size() << " " << vec.capacity() << std::endl;
   return 0;
 }

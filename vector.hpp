@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:56 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/06 19:34:51 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/06 22:01:54 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,12 @@ namespace ft
 			const_reference front() const;
 			reference back();
 			const_reference back() const;
+
+			// template <class InputIterator>
+  			// void assign (InputIterator first, InputIterator last);
+			void assign (size_type n, const value_type& val);
+
+			allocator_type get_allocator() const;
 	};
 
 	template < class T, class Alloc>
@@ -197,10 +203,30 @@ namespace ft
 	}
 
 	template < class T, class Alloc>
+	void vector<T, Alloc>::assign (size_type n, const value_type& val){
+		for (pointer i = _begin; i < _end; i++){
+			_alloc.destroy(i);}
+		if (this->capacity() < n)
+		{
+			_alloc.deallocate(_begin, this->capacity());
+			_begin = _alloc.allocate(n);
+			_end_cap = _begin + n;
+		}
+		_end = _begin + n;
+		for (pointer i = _begin; i < _end; i++){
+			_alloc.construct(i, val);}
+	}
+	
+	template < class T, class Alloc>
+	typename vector<T, Alloc>::allocator_type vector<T, Alloc>::get_allocator() const{
+		return _alloc;
+	}
+
+	template < class T, class Alloc>
 	vector<T, Alloc>::~vector(){
 		for(pointer i = _begin; i < _end; i++)
 			_alloc.destroy(i);
-		_alloc.deallocate(_begin, this->size());
+		_alloc.deallocate(_begin, this->capacity());
 	}
 }
 	// template < class T, class Alloc>
