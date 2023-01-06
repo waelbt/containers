@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:40 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/05 18:00:41 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/06 10:32:11 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,21 @@
 # include <vector>
 
 
-int main(void)
+// int main(void)
+// {
+// 	// ft::vector<int> a;
+// 	std::vector<int> vec {1, 2, 3};
+// 	std::cout << sizeof(vec) << std::endl;
+// 	std::cout << vec.size() << " " << a.capacity() << std::endl;
+// 	return 0;	
+// }
+
+#include <iostream>
+#include <vector>
+
+int main()
 {
-	ft::vector<int> a;
-	(void) a;
-	return 0;	
+   // std::vector<int> vec(5, 10); // Create an empty vector.
+    ft::vector<int> vec(5, 10);
+    return 0;
 }
