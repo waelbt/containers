@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:56 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/07 17:54:00 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/07 20:50:13 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ namespace ft
 			size_type max_size() const;
 			size_type capacity() const;
 			bool empty() const;
-			//void resize (size_type n, value_type val = value_type());
+			void resize (size_type n, value_type val = value_type());
 			void reserve (size_type n);
 
 			reference operator[] (size_type n);
@@ -139,12 +139,18 @@ namespace ft
 		return  (SIZE_MAX / sizeof(T));
 	}
 	
-	// template < class T, class Alloc>
-	// void vector<T, Alloc>::resize (size_type n, value_type val){
-	// 	(void )n;
-	// 	(void )val;
-	// 	//i will implement inserte or erase first
-	// }
+	template < class T, class Alloc>
+	void vector<T, Alloc>::resize (size_type n, value_type val){
+		if (n > (this->capacity() * 2))
+			this->reserve(n);
+		if (n < this->size()){
+			for (size_type i = n; i < this->size(); i++)
+				this->pop_back();}
+		else if (n > this->size()){
+			for (size_type i = this->size(); i < n; i++)
+				this->push_back(val);}
+		_end = _begin + n;
+	}
 
 	template < class T, class Alloc>
 	bool vector<T, Alloc>::empty() const{
@@ -228,7 +234,10 @@ namespace ft
 
 	template < class T, class Alloc>
 	void vector<T, Alloc>::push_back (const value_type& val){
-		if (this->size() == this->capacity())
+		//std::cout << "std : " << this->size() << " " << this->capacity() << std::endl; 
+		if (!this->capacity())
+			this->reserve(1);
+		else if (this->size() == this->capacity())
 			this->reserve(this->capacity() * 2);
 		_alloc.construct(_end, val);
 		_end++;

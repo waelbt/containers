@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:40 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/07 17:53:50 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/07 20:48:37 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,23 +38,21 @@
 
 int main(void)
 {
-  {
-    std::vector<int> vec(19, 100);
-    std::cout << "size  :"<< vec.size() << " capacity: " << vec.capacity() << std::endl;
-    vec.push_back(6);
-    std::cout << "size  :"<< vec.size() << " capacity: " << vec.capacity() << std::endl;
-    vec.pop_back();
-    std::cout << "size  :"<< vec.size() << " capacity: " << vec.capacity() << std::endl;
-    std::cout << vec.back() << std::endl;
-  }
-  {
-    std::vector<int> vec(19, 100);
-    std::cout << "size  :"<< vec.size() << " capacity: " << vec.capacity() << std::endl;
-    vec.push_back(6);
-    std::cout << "size  :"<< vec.size() << " capacity: " << vec.capacity() << std::endl;
-    vec.pop_back();
-    std::cout << "size  :"<< vec.size() << " capacity: " << vec.capacity() << std::endl;
-    std::cout << vec.back() << std::endl;
-  }
-  return 0;
+    std::vector<int> a;
+    ft::vector<int> b;
+
+    srand(time(NULL));
+	for (int i = 0; i < 10; i++)
+	{
+    	const int value = rand();
+    	a.push_back(value);
+    	b.push_back(value);
+	}
+    std::cout << a.size() << " " << a.capacity() << std::endl;
+   	std::cout << b.size() << " " << b.capacity() << std::endl;
+	a.resize(100, 3);
+	b.resize(100, 3);
+	std::cout << a.size() << " " << a.capacity() << " " << a.back() << " " << a.front() << std::endl;
+   	std::cout << b.size() << " " << b.capacity()  << " " << b.back() << " " << b.front() << std::endl;
+  	return 0;
 }
