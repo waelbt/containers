@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:56 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/06 22:11:04 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/07 17:54:00 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define	VECTOR_HPP
 
 # include <iostream>
+# include "tools.hpp"
+# include <vector>
 
 namespace ft
 {
@@ -34,7 +36,7 @@ namespace ft
 			typedef typename std::iterator_traits<iterator>::difference_type	difference_type; //tmp
 			typedef size_t 														size_type;
 
-		public:
+		private:
 			pointer			_begin;
 			pointer			_end;
 			pointer			_end_cap;
@@ -77,7 +79,9 @@ namespace ft
   			// void assign (InputIterator first, InputIterator last);
 			void assign (size_type n, const value_type& val);
 			void push_back (const value_type& val);
+			void pop_back();
 			void clear();
+			void swap (vector& x);
 
 			allocator_type get_allocator() const;
 	};
@@ -195,12 +199,12 @@ namespace ft
 
 	template < class T, class Alloc>
 	typename vector<T, Alloc>::reference vector<T, Alloc>::back(){
-		return *_end;
+		return *(_end - 1);
 	}
 
 	template < class T, class Alloc>
 	typename vector<T, Alloc>::const_reference vector<T, Alloc>::back() const{
-		return *_end;
+		return *(_end - 1);
 	}
 
 	template < class T, class Alloc>
@@ -222,17 +226,36 @@ namespace ft
 		return _alloc;
 	}
 
-	// template < class T, class Alloc>
-	// void vector<T, Alloc>::push_back (const value_type& val){
-	// 	if ()
-	// }
+	template < class T, class Alloc>
+	void vector<T, Alloc>::push_back (const value_type& val){
+		if (this->size() == this->capacity())
+			this->reserve(this->capacity() * 2);
+		_alloc.construct(_end, val);
+		_end++;
+	}
 
+	template < class T, class Alloc>
+	void vector<T, Alloc>::pop_back (){
+		if (this->size())
+		{
+			_alloc.destroy(_end);
+			_end--;
+		}
+	}
 	template < class T, class Alloc>
 	void vector<T, Alloc>::clear(){
 		for(pointer i = _begin; i < _end; i++)
 			_alloc.destroy(i);
 	}
-	
+
+	template < class T, class Alloc>
+	void vector<T, Alloc>::swap (vector& x){
+		ft::swap(_begin, x._begin);
+		ft::swap(_end, x._end);
+		ft::swap(_end_cap, x._end_cap);
+		ft::swap(_alloc, x._alloc);
+	}
+
 	template < class T, class Alloc>
 	vector<T, Alloc>::~vector(){
 		this->clear();
