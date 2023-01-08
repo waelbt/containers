@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:56 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/07 20:50:13 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/08 19:06:08 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,8 +267,11 @@ namespace ft
 
 	template < class T, class Alloc>
 	vector<T, Alloc>::~vector(){
-		this->clear();
-		_alloc.deallocate(_begin, this->capacity());
+		if (_begin)
+		{
+			this->clear();
+			_alloc.deallocate(_begin, this->capacity());
+		}
 	}
 }
 	// template < class T, class Alloc>
