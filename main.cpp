@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:40 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/08 19:05:04 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/09 16:34:26 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,14 @@
 //   return 0;
 // }
 
+	
 
 int main(void)
 {
-    ft::vector<int> a;
-	std::cout << a.get_allocator() << std::endl;
+    // ft::vector<unsigned char> a;
+	// std::vector<unsigned char> ab;
+	// std::cout << ft::is_integral<int>::value << std::endl;
+	// std::cout << a.get_allocator() << std::endl;
     // // ft::vector<int> b;
 	// // a = b;
     // srand(time(NULL));

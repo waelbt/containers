@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:56 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/08 19:06:08 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/09 16:25:05 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <iostream>
 # include "tools.hpp"
 # include <vector>
+# include "is_integral.hpp"
 
 namespace ft
 {
@@ -34,7 +35,7 @@ namespace ft
 			typedef typename std::reverse_iterator<iterator>					reverse_iterator; //tmp
 			typedef typename std::reverse_iterator<const_iterator>				const_reverse_iterator; //tmp
 			typedef typename std::iterator_traits<iterator>::difference_type	difference_type; //tmp
-			typedef size_t 														size_type;
+			typedef typename allocator_type::size_type 									size_type;
 
 		private:
 			pointer			_begin;
@@ -108,7 +109,6 @@ namespace ft
 	
 		if (this != &x)
 		{
-			// not all the allocator protected
 			this->clear();
 			if (x.size() > this->capacity())
 			{
@@ -125,18 +125,20 @@ namespace ft
 	}
 
 	template < class T, class Alloc>
-	size_t vector<T, Alloc>::capacity() const{
+	typename vector<T, Alloc>::size_type vector<T, Alloc>::capacity() const{
 		return (_end_cap - _begin);
 	}
 	
 	template < class T, class Alloc>
-	size_t vector<T, Alloc>::size() const{
+	typename vector<T, Alloc>::size_type vector<T, Alloc>::size() const{
 		return (_end - _begin);;
 	}
-	
+
 	template < class T, class Alloc>
-	size_t vector<T, Alloc>::max_size() const{
-		return  (SIZE_MAX / sizeof(T));
+	typename vector<T, Alloc>::size_type vector<T, Alloc>::max_size() const{
+		if(ft::is_char<T>::value)
+			return _alloc.max_size() / 2;
+		return _alloc.max_size();
 	}
 	
 	template < class T, class Alloc>
@@ -234,7 +236,6 @@ namespace ft
 
 	template < class T, class Alloc>
 	void vector<T, Alloc>::push_back (const value_type& val){
-		//std::cout << "std : " << this->size() << " " << this->capacity() << std::endl; 
 		if (!this->capacity())
 			this->reserve(1);
 		else if (this->size() == this->capacity())
@@ -265,13 +266,16 @@ namespace ft
 		ft::swap(_alloc, x._alloc);
 	}
 
+	template <class T, class Alloc>
+	void swap (vector<T,Alloc>& x, vector<T,Alloc>& y){
+		x.swap(y);
+	}
+
 	template < class T, class Alloc>
 	vector<T, Alloc>::~vector(){
+		this->clear();
 		if (_begin)
-		{
-			this->clear();
 			_alloc.deallocate(_begin, this->capacity());
-		}
 	}
 }
 	// template < class T, class Alloc>
