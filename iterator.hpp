@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 17:24:29 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/09 21:43:53 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/10 02:08:16 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ namespace ft
 		private:
     		T* _m_ptr;	
 		public:
-			//iterator() = default; //tanrja3 l hadi
+			iterator(): _m_ptr(NULL){}
 			iterator(T* m_ptr) : _m_ptr(m_ptr){}
     		T& operator*(){
 				return *_m_ptr;}

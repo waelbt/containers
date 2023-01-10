@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:56 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/09 23:54:21 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/10 03:02:45 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,17 +49,17 @@ namespace ft
 			explicit vector (const allocator_type& alloc = allocator_type());
 			explicit vector (size_type n, const value_type& val = value_type(),
                  const allocator_type& alloc = allocator_type());
-			template <class InputIterator>
-         	vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()) : _alloc(alloc){
-				difference_type size;
+			// template <class InputIterator>
+         	// vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()) : _alloc(alloc){
+			// 	difference_type size;
 				
-				size = last - first;
-				_begin = _alloc.allocate(size);
-				_end = _begin + size;
-				_end_cap = _end;
-				for(pointer i = _begin; i < _end; i++)
-					_alloc.construct(i, *(first++));
-			}
+			// 	size = last - first;
+			// 	_begin = _alloc.allocate(size);
+			// 	_end = _begin + size;
+			// 	_end_cap = _end;
+			// 	for(pointer i = _begin; i < _end; i++)
+			// 		_alloc.construct(i, *(first++));
+			// }
 			vector (const vector& x);
 			
 			vector& operator= (const vector& x);
@@ -70,6 +70,12 @@ namespace ft
 			//const_iterator begin() const;
 			iterator end();
 			// const_iterator end() const;
+
+			// reverse_iterator rbegin();
+			// const_reverse_iterator rbegin() const;
+			
+			//reverse_iterator rend();
+			//const_reverse_iterator rend() const;
 
 			size_type size() const;
 			size_type max_size() const;
@@ -87,11 +93,30 @@ namespace ft
 			reference back();
 			const_reference back() const;
 
-			// template <class InputIterator>
-  			// void assign (InputIterator first, InputIterator last);
+			template <class InputIterator>
+  			void assign (InputIterator first, InputIterator last){
+				this->clear();
+				for (InputIterator it = first; it != last; it++)
+					push_back(*it);
+			}
 			void assign (size_type n, const value_type& val);
 			void push_back (const value_type& val);
 			void pop_back();
+			iterator insert (iterator position, const value_type& val);
+			void insert (iterator position, size_type n, const value_type& val);
+			template <class InputIterator>
+    		void insert (iterator position, InputIterator first, InputIterator last){
+				vector<T, Alloc> tmp;
+				ft::vector<T, Alloc>::iterator it;
+		
+				for (it = begin(); it != position; it++)
+					tmp.push_back(*it);
+				for (InputIterator it = first; it != last; it++)
+					tmp.push_back(*it);
+				for (; it < end(); it++)
+					tmp.push_back(*it);
+				*this = tmp;
+			}
 			void clear();
 			void swap (vector& x);
 
@@ -155,7 +180,6 @@ namespace ft
 	
 	template < class T, class Alloc>
 	void vector<T, Alloc>::resize (size_type n, value_type val){
-		//exception max_size
 		if (n > (this->capacity() * 2))
 			this->reserve(n);
 		if (n < this->size()){
@@ -181,7 +205,8 @@ namespace ft
 			_begin = _alloc.allocate(n);
 			_end = _begin;
 			_end_cap = _begin + n;
-			*this = tmp;
+			if (tmp.size())
+				*this = tmp;
 		}
 	}
 	
@@ -231,19 +256,9 @@ namespace ft
 
 	template < class T, class Alloc>
 	void vector<T, Alloc>::assign (size_type n, const value_type& val){
-		(void) val;
-		(void) n;
 		this->clear();
-		if (this->capacity() < n)
-		{
-			if (this->capacity())
-				_alloc.deallocate(_begin, this->capacity());
-			_begin = _alloc.allocate(n);
-			_end_cap = _begin + n;
-		}
-		_end = _begin + n;
-		for (pointer i = _begin; i < _end; i++){
-			_alloc.construct(i, val);}
+		for (size_t i = 0; i != n; i++)
+			push_back(val);
 	}
 	
 	template < class T, class Alloc>
@@ -253,7 +268,6 @@ namespace ft
 
 	template < class T, class Alloc>
 	void vector<T, Alloc>::push_back (const value_type& val){
-		//std::cerr << this->size() << " " << this->capacity() << std::endl;
 		if (!this->capacity())
 			this->reserve(1);
 		else if (this->size() == this->capacity())
@@ -270,7 +284,45 @@ namespace ft
 			_end--;
 		}
 	}
+	
+	template < class T, class Alloc>
+	typename ft::vector<T, Alloc>::iterator
+		vector<T, Alloc>::insert(ft::vector<T, Alloc>::iterator position, const value_type& val)
+	{
+		vector<T, Alloc> tmp;
+		ft::vector<T, Alloc>::iterator it;
+		int i = 0;
 
+		for (it = begin(); it != position; it++)
+		{
+			i++;
+			tmp.push_back(*it);
+		}
+		tmp.push_back(val);
+		for (; it < end(); it++)
+			tmp.push_back(*it);
+		*this = tmp;
+		return iterator(_begin + i);
+	}
+
+	template < class T, class Alloc>
+	void vector<T, Alloc>::insert (ft::vector<T, Alloc>::iterator position,
+		size_type n, const value_type& val)
+	{
+		vector<T, Alloc> tmp;
+		ft::vector<T, Alloc>::iterator it;
+	
+		if (n >= max_size())
+			throw std::length_error("vector");
+		for (it = begin(); it != position; it++)
+			tmp.push_back(*it);
+		for(size_t i = 0 ; i < n; i++)
+			tmp.push_back(val);
+		for (; it < end(); it++)
+			tmp.push_back(*it);
+		*this = tmp;
+	}
+	
 	template < class T, class Alloc>
 	void vector<T, Alloc>::clear(){
 		while (this->size())
@@ -317,24 +369,5 @@ namespace ft
 			_alloc.deallocate(_begin, this->capacity());
 	}
 }
-	// template < class T, class Alloc>
-	// typename vector<T, Alloc>::iterator vector<T, Alloc>::begin(){
-	// 	return iterator(_begin);
-	// }
-
-	// template < class T, class Alloc>
-	// typename vector<T, Alloc>::const_iterator vector<T, Alloc>::begin() const{
-	// 	return const_iterator(_begin);
-	// }
-	
-	// template < class T, class Alloc>
-	// typename vector<T, Alloc>::iterator vector<T, Alloc>::end(){
-	// 	return iterator(_end);
-	// }
-
-	// template < class T, class Alloc>
-	// typename vector<T, Alloc>::const_iterator vector<T, Alloc>::end() const{
-	// 	return const_iterator(_end);
-	// }
 	
 #endif
