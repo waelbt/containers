@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:40 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/10 02:55:55 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/10 03:28:22 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,14 @@
 // }
 
 int main(void){
-	ft::vector<std::string> v(5000, "Test");
-	v.insert(v.begin() + 115, v.max_size(), "ww");
+	ft::vector<int> myvector(10, 4);
+	ft::vector<int>::iterator it;
+	myvector.insert(myvector.begin(), 5);
+	for (it=myvector.begin(); it<myvector.end(); it++)
+    	std::cout << ' ' << *it;
+  	std::cout << '\n';
+	myvector.erase(myvector.begin());
+	for (it=myvector.begin(); it<myvector.end(); it++)
+    	std::cout << ' ' << *it;
+  	std::cout << '\n';
 }

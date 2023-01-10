@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:56 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/10 03:02:45 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/10 03:34:59 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,17 +49,17 @@ namespace ft
 			explicit vector (const allocator_type& alloc = allocator_type());
 			explicit vector (size_type n, const value_type& val = value_type(),
                  const allocator_type& alloc = allocator_type());
-			// template <class InputIterator>
-         	// vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()) : _alloc(alloc){
-			// 	difference_type size;
+			template <class InputIterator>
+         	vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()) : _alloc(alloc){
+				difference_type size;
 				
-			// 	size = last - first;
-			// 	_begin = _alloc.allocate(size);
-			// 	_end = _begin + size;
-			// 	_end_cap = _end;
-			// 	for(pointer i = _begin; i < _end; i++)
-			// 		_alloc.construct(i, *(first++));
-			// }
+				size = last - first;
+				_begin = _alloc.allocate(size);
+				_end = _begin + size;
+				_end_cap = _end;
+				for(pointer i = _begin; i < _end; i++)
+					_alloc.construct(i, *(first++));
+			}
 			vector (const vector& x);
 			
 			vector& operator= (const vector& x);
@@ -117,6 +117,7 @@ namespace ft
 					tmp.push_back(*it);
 				*this = tmp;
 			}
+			iterator erase (iterator position);
 			void clear();
 			void swap (vector& x);
 
@@ -324,9 +325,30 @@ namespace ft
 	}
 	
 	template < class T, class Alloc>
+	typename ft::vector<T, Alloc>::iterator
+		vector<T, Alloc>::erase (ft::vector<T, Alloc>::iterator position)
+	{
+		vector<T, Alloc> tmp;
+		ft::vector<T, Alloc>::iterator it;
+		int i;
+
+		i = 0;
+		for (it = begin(); it != position; it++)
+		{
+			tmp.push_back(*it);
+			i++;
+		}
+		it++;
+		for (; it < end(); it++)
+			tmp.push_back(*it);
+		*this = tmp;
+		return iterator(_begin + i);
+	}
+
+	template < class T, class Alloc>
 	void vector<T, Alloc>::clear(){
 		while (this->size())
-			this->pop_back();
+			pop_back();
 	}
 
 	template < class T, class Alloc>
