@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:40 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/10 03:28:22 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/12 19:38:16 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,15 +132,18 @@
 //   return 0;
 // }
 
+
+template<typename T>
+void print_const_array(const T* arr, size_t size) {
+    typedef typename ft::iterator_traits<const T*>::value_type value_type;
+    for (size_t i = 0; i < size; ++i) {
+        value_type val = arr[i];
+        std::cout << val << " ";
+    }
+    std::cout << std::endl;
+}
+
 int main(void){
-	ft::vector<int> myvector(10, 4);
-	ft::vector<int>::iterator it;
-	myvector.insert(myvector.begin(), 5);
-	for (it=myvector.begin(); it<myvector.end(); it++)
-    	std::cout << ' ' << *it;
-  	std::cout << '\n';
-	myvector.erase(myvector.begin());
-	for (it=myvector.begin(); it<myvector.end(); it++)
-    	std::cout << ' ' << *it;
-  	std::cout << '\n';
+	const int arr[] = {1, 2, 3, 4, 5};
+	print_const_array(arr, 5);
 }

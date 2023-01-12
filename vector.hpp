@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:56 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/10 03:38:19 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/12 19:37:25 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <vector>
 # include "iterator.hpp"
 # include "is_integral.hpp"
+# include "iterator_traits.hpp"
 
 namespace ft
 {
@@ -35,7 +36,6 @@ namespace ft
 			typedef	typename std::vector<T>::const_iterator						const_iterator; // the vector itertor is just temporary i will remove it 
 			typedef typename std::reverse_iterator<iterator>					reverse_iterator; //tmp
 			typedef typename std::reverse_iterator<const_iterator>				const_reverse_iterator; //tmp
-			// typedef typename std::iterator_traits<iterator>::difference_type	difference_type; //tmp
 			typedef ptrdiff_t													difference_type;
 			typedef typename allocator_type::size_type 							size_type;
 
