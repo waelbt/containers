@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:40 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/12 19:38:16 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/12 22:30:09 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,17 +133,17 @@
 // }
 
 
-template<typename T>
-void print_const_array(const T* arr, size_t size) {
-    typedef typename ft::iterator_traits<const T*>::value_type value_type;
-    for (size_t i = 0; i < size; ++i) {
-        value_type val = arr[i];
-        std::cout << val << " ";
-    }
-    std::cout << std::endl;
-}
+// template<typename T>
+// void print_const_array(const T* arr, size_t size) {
+//     typedef typename ft::iterator_traits<const T*>::value_type value_type;
+//     for (size_t i = 0; i < size; ++i) {
+//         value_type val = arr[i];
+//         std::cout << val << " ";
+//     }
+//     std::cout << std::endl;
+// }
 
-int main(void){
-	const int arr[] = {1, 2, 3, 4, 5};
-	print_const_array(arr, 5);
-}
+// int main(void){
+// 	const int arr[] = {1, 2, 3, 4, 5};
+// 	print_const_array(arr, 5);
+// }

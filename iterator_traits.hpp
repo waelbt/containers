@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 16:41:43 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/12 19:46:39 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/12 19:53:30 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,13 @@ namespace ft
 
 // removed 
 // template<class T>
-	// struct iterator_traits<const T*>
-	// {
-    //     typedef ptrdiff_t difference_type;
-    //     typedef T value_type;
-    //     typedef const T* pointer;
-    //     typedef const T& reference;
-    //     typedef std::random_access_iterator_tag iterator_category;
-    // };
+// struct iterator_traits<const T*>
+// {
+//     typedef ptrdiff_t difference_type;
+//     typedef T value_type;
+//     typedef const T* pointer;
+//     typedef const T& reference;
+//     typedef std::random_access_iterator_tag iterator_category;
+// };
+
 #endif

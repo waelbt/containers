@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:56 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/12 19:37:25 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/12 21:37:18 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ namespace ft
 			typedef	typename allocator_type::pointer							pointer;
 			typedef	typename allocator_type::const_pointer						const_pointer;
 			typedef	typename ft::iterator<T>									iterator; // the vector itertor is just temporary i will remove it 
-			typedef	typename std::vector<T>::const_iterator						const_iterator; // the vector itertor is just temporary i will remove it 
+			typedef	typename ft::iterator<const T>								const_iterator; // the vector itertor is just temporary i will remove it 
 			typedef typename std::reverse_iterator<iterator>					reverse_iterator; //tmp
 			typedef typename std::reverse_iterator<const_iterator>				const_reverse_iterator; //tmp
 			typedef ptrdiff_t													difference_type;
@@ -49,17 +49,17 @@ namespace ft
 			explicit vector (const allocator_type& alloc = allocator_type());
 			explicit vector (size_type n, const value_type& val = value_type(),
                  const allocator_type& alloc = allocator_type());
-			// template <class InputIterator>
-         	// vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()) : _alloc(alloc){
-			// 	difference_type size;
+			template <class InputIterator>
+         	vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()) : _alloc(alloc){
+				difference_type size;
 				
-			// 	size = last - first;
-			// 	_begin = _alloc.allocate(size);
-			// 	_end = _begin + size;
-			// 	_end_cap = _end;
-			// 	for(pointer i = _begin; i < _end; i++)
-			// 		_alloc.construct(i, *(first++));
-			// }
+				size = last - first;
+				_begin = _alloc.allocate(size);
+				_end = _begin + size;
+				_end_cap = _end;
+				for(pointer i = _begin; i < _end; i++)
+					_alloc.construct(i, *(first++));
+			}
 			vector (const vector& x);
 			
 			vector& operator= (const vector& x);
@@ -67,9 +67,9 @@ namespace ft
 			~vector();
 
 			iterator begin();
-			//const_iterator begin() const;
+			const_iterator begin() const;
 			iterator end();
-			// const_iterator end() const;
+			const_iterator end() const;
 
 			// reverse_iterator rbegin();
 			// const_reverse_iterator rbegin() const;
@@ -391,20 +391,20 @@ namespace ft
 		return iterator(_begin);
 	}
 
-	// template < class T, class Alloc>
-	// typename std::vector<T>::const_iterator vector<T, Alloc>::begin() const{
-	// 	return std::vector<T>::const_iterator(_begin);
-	// }
+	template < class T, class Alloc>
+	typename ft::vector<T, Alloc>::const_iterator vector<T, Alloc>::begin() const{
+		return iterator(_begin);
+	}
 	
 	template < class T, class Alloc>
 	typename ft::vector<T, Alloc>::iterator vector<T, Alloc>::end(){
 		return iterator(_end);
 	}
-	
-	// template < class T, class Alloc>
-	// typename std::vector<T>::const_iterator vector<T, Alloc>::end() const{
-	// 	return std::vector<T>::const_iterator(_end);
-	// }
+
+	template < class T, class Alloc>
+	typename ft::vector<T, Alloc>::const_iterator vector<T, Alloc>::end() const{
+		return iterator(_end);
+	}
 
 	template < class T, class Alloc>
 	vector<T, Alloc>::~vector(){
