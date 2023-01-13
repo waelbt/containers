@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 22:40:20 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/13 04:16:54 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/13 08:56:29 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,13 @@ namespace ft
     		reference         operator[](difference_type n) const {return *(*this + n);}
 	};
 
+	template <class T>
+	reverse_iterator<T> operator+(ptrdiff_t n, reverse_iterator<T>  const& it){
+    	return it + n;}
+	template <class T>
+	reverse_iterator<T> operator-(ptrdiff_t n, reverse_iterator<T>  const& it){
+    	return  it - n;}
+
 	template <class Iterator1, class Iterator2>
 	bool operator==(const reverse_iterator<Iterator1>& obj1, const reverse_iterator<Iterator2>& obj2){
 		return obj1.base() == obj2.base();}
@@ -82,7 +89,7 @@ namespace ft
 
 	template <class Iterator1, class Iterator2>
 	ptrdiff_t operator-(const reverse_iterator<Iterator1>& obj1, const reverse_iterator<Iterator2>& obj2){
-	    return obj1.base() - obj2.base();}
+	    return obj2.base() - obj1.base();}
 	// + / -
 } // namespace ft
 
