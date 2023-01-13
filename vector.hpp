@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:56 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/13 01:33:13 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/13 04:05:44 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,15 +73,14 @@ namespace ft
 			const_iterator end() const;
 
 			reverse_iterator rbegin(){
-				return reverse_iterator(begin());}
+				return reverse_iterator(end());}
 			const_reverse_iterator rbegin() const{
-				return reverse_iterator(begin());}
+				return const_reverse_iterator(end());}
 			
 			reverse_iterator rend(){
-				return reverse_iterator(end());}
+				return reverse_iterator(begin());}
 			const_reverse_iterator rend() const{
-				return reverse_iterator(end());}
-
+				return const_reverse_iterator(begin());}
 			size_type size() const;
 			size_type max_size() const;
 			size_type capacity() const;

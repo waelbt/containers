@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 17:24:29 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/13 02:29:50 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/13 08:22:21 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ namespace ft
 			iterator(): _m_ptr(NULL){}
 			iterator(pointer m_ptr) : _m_ptr(m_ptr){}
 			iterator(const iterator& obj) : _m_ptr(obj._m_ptr){}
+			pointer get() const{return _m_ptr;}
 			operator iterator<const value_type>(){
         		return iterator<const value_type>(_m_ptr);}
 			pointer operator->() const { return _m_ptr; }
@@ -61,9 +62,9 @@ namespace ft
 				_m_ptr  -= n;
 				return *this;}
 			iterator operator+(difference_type n) const { //const{
-				return iterator<T>(_m_ptr + n);}
+				return _m_ptr + n;}
     		iterator operator-(difference_type n) const{ //const{
-				return iterator<T>(_m_ptr - n);}
+				return _m_ptr - n;}
 	   		difference_type  operator-(const iterator& other) const{ //const{
 				return _m_ptr - other._m_ptr;} 
 			difference_type  operator+(const iterator& other) const{ //const{
@@ -72,22 +73,37 @@ namespace ft
 				return _m_ptr + n; }
 			iterator operator[](difference_type n) const{
 				return _m_ptr + n;}
-    		bool operator==(const iterator& other) const{
-				return (_m_ptr == other._m_ptr);}
-    		bool operator!=(const iterator& other) const{
-				return !(*this == other);}
-    		bool operator<(const iterator& other) const{
-				return (_m_ptr < other._m_ptr);}
-    		bool operator<=(const iterator& other) const{
-				return (_m_ptr <= other._m_ptr);}
-    		bool operator>(const iterator& other) const{
-				return (other < *this);}
-    		bool operator>=(const iterator& other) const{
-				return (other <= *this);}
   	};
+
+	template <class T, class U>
+	bool operator==(const iterator<T>& iter1, const iterator<U>& iter2){
+		return (iter1.get() == iter2.get());}
+
+	template <class T, class U>
+    bool operator!=(const iterator<T>& iter1, const iterator<U>& iter2){
+		return !(iter1 == iter2);}
+	
+	template <class T, class U>
+    bool operator<(const iterator<T>& iter1, const iterator<U>& iter2){
+		return (iter1.get() < iter2.get());}
+
+	template <class T, class U>
+    bool operator<=(const iterator<T>& iter1, const iterator<U>& iter2){
+		return (iter1.get() <= iter2.get());}
+	
+	template <class T, class U>
+    bool operator>(const iterator<T>& iter1, const iterator<U>& iter2){
+		return !(iter1 <= iter2);}
+
+	template <class T, class U>
+    bool operator>=(const iterator<T>& iter1, const iterator<U>& iter2){
+		return !(iter1 < iter2);}
 	template <class T>
 	iterator<T> operator+(ptrdiff_t n, iterator<T>  const& it){
-    	return it.operator+(n);}
+    	return (it +n) ;}
+	template <class T>
+	iterator<T> operator-(ptrdiff_t n, iterator<T>  const& it){
+    	return (it - n) ;}
 	template<typename T>
 	std::ostream& operator<<(std::ostream& os, iterator<T> it) {
     	os << *it;
