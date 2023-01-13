@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 17:24:29 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/12 22:29:13 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/13 02:29:50 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ namespace ft
     		typedef T*   							pointer;
     		typedef T& 								reference;
 			typedef std::random_access_iterator_tag iterator_category;
-		private:
+		protected:
     		pointer _m_ptr;	
 		public:
 			iterator(): _m_ptr(NULL){}
@@ -93,5 +93,6 @@ namespace ft
     	os << *it;
     return os;
 	}
-}
+
+} // namespace ft
 #endif

@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:56 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/12 21:37:18 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/13 01:33:13 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include "iterator.hpp"
 # include "is_integral.hpp"
 # include "iterator_traits.hpp"
+# include "reverse_iterator.hpp"
 
 namespace ft
 {
@@ -34,8 +35,8 @@ namespace ft
 			typedef	typename allocator_type::const_pointer						const_pointer;
 			typedef	typename ft::iterator<T>									iterator; // the vector itertor is just temporary i will remove it 
 			typedef	typename ft::iterator<const T>								const_iterator; // the vector itertor is just temporary i will remove it 
-			typedef typename std::reverse_iterator<iterator>					reverse_iterator; //tmp
-			typedef typename std::reverse_iterator<const_iterator>				const_reverse_iterator; //tmp
+			typedef typename ft::reverse_iterator<iterator>						reverse_iterator; //tmp
+			typedef typename ft::reverse_iterator<const_iterator>				const_reverse_iterator; //tmp
 			typedef ptrdiff_t													difference_type;
 			typedef typename allocator_type::size_type 							size_type;
 
@@ -71,11 +72,15 @@ namespace ft
 			iterator end();
 			const_iterator end() const;
 
-			// reverse_iterator rbegin();
-			// const_reverse_iterator rbegin() const;
+			reverse_iterator rbegin(){
+				return reverse_iterator(begin());}
+			const_reverse_iterator rbegin() const{
+				return reverse_iterator(begin());}
 			
-			//reverse_iterator rend();
-			//const_reverse_iterator rend() const;
+			reverse_iterator rend(){
+				return reverse_iterator(end());}
+			const_reverse_iterator rend() const{
+				return reverse_iterator(end());}
 
 			size_type size() const;
 			size_type max_size() const;
@@ -388,23 +393,35 @@ namespace ft
 
 	template < class T, class Alloc>
 	typename ft::vector<T, Alloc>::iterator vector<T, Alloc>::begin(){
-		return iterator(_begin);
-	}
+		return _begin;}
 
 	template < class T, class Alloc>
 	typename ft::vector<T, Alloc>::const_iterator vector<T, Alloc>::begin() const{
-		return iterator(_begin);
-	}
+		return _begin;}
 	
 	template < class T, class Alloc>
 	typename ft::vector<T, Alloc>::iterator vector<T, Alloc>::end(){
-		return iterator(_end);
-	}
+		return _end;}
 
 	template < class T, class Alloc>
 	typename ft::vector<T, Alloc>::const_iterator vector<T, Alloc>::end() const{
-		return iterator(_end);
-	}
+		return _end;}
+
+	// template < class T, class Alloc>
+	// typename ft::vector<T, Alloc>::reverse_iterator rbegin(){
+	// 	return reverse_iterator();}
+
+	// template < class T, class Alloc>	
+	// typename ft::vector<T, Alloc>::reverse_iterator rbegin() const{
+	// 	return reverse_iterator(_begin);}
+
+	// template < class T, class Alloc>
+	// typename ft::vector<T, Alloc>::reverse_iterator rend(){
+	// 	return reverse_iterator(_end);}
+
+	// template < class T, class Alloc>
+	// typename ft::vector<T, Alloc>::reverse_iterator rend() const{
+	// 	return reverse_iterator(_end);}
 
 	template < class T, class Alloc>
 	vector<T, Alloc>::~vector(){
@@ -412,6 +429,6 @@ namespace ft
 		if (_begin)
 			_alloc.deallocate(_begin, this->capacity());
 	}
-}
+} // namespace ft
 	
 #endif

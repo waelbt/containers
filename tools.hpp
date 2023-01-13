@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 16:51:49 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/12 19:42:37 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/12 22:42:01 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,6 @@ namespace ft
 	struct remove_cv<const T> {
     	typedef T type;
 	};
-}
+} // namespace ft
 
 #endif

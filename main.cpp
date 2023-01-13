@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:40 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/12 22:30:09 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/13 02:25:22 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,17 @@
 # include <vector>
 
 
-// int main(void)
-// {
-// 	// ft::vector<int> a;
-// 	std::vector<int> vec {1, 2, 3};
-// 	std::cout << sizeof(vec) << std::endl;
-// 	std::cout << vec.size() << " " << a.capacity() << std::endl;
-// 	return 0;	
-// }
+int main(void)
+{
+	ft::vector<int> a;
+	ft::vector<int>::const_reverse_iterator it;
+	it = a.rbegin();
+	// (void) it;
+    // std::sort(a.begin(), a.end());
+	// std::cout << sizeof(vec) << std::endl;
+	// std::cout << vec.size() << " " << a.capacity() << std::endl;
+	return 0;	
+}
 
 // int main (void)
 // {
