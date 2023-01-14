@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 22:40:20 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/13 08:56:29 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/14 04:45:57 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,6 @@ namespace ft
 			{
      			_iter_adapt = other.base();
         		return *this;}
-			// operator Iterator() const{
-			// 	return base();
-			// }
 			operator reverse_iterator<const Iterator>(){
         		return reverse_iterator<const Iterator>(_iter_adapt);}
 			Iterator base() const {return _iter_adapt;} 

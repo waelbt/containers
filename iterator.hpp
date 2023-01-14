@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 17:24:29 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/14 02:11:04 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/14 04:46:22 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,27 @@
 
 namespace ft
 {
+				/*iterator traits*/
+	template<class Iterator>
+	struct iterator_traits
+	{
+		typedef typename Iterator::difference_type difference_type;
+		typedef typename Iterator::value_type value_type;
+		typedef typename Iterator::pointer pointer;
+		typedef typename Iterator::reference reference;
+		typedef typename Iterator::iterator_category iterator_category;
+	};
+
+	template<class  T>
+	struct iterator_traits<T*>
+	{
+    	typedef ptrdiff_t difference_type;
+    	typedef typename ft::remove_cv<T>::type value_type;
+    	typedef T* pointer;
+        typedef T& reference;
+        typedef std::random_access_iterator_tag iterator_category;
+	};
+				/*	iterator	*/
 	template <class T>
   	class iterator
 	{

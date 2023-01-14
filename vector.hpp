@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:56 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/13 10:19:25 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/14 04:56:54 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@
 # include <vector>
 # include <type_traits>
 # include "iterator.hpp"
-# include "is_integral.hpp"
-# include "iterator_traits.hpp"
 # include "reverse_iterator.hpp"
 
 namespace ft
@@ -52,7 +50,7 @@ namespace ft
 			explicit vector (size_type n, const value_type& val = value_type(),
                  const allocator_type& alloc = allocator_type());
 			template <class InputIterator>
-         	vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()) : _alloc(alloc){
+         	vector (InputIterator first,typename ft::enable_if<!ft::is_integral<InputIterator>::value , InputIterator>::type  last, const allocator_type& alloc = allocator_type()) : _alloc(alloc){
 				difference_type size;
 				
 				size = last - first;

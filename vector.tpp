@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 09:03:46 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/13 09:17:23 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/14 17:51:55 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,20 +93,38 @@ bool vector<T, Alloc>::empty() const{
 	return !(_end - _begin);
 }
 
+// template < class T, class Alloc>
+// void vector<T, Alloc>::reserve (size_type n){
+// 	if (n > this->capacity())
+// 	{
+// 		vector<T, Alloc> tmp(*this);
+// 		this->~vector();
+// 		_begin = _alloc.allocate(n);
+// 		_end = _begin;
+// 		_end_cap = _begin + n;
+// 		if (tmp.size())
+// 			*this = tmp;
+// 	}
+// }
+
 template < class T, class Alloc>
 void vector<T, Alloc>::reserve (size_type n){
-	if (n > this->capacity())
+	if (n > capacity())
 	{
-		vector<T, Alloc> tmp(*this);
-		this->~vector();
-		_begin = _alloc.allocate(n);
-		_end = _begin;
-		_end_cap = _begin + n;
-		if (tmp.size())
-			*this = tmp;
+		size_type size = this->size();
+		pointer new_beg = _alloc.allocate(n);
+		for (size_type i = 0; i < size; i++)
+		{
+			_alloc.construct(new_beg + i, *(_begin + i));
+			_alloc.destroy(_begin + i);
+		}
+		if (_begin)
+			this->_alloc.deallocate(_begin, capacity());
+		_begin = new_beg;
+		_end = new_beg + size;
+		_end_cap = new_beg + n;
 	}
 }
-
 			/******* Element access ************/
 template < class T, class Alloc>
 typename vector<T, Alloc>::reference vector<T, Alloc>::operator[] (size_type n){
@@ -265,10 +283,10 @@ void vector<T, Alloc>::clear(){
 
 template < class T, class Alloc>
 void vector<T, Alloc>::swap (vector& x){
-	ft::swap(_begin, x._begin);
-	ft::swap(_end, x._end);
-	ft::swap(_end_cap, x._end_cap);
-	ft::swap(_alloc, x._alloc);
+	std::swap(_begin, x._begin);
+	std::swap(_end, x._end);
+	std::swap(_end_cap, x._end_cap);
+	std::swap(_alloc, x._alloc);
 }
 
 template <class T, class Alloc>
