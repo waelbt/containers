@@ -1,22 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   enable_if.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/03 10:55:40 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/14 03:05:53 by waboutzo         ###   ########.fr       */
+/*   Created: 2023/01/13 10:17:34 by waboutzo          #+#    #+#             */
+/*   Updated: 2023/01/13 10:18:35 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef		ENABLE_IF_HPP
+# define	ENABLE_IF_HPP
 
-# include "vector.hpp"
-# include <vector>
-
-
-int main(void)
+namespace ft
 {
-	
-	return 0;	
-}
+	template <bool Cond, class T = void>
+	struct enable_if{
+		
+	}
+
+} // namespace ft
+
+# endif
