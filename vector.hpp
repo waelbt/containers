@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:56 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/15 01:06:38 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/15 01:53:55 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,43 +139,33 @@ namespace ft
 	};
 	template <class T, class Alloc> 
 	bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
-		(void) lhs;
-		(void) rhs;
+		if (lhs.size() == rhs.size())
+			return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
 		return false;
 	}
 	
 	template <class T, class Alloc> 
 	bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
-		(void) lhs;
-		(void) rhs;
-		return false;
+		return !(lhs == rhs);
 	}
 	
 	template <class T, class Alloc>
 	bool operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
-		(void) lhs;
-		(void) rhs;
-		return false;
+		return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 	}
 	template <class T, class Alloc>
 	bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
-		(void) lhs;
-		(void) rhs;
-		return false;
+		return !(rhs < lhs);
 	}
 	
 	template <class T, class Alloc>
 	bool operator>  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
-		(void) lhs;
-		(void) rhs;
-		return false;
+		return rhs < lhs;
 	}
 	
 	template <class T, class Alloc>
 	bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
-		(void) lhs;
-		(void) rhs;
-		return false;
+		return !(lhs < rhs);
 	}
 	#include "vector.tpp"
 } // namespace ft
