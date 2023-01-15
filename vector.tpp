@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 09:03:46 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/15 00:49:44 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/15 23:05:45 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,76 +196,83 @@ void vector<T, Alloc>::pop_back (){
 	}
 }
 
+// template < class T, class Alloc>
+// typename ft::vector<T, Alloc>::iterator
+// 	vector<T, Alloc>::insert(ft::vector<T, Alloc>::iterator position, const value_type& val)
+// {
+// 	vector<T, Alloc> tmp;
+// 	ft::vector<T, Alloc>::iterator it;
+// 	int i = 0;
+// 	for (it = begin(); it != position; it++)
+// 	{
+// 		i++;
+// 		tmp.push_back(*it);
+// 	}
+// 	tmp.push_back(val);
+// 	for (; it < end(); it++)
+// 		tmp.push_back(*it);
+// 	this->swap(tmp);
+// 	return iterator(_begin + i);
+// }
+
 template < class T, class Alloc>
 typename ft::vector<T, Alloc>::iterator
-	vector<T, Alloc>::insert(ft::vector<T, Alloc>::iterator position, const value_type& val)
+	vector<T, Alloc>::insert(iterator position, const value_type& val)
 {
-	vector<T, Alloc> tmp;
-	ft::vector<T, Alloc>::iterator it;
-	int i = 0;
-	for (it = begin(); it != position; it++)
+	difference_type distance;
+	value_type		tmp;
+	value_type		tmp2;
+	iterator		it;
+
+	distance =  std::distance(begin(), position);
+	resize(size() + 1);
+	tmp2 = val;
+	for (it = begin() + distance; it < end(); it++)
 	{
-		i++;
-		tmp.push_back(*it);
+		tmp = *it;
+		*it = tmp2;
+		tmp2 = tmp;
 	}
-	tmp.push_back(val);
-	for (; it < end(); it++)
-		tmp.push_back(*it);
-	*this = tmp;
-	return iterator(_begin + i);
+	return (begin() + distance);
 }
+
 
 template < class T, class Alloc>
 void vector<T, Alloc>::insert (ft::vector<T, Alloc>::iterator position,
 	size_type n, const value_type& val)
 {
-	vector<T, Alloc> tmp;
-	ft::vector<T, Alloc>::iterator it;
-
-	if (n >= max_size())
-		throw std::length_error("vector");
-	for (it = begin(); it != position; it++)
-		tmp.push_back(*it);
-	for(size_t i = 0 ; i < n; i++)
-		tmp.push_back(val);
-	for (; it < end(); it++)
-		tmp.push_back(*it);
-	*this = tmp;
+	difference_type distance;
+	size_type		size;
+	iterator		tmp;
+	
+	distance =  std::distance(begin(), position);
+	size = this->size();
+	resize(size + n, val);
+	tmp = end();
+	for (difference_type i = size - 1; i >= distance; i--)
+		std::swap(*(begin() + i), *(--tmp));
 }
 
 template < class T, class Alloc>
 typename ft::vector<T, Alloc>::iterator
 	vector<T, Alloc>::erase (ft::vector<T, Alloc>::iterator position)
 {
-	vector<T, Alloc> tmp;
-	ft::vector<T, Alloc>::iterator it;
-	int i;
-	i = 0;
-	for (it = begin(); it != position; it++)
-	{
-		tmp.push_back(*it);
-		i++;
-	}
-	it++;
-	for (; it < end(); it++)
-		tmp.push_back(*it);
-	*this = tmp;
-	return iterator(_begin + i);
+	for (iterator it = position ;it < end() - 1; it++)
+		std::swap(*it, *(it + 1));
+	pop_back();
+	return position;
 }
 
 template < class T, class Alloc>
 typename ft::vector<T, Alloc>::iterator vector<T, Alloc>::erase(
 	ft::vector<T, Alloc>::iterator first, ft::vector<T, Alloc>::iterator last){
-	vector<T, Alloc> tmp;
-	ft::vector<T, Alloc>::iterator it;
-	difference_type i = last - first;
-
-	for (it = begin(); it != first; it++)
-		tmp.push_back(*it);
-	for (it = last; it < end(); it++)
-		tmp.push_back(*it);
-	*this = tmp;
-	return iterator(_begin + i);
+	difference_type distance = std::distance(first, last);
+	for (iterator it = last; it < end();it++){
+		std::swap(*(first++), *(it));
+	}
+	for(difference_type i = 0; i < distance;i++)
+		pop_back();
+	return last;
 }
 
 template < class T, class Alloc>
@@ -315,6 +322,9 @@ vector<T, Alloc>::~vector(){
 	this->clear();
 	if (_begin)
 		_alloc.deallocate(_begin, this->capacity());
+	_begin = NULL;
+	_end = NULL;
+	_end_cap = NULL;
 }
 
 #endif
