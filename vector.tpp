@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 09:03:46 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/14 17:51:55 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/15 00:49:44 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,7 @@ typename vector<T, Alloc>::size_type vector<T, Alloc>::size() const{
 
 template < class T, class Alloc>
 typename vector<T, Alloc>::size_type vector<T, Alloc>::max_size() const{
-	if(ft::is_char<T>::value)
-		return _alloc.max_size() / 2;
-	return _alloc.max_size();
+	return (ft::is_char<T>::value) ? (_alloc.max_size() / 2) : _alloc.max_size();
 }
 	
 template < class T, class Alloc>
@@ -260,16 +258,11 @@ typename ft::vector<T, Alloc>::iterator vector<T, Alloc>::erase(
 	ft::vector<T, Alloc>::iterator first, ft::vector<T, Alloc>::iterator last){
 	vector<T, Alloc> tmp;
 	ft::vector<T, Alloc>::iterator it;
-	int i;
-	i = 0;
+	difference_type i = last - first;
+
 	for (it = begin(); it != first; it++)
-	{
 		tmp.push_back(*it);
-		i++;
-	}
-	for (; it <= last; it++)
-		it++;
-	for (; it < end(); it++)
+	for (it = last; it < end(); it++)
 		tmp.push_back(*it);
 	*this = tmp;
 	return iterator(_begin + i);

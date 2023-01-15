@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:56 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/14 04:56:54 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/15 01:06:38 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 # define	VECTOR_HPP
 
 # include <iostream>
-# include "tools.hpp"
+// # include "type_traits.hpp"
 # include <vector>
 # include <type_traits>
 # include "iterator.hpp"
-# include "reverse_iterator.hpp"
+
 
 namespace ft
 {
@@ -49,16 +49,22 @@ namespace ft
 			explicit vector (const allocator_type& alloc = allocator_type());
 			explicit vector (size_type n, const value_type& val = value_type(),
                  const allocator_type& alloc = allocator_type());
-			template <class InputIterator>
-         	vector (InputIterator first,typename ft::enable_if<!ft::is_integral<InputIterator>::value , InputIterator>::type  last, const allocator_type& alloc = allocator_type()) : _alloc(alloc){
-				difference_type size;
+			// template <class InputIterator>
+         	// vector (InputIterator first,typename ft::enable_if<!ft::is_integral<InputIterator>::value , InputIterator>::type  last, const allocator_type& alloc = allocator_type()) : _alloc(alloc){
+			// 	difference_type size;
 				
-				size = last - first;
-				_begin = _alloc.allocate(size);
-				_end = _begin + size;
-				_end_cap = _end;
-				for(pointer i = _begin; i < _end; i++)
-					_alloc.construct(i, *(first++));
+			// 	size = last - first;
+			// 	_begin = _alloc.allocate(size);
+			// 	_end = _begin + size;
+			// 	_end_cap = _end;
+			// 	for(pointer i = _begin; i < _end; i++)
+			// 		_alloc.construct(i, *(first++));
+			// }
+			template <class InputIterator>
+         	vector (InputIterator first,typename ft::enable_if<!ft::is_integral<InputIterator>::value , InputIterator>::type last, const allocator_type& alloc = allocator_type()) : _begin(NULL), _end(NULL), _end_cap(NULL),_alloc(alloc){
+				
+				for(InputIterator i = first; i != last; i++)
+					push_back(*i);
 			}
 			vector (const vector& x);
 			
@@ -101,7 +107,7 @@ namespace ft
 			const_reference back() const;
 
 			template <class InputIterator>
-  			void assign (InputIterator first, InputIterator last){
+  			void assign (InputIterator first, typename ft::enable_if<!ft::is_integral<InputIterator>::value , InputIterator>::type last){
 				this->clear();
 				for (InputIterator it = first; it != last; it++)
 					push_back(*it);
@@ -112,7 +118,7 @@ namespace ft
 			iterator insert (iterator position, const value_type& val);
 			void insert (iterator position, size_type n, const value_type& val);
 			template <class InputIterator>
-    		void insert (iterator position, InputIterator first, InputIterator last){
+    		void insert (iterator position, InputIterator first, typename ft::enable_if<!ft::is_integral<InputIterator>::value , InputIterator>::type last){
 				vector<T, Alloc> tmp;
 				ft::vector<T, Alloc>::iterator it;
 		
@@ -131,7 +137,46 @@ namespace ft
 
 			allocator_type get_allocator() const;
 	};
-
+	template <class T, class Alloc> 
+	bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+		(void) lhs;
+		(void) rhs;
+		return false;
+	}
+	
+	template <class T, class Alloc> 
+	bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+		(void) lhs;
+		(void) rhs;
+		return false;
+	}
+	
+	template <class T, class Alloc>
+	bool operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+		(void) lhs;
+		(void) rhs;
+		return false;
+	}
+	template <class T, class Alloc>
+	bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+		(void) lhs;
+		(void) rhs;
+		return false;
+	}
+	
+	template <class T, class Alloc>
+	bool operator>  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+		(void) lhs;
+		(void) rhs;
+		return false;
+	}
+	
+	template <class T, class Alloc>
+	bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+		(void) lhs;
+		(void) rhs;
+		return false;
+	}
 	#include "vector.tpp"
 } // namespace ft
 	
