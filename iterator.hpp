@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 17:24:29 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/16 22:28:07 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/17 17:49:03 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ namespace ft
 		typedef typename Iterator::reference reference;
 		typedef typename Iterator::iterator_category iterator_category;
 	};
+	
 
 	template<class  T>
 	struct iterator_traits<T*>
@@ -91,10 +92,10 @@ namespace ft
 				return _m_ptr - other._m_ptr;} 
 			difference_type  operator+(const iterator& other) const{ //const{
 				return _m_ptr + other._m_ptr;} 
-			iterator operator[](difference_type n) {
-				return _m_ptr + n; }
-			iterator operator[](difference_type n) const{
-				return _m_ptr + n;}
+			// reference operator[](difference_type n) {
+			// 	return *this + n; }
+			reference operator[](difference_type n) const{
+				return _m_ptr[n];}
   	};
 
 	template <class T, class U>

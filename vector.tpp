@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 09:03:46 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/17 01:08:11 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/18 00:31:38 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,35 +75,24 @@ typename vector<T, Alloc>::size_type vector<T, Alloc>::max_size() const{
 	
 template < class T, class Alloc>
 void vector<T, Alloc>::resize (size_type n, value_type val){
-	if (n > (this->capacity() * 2))
+	if (n > this->capacity())
 		this->reserve(n);
 	if (n < this->size()){
 		for (size_type i = this->size(); i > n; i--)
-			this->pop_back();}
+			_alloc.destroy(--_end);
+	}
 	else if (n > this->size()){
 		for (size_type i = this->size(); i < n; i++)
-			this->push_back(val);}
-	_end = _begin + n;
+		{
+			_alloc.construct(_end++, val);
+		}
+	}
 }
 
 template < class T, class Alloc>
 bool vector<T, Alloc>::empty() const{
 	return !(_end - _begin);
 }
-
-// template < class T, class Alloc>
-// void vector<T, Alloc>::reserve (size_type n){
-// 	if (n > this->capacity())
-// 	{
-// 		vector<T, Alloc> tmp(*this);
-// 		this->~vector();
-// 		_begin = _alloc.allocate(n);
-// 		_end = _begin;
-// 		_end_cap = _begin + n;
-// 		if (tmp.size())
-// 			*this = tmp;
-// 	}
-// }
 
 template < class T, class Alloc>
 void vector<T, Alloc>::reserve (size_type n){
@@ -192,43 +181,19 @@ void vector<T, Alloc>::pop_back (){
 		_alloc.destroy(--_end);
 }
 
-// template < class T, class Alloc>
-// typename ft::vector<T, Alloc>::iterator
-// 	vector<T, Alloc>::insert(ft::vector<T, Alloc>::iterator position, const value_type& val)
-// {
-// 	vector<T, Alloc> tmp;
-// 	ft::vector<T, Alloc>::iterator it;
-// 	int i = 0;
-// 	for (it = begin(); it != position; it++)
-// 	{
-// 		i++;
-// 		tmp.push_back(*it);
-// 	}
-// 	tmp.push_back(val);
-// 	for (; it < end(); it++)
-// 		tmp.push_back(*it);
-// 	this->swap(tmp);
-// 	return iterator(_begin + i);
-// }
-
 template < class T, class Alloc>
 typename ft::vector<T, Alloc>::iterator
 	vector<T, Alloc>::insert(iterator position, const value_type& val)
 {
 	difference_type distance;
-	value_type		tmp;
-	value_type		tmp2;
 	iterator		it;
 
 	distance =  std::distance(begin(), position);
-	resize(size() + 1);
-	tmp2 = val;
-	for (it = begin() + distance; it < end(); it++)
-	{
-		tmp = *it;
-		*it = tmp2;
-		tmp2 = tmp;
-	}
+	if (size() == capacity())
+		reserve(capacity() * 2);
+	resize(size() + 1, val);
+	for (it = end() - 1; it > (begin() + distance); it--)
+		std::swap(*it, *(it - 1));
 	return (begin() + distance);
 }
 
@@ -241,12 +206,19 @@ void vector<T, Alloc>::insert (ft::vector<T, Alloc>::iterator position,
 	size_type		size;
 	iterator		tmp;
 	
-	distance =  std::distance(begin(), position);
+	distance = position - begin();
 	size = this->size();
+	if (size + n > capacity())
+	{
+		if (size + n < (capacity() * 2))
+			reserve(size + n);
+		else
+			reserve(capacity() * 2);
+	}
 	resize(size + n, val);
 	tmp = end();
 	for (difference_type i = size - 1; i >= distance; i--)
-		std::swap(*(begin() + i), *(--tmp));
+		std::swap(*(begin() + i),*(--tmp));
 }
 
 template < class T, class Alloc>
@@ -254,9 +226,7 @@ typename ft::vector<T, Alloc>::iterator
 	vector<T, Alloc>::erase (ft::vector<T, Alloc>::iterator position)
 {
 	for (iterator it = position; it < end() - 1; it++)
-	{
 		*it = *(it + 1);
-	}
 	pop_back();
 	return position;
 }
@@ -265,12 +235,18 @@ template < class T, class Alloc>
 typename ft::vector<T, Alloc>::iterator vector<T, Alloc>::erase(
 	ft::vector<T, Alloc>::iterator first, ft::vector<T, Alloc>::iterator last){
 	difference_type distance = std::distance(first, last);
-	for (iterator it = last; it < end();it++){
-		std::swap(*(first++), *(it));
+	difference_type de = std::distance(begin(), first);
+	iterator tmp = first;
+	for (iterator it = last; it != end(); it++)
+		*(first++) = *it;
+	for(difference_type i = 0; i < distance / 2;i++)
+	{
+		_alloc.destroy(--_end);
+		_alloc.destroy(--_end);
 	}
-	for(difference_type i = 0; i < distance;i++)
-		pop_back();
-	return last;
+	if(distance % 2)
+		_alloc.destroy(--_end);
+	return _begin + de;
 }
 
 template < class T, class Alloc>

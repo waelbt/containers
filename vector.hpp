@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:56 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/17 01:08:54 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/18 00:21:45 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <type_traits>
 # include "iterator.hpp"
 
+# define SFINA(X) typename ft::enable_if<!ft::is_integral<X>::value, X>::type *  = 0
+# define IS_INPUT(X) ((ft::is_same<typename X, std::input_iterator_tag>::value) ? (1) : (0))
 
 namespace ft
 {
@@ -60,8 +62,18 @@ namespace ft
 			// 		_alloc.construct(i, *(first++));
 			// }
 			template <class InputIterator>
-         	vector (InputIterator first,typename ft::enable_if<!ft::is_integral<InputIterator>::value , InputIterator>::type last, const allocator_type& alloc = allocator_type()) : _begin(NULL), _end(NULL), _end_cap(NULL),_alloc(alloc){
-				
+         	vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(), SFINA(InputIterator)) : _begin(NULL), _end(NULL), _end_cap(NULL),_alloc(alloc){
+				if (!IS_INPUT(iterator_traits<InputIterator>::iterator_category))
+				{
+					difference_type size;
+
+					size = std::distance(first, last);
+					_begin = _alloc.allocate(size);
+					_end = _begin + size;
+					_end_cap = _end;
+					for(pointer i = _begin; i < _end; i++)
+						_alloc.construct(i, *(first++));
+				}
 				for(InputIterator i = first; i != last; i++)
 					push_back(*i);
 			}
@@ -107,37 +119,49 @@ namespace ft
 			template <class InputIterator>
   			void assign (InputIterator first, typename ft::enable_if<!ft::is_integral<InputIterator>::value , InputIterator>::type last){
 				this->clear();
-				for (InputIterator it = first; it != last; it++)
-					push_back(*it);
+				if (!IS_INPUT(iterator_traits<InputIterator>::iterator_category))
+				{
+					difference_type size;
+
+					size = std::distance(first, last);
+					if (_begin)
+						this->_alloc.deallocate(_begin, capacity());
+					_begin = _alloc.allocate(size);
+					_end = _begin + size;
+					_end_cap = _end;
+					for(pointer i = _begin; i < _end; i++)
+						_alloc.construct(i, *(first++));
+				}
+				for(InputIterator i = first; i != last; i++)
+					push_back(*i);
 			}
 			void assign (size_type n, const value_type& val);
 			void push_back (const value_type& val);
 			void pop_back();
 			iterator insert (iterator position, const value_type& val);
 			void insert (iterator position, size_type n, const value_type& val);
-			template <class InputIterator>
-    		void insert (iterator position, InputIterator first, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type last)
+			template <class InptIter>
+    		void insert (iterator position, InptIter first,InptIter last, SFINA(InptIter))
 			{
 				iterator tmp;
-		
-				if (!ft::is_same<typename iterator_traits<InputIterator>::iterator_category, std::input_iterator_tag>::value)
-				{
-					difference_type start = std::distance(begin(), position);
+
+				if (!IS_INPUT(iterator_traits<InptIter>::iterator_category)){
+					difference_type start = position - begin();
 					difference_type range = std::distance(first, last);
 					size_type		previous_size = size();
-	
+
+					if (previous_size + range > capacity())
+						reserve(capacity() * 2);
 					resize(previous_size + range);
 					tmp = end();
 					for (difference_type i = previous_size - 1; i >= start; i--)
 						*(--tmp) = *(begin() + i);
-					InputIterator tmp2 = first;
+					InptIter tmp2 = first;
 					for (difference_type it = start; it < range + start; it++)
-						*(begin() + it) = *(tmp2++);
-				}
-				else
-				{
+						*(begin() + it) = *(tmp2++);}
+				else {
 					tmp = position;
-					for (InputIterator it = first; it != last; it++){
+					for (InptIter it = first; it != last; it++){
 						tmp = insert(tmp, *it);
 						tmp++;}
 				}
