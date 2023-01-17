@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 09:03:46 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/15 23:05:45 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/17 01:08:11 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,8 +173,7 @@ typename vector<T, Alloc>::const_reference vector<T, Alloc>::back() const{
 template < class T, class Alloc>
 void vector<T, Alloc>::assign (size_type n, const value_type& val){
 	this->clear();
-	for (size_t i = 0; i != n; i++)
-		push_back(val);
+	resize(n, val);
 }
 
 template < class T, class Alloc>
@@ -190,10 +189,7 @@ void vector<T, Alloc>::push_back (const value_type& val){
 template < class T, class Alloc>
 void vector<T, Alloc>::pop_back (){
 	if (this->size())
-	{
-		_alloc.destroy(_end - 1);
-		_end--;
-	}
+		_alloc.destroy(--_end);
 }
 
 // template < class T, class Alloc>
@@ -257,8 +253,10 @@ template < class T, class Alloc>
 typename ft::vector<T, Alloc>::iterator
 	vector<T, Alloc>::erase (ft::vector<T, Alloc>::iterator position)
 {
-	for (iterator it = position ;it < end() - 1; it++)
-		std::swap(*it, *(it + 1));
+	for (iterator it = position; it < end() - 1; it++)
+	{
+		*it = *(it + 1);
+	}
 	pop_back();
 	return position;
 }
@@ -277,8 +275,21 @@ typename ft::vector<T, Alloc>::iterator vector<T, Alloc>::erase(
 
 template < class T, class Alloc>
 void vector<T, Alloc>::clear(){
-	while (this->size())
-		pop_back();
+	size_type half_size;
+	size_type odd;
+	pointer tmp = _begin;
+
+	half_size = this->size() / 2;
+	odd = this->size() % 2;
+	for (size_type i = 0; i < half_size; i++)
+	{
+		_alloc.destroy(_begin++);
+		_alloc.destroy(--_end);
+	}
+	if (odd)
+		_alloc.destroy(_begin);
+	_begin = tmp;
+	_end = tmp;
 }
 
 template < class T, class Alloc>

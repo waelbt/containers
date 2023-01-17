@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:56 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/16 00:47:05 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/17 01:08:54 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ namespace ft
 			pointer			_end;
 			pointer			_end_cap;
 			allocator_type	_alloc;
-
 		public:
 			explicit vector (const allocator_type& alloc = allocator_type());
 			explicit vector (size_type n, const value_type& val = value_type(),
@@ -105,24 +104,6 @@ namespace ft
 			const_reference front() const;
 			reference back();
 			const_reference back() const;
-
-
-			// difference_type	distance = std::distance(begin(), position);
-			// 	difference_type	range = std::distance(first, last);
-			// 	size_type		size = this->size();
-			// 	InputIterator	tmp = first;
-			// 	// resize(size + range,*first);
-			// 	resize(size + range);
-			// 	for (size_type i = size; i < this->size(); i++)
-			// 		*(begin() + i) = *(tmp++);
-			// 	iterator tmp1 = begin() + size - distance - range;
-			// 	 std::cout << *tmp1 << " " << size + distance << std::endl;
-			// 	for (iterator i = end() - 1; i >= begin() + size; i--)
-			// 	{
-			// 		std::swap(*(i), *(--tmp1));
-			// 		std::cout << *i << std::endl;
-			// 	}
-				
 			template <class InputIterator>
   			void assign (InputIterator first, typename ft::enable_if<!ft::is_integral<InputIterator>::value , InputIterator>::type last){
 				this->clear();
@@ -135,28 +116,31 @@ namespace ft
 			iterator insert (iterator position, const value_type& val);
 			void insert (iterator position, size_type n, const value_type& val);
 			template <class InputIterator>
-    		void insert (iterator position, InputIterator first, typename ft::enable_if<!ft::is_integral<InputIterator>::value , InputIterator>::type last){
-				difference_type start = std::distance(begin(), position);
-				difference_type range = std::distance(first, last);
-				size_type		previous_size = size();
-				std::cout << std::distance(begin(), position) << std::endl;
-				resize(previous_size + range);
-				for (iterator it = begin(); it < end(); it++)
-      				std::cout << ' ' << *it;
-    			std::cout << '\n';
-				iterator tmp = end();
-				int i = 0;
-				std::cout << previous_size << "codition " << range + start << std::endl;
-				difference_type it = previous_size;
-				while (--it >  range + start)
+    		void insert (iterator position, InputIterator first, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type last)
+			{
+				iterator tmp;
+		
+				if (!ft::is_same<typename iterator_traits<InputIterator>::iterator_category, std::input_iterator_tag>::value)
 				{
-					std::cout << *(begin() + it) << " id " << i++ << std::endl;
-					*(--tmp) = *(begin() + it);
+					difference_type start = std::distance(begin(), position);
+					difference_type range = std::distance(first, last);
+					size_type		previous_size = size();
+	
+					resize(previous_size + range);
+					tmp = end();
+					for (difference_type i = previous_size - 1; i >= start; i--)
+						*(--tmp) = *(begin() + i);
+					InputIterator tmp2 = first;
+					for (difference_type it = start; it < range + start; it++)
+						*(begin() + it) = *(tmp2++);
 				}
-				InputIterator tmp2 = first;
-				// std::cout << start <<" " <<   range + start << std::endl;
-				for (difference_type it = start; it < range + start; it++)
-					*(begin() + it) = *(tmp2++);
+				else
+				{
+					tmp = position;
+					for (InputIterator it = first; it != last; it++){
+						tmp = insert(tmp, *it);
+						tmp++;}
+				}
 			}
 			iterator erase (iterator position);
 			iterator erase (iterator first, iterator last);

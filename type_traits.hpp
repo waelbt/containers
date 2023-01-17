@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 16:51:49 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/15 16:11:05 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/16 19:54:18 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,16 @@
 
 namespace ft
 {
+				/*is_same*/
+	template<typename T, typename U>
+	struct is_same {
+    	static const bool value = false;
+	};
+
+	template<typename T>
+	struct is_same<T, T> {
+		static const bool value = true;
+	};
 				/*remove const*/
 	template<typename T>
 	struct remove_cv {
@@ -116,6 +126,7 @@ namespace ft
 	struct is_integral_traits<unsigned int>{
 		static const bool value = true;
 	};
+	
 	
 	template <>
 	struct is_integral_traits<unsigned long int>{
