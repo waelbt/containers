@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 09:03:46 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/18 00:31:38 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/18 01:13:34 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,13 +186,15 @@ typename ft::vector<T, Alloc>::iterator
 	vector<T, Alloc>::insert(iterator position, const value_type& val)
 {
 	difference_type distance;
-	iterator		it;
+	pointer		it;
 
-	distance =  std::distance(begin(), position);
+	distance = position - begin();
+	if (!capacity())
+		reserve(1);
 	if (size() == capacity())
 		reserve(capacity() * 2);
-	resize(size() + 1, val);
-	for (it = end() - 1; it > (begin() + distance); it--)
+	_alloc.construct(_end++, val);
+	for (it = _end - 1; it > (_begin + distance); it--)
 		std::swap(*it, *(it - 1));
 	return (begin() + distance);
 }
@@ -204,7 +206,7 @@ void vector<T, Alloc>::insert (ft::vector<T, Alloc>::iterator position,
 {
 	difference_type distance;
 	size_type		size;
-	iterator		tmp;
+	pointer		tmp;
 	
 	distance = position - begin();
 	size = this->size();
@@ -216,7 +218,7 @@ void vector<T, Alloc>::insert (ft::vector<T, Alloc>::iterator position,
 			reserve(capacity() * 2);
 	}
 	resize(size + n, val);
-	tmp = end();
+	tmp = _end;
 	for (difference_type i = size - 1; i >= distance; i--)
 		std::swap(*(begin() + i),*(--tmp));
 }

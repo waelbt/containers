@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:56 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/18 00:21:45 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/18 01:36:38 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,19 +121,25 @@ namespace ft
 				this->clear();
 				if (!IS_INPUT(iterator_traits<InputIterator>::iterator_category))
 				{
-					difference_type size;
+					size_type size;
 
 					size = std::distance(first, last);
-					if (_begin)
-						this->_alloc.deallocate(_begin, capacity());
-					_begin = _alloc.allocate(size);
+					if(size > capacity())
+					{
+						if (_begin)
+							this->_alloc.deallocate(_begin, capacity());
+						_begin = _alloc.allocate(size);
+						_end_cap = _begin + size;
+					}
 					_end = _begin + size;
-					_end_cap = _end;
 					for(pointer i = _begin; i < _end; i++)
 						_alloc.construct(i, *(first++));
 				}
-				for(InputIterator i = first; i != last; i++)
-					push_back(*i);
+				else
+				{
+					for(InputIterator i = first; i != last; i++)
+						push_back(*i);
+				}
 			}
 			void assign (size_type n, const value_type& val);
 			void push_back (const value_type& val);
