@@ -6,15 +6,15 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 09:03:46 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/19 01:36:06 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/19 01:43:55 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef		VECTOR_TPP
 # define	VECTOR_TPP
 
-
 			/******* constructors ************/
+
 template < class T, class Alloc>
 vector<T, Alloc>::vector (const Alloc& alloc) : _begin(NULL), _end(NULL), _end_cap(NULL), _alloc(alloc){}
 

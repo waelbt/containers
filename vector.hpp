@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:56 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/19 00:56:51 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/19 01:56:01 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,11 @@ namespace ft
 					for(pointer i = _begin; i < _end; i++)
 						_alloc.construct(i, *(first++));
 				}
-				for(InputIterator i = first; i != last; i++)
-					push_back(*i);
+				else
+				{
+					for(InputIterator i = first; i != last; i++)
+						push_back(*i);
+				}
 			}
 			vector (const vector& x);
 			
