@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 09:03:46 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/18 01:13:34 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/19 01:36:06 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,14 @@ vector<T, Alloc>::vector (size_type n, const value_type& val, const allocator_ty
 
 template < class T, class Alloc>
 vector<T, Alloc>::vector (const vector& x) : _begin(NULL), _end(NULL), _end_cap(NULL), _alloc(x._alloc){
-	*this = x;
+	pointer		tmp;
+
+	_begin = _alloc.allocate(x.capacity());
+	_end_cap = _begin + x.capacity();
+	_end = _begin + x.size();
+	tmp = x._begin;
+	for(pointer i = _begin; i < _end; i++)
+		_alloc.construct(i, *(tmp++));
 }
 
 			/******* Assignment operator ************/
@@ -195,7 +202,7 @@ typename ft::vector<T, Alloc>::iterator
 		reserve(capacity() * 2);
 	_alloc.construct(_end++, val);
 	for (it = _end - 1; it > (_begin + distance); it--)
-		std::swap(*it, *(it - 1));
+		ft::swap(*it, *(it - 1));
 	return (begin() + distance);
 }
 
@@ -211,16 +218,11 @@ void vector<T, Alloc>::insert (ft::vector<T, Alloc>::iterator position,
 	distance = position - begin();
 	size = this->size();
 	if (size + n > capacity())
-	{
-		if (size + n < (capacity() * 2))
-			reserve(size + n);
-		else
-			reserve(capacity() * 2);
-	}
+		reserve(capacity() * 2);
 	resize(size + n, val);
 	tmp = _end;
 	for (difference_type i = size - 1; i >= distance; i--)
-		std::swap(*(begin() + i),*(--tmp));
+		ft::swap(*(begin() + i),*(--tmp));
 }
 
 template < class T, class Alloc>
@@ -272,10 +274,10 @@ void vector<T, Alloc>::clear(){
 
 template < class T, class Alloc>
 void vector<T, Alloc>::swap (vector& x){
-	std::swap(_begin, x._begin);
-	std::swap(_end, x._end);
-	std::swap(_end_cap, x._end_cap);
-	std::swap(_alloc, x._alloc);
+	ft::swap(_begin, x._begin);
+	ft::swap(_end, x._end);
+	ft::swap(_end_cap, x._end_cap);
+	ft::swap(_alloc, x._alloc);
 }
 
 template <class T, class Alloc>

@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:56 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/18 01:36:38 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/19 00:56:51 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,6 @@ namespace ft
 			explicit vector (const allocator_type& alloc = allocator_type());
 			explicit vector (size_type n, const value_type& val = value_type(),
                  const allocator_type& alloc = allocator_type());
-			// template <class InputIterator>
-         	// vector (InputIterator first,typename ft::enable_if<!ft::is_integral<InputIterator>::value , InputIterator>::type  last, const allocator_type& alloc = allocator_type()) : _alloc(alloc){
-			// 	difference_type size;
-				
-			// 	size = last - first;
-			// 	_begin = _alloc.allocate(size);
-			// 	_end = _begin + size;
-			// 	_end_cap = _end;
-			// 	for(pointer i = _begin; i < _end; i++)
-			// 		_alloc.construct(i, *(first++));
-			// }
 			template <class InputIterator>
          	vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(), SFINA(InputIterator)) : _begin(NULL), _end(NULL), _end_cap(NULL),_alloc(alloc){
 				if (!IS_INPUT(iterator_traits<InputIterator>::iterator_category))
@@ -165,7 +154,8 @@ namespace ft
 					InptIter tmp2 = first;
 					for (difference_type it = start; it < range + start; it++)
 						*(begin() + it) = *(tmp2++);}
-				else {
+				else
+				{
 					tmp = position;
 					for (InptIter it = first; it != last; it++){
 						tmp = insert(tmp, *it);

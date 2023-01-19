@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 16:51:49 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/17 01:43:04 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/19 00:49:53 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,13 @@
 
 namespace ft
 {
+	template <typename T>
+	void swap(T& x, T&y)
+	{
+		T tmp(x);
+		x = y;
+		y = tmp;
+	}
 				/*is_same*/
 	template<typename T, typename U>
 	struct is_same {
