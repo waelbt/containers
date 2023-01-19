@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:56 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/19 01:56:01 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/19 15:44:25 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <iostream>
 // # include "type_traits.hpp"
 # include <vector>
+
+#include <stack>
 # include <type_traits>
 # include "iterator.hpp"
 
@@ -204,6 +206,6 @@ namespace ft
 	}
 	#include "vector.tpp"
 } // namespace ft
-	
+
 
 #endif
