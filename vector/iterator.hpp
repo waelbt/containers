@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 17:24:29 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/20 19:40:15 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/21 19:37:34 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ namespace ft
     		typedef ptrdiff_t						difference_type;
     		typedef T*   							pointer;
     		typedef T& 								reference;
+			typedef const value_type&				const_reference;
+			typedef const value_type*				const_pointer;
 			typedef std::random_access_iterator_tag iterator_category;
 		protected:
     		pointer _m_ptr;	
@@ -58,11 +60,14 @@ namespace ft
 			pointer get() const{return _m_ptr;}
 			operator iterator<const value_type>(){
         		return iterator<const value_type>(_m_ptr);}
-			pointer operator->() const { return _m_ptr; }
+			const_pointer operator->() const { return _m_ptr; }
+			pointer operator->()  { return _m_ptr; }
 			iterator& operator=(const iterator& obj){
 				_m_ptr = obj._m_ptr;
 				return *this;}
     		reference operator*(){
+				return *_m_ptr;}
+			const_reference operator* () const{
 				return *_m_ptr;}
     		iterator& operator++(){
 				_m_ptr++;

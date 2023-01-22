@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 18:57:53 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/20 23:43:02 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/20 23:43:53 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,9 @@ namespace ft
 	{ return !(lhs<rhs); }
 			/*make pair*/
 	template <class T1,class T2>
-  	pair<T1,T2> make_pair (T1 x, T2 y)
-  	{
+  	pair<T1,T2> make_pair (T1 x, T2 y){
     	return ( pair<T1,T2>(x,y) );
-  	}
+	}
 } // namespace ft
 
 #endif

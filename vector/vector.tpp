@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 09:03:46 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/20 23:41:33 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/21 19:29:09 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,17 +82,19 @@ typename vector<T, Alloc>::size_type vector<T, Alloc>::max_size() const{
 	
 template < class T, class Alloc>
 void vector<T, Alloc>::resize (size_type n, value_type val){
+	if (!capacity())
+		reserve(n);
+	else if (n > capacity())
+		this->reserve(capacity() * 2);
 	if (n > this->capacity())
-		this->reserve(n);
+		reserve(n);
 	if (n < this->size()){
 		for (size_type i = this->size(); i > n; i--)
 			_alloc.destroy(--_end);
 	}
 	else if (n > this->size()){
 		for (size_type i = this->size(); i < n; i++)
-		{
-			_alloc.construct(_end++, val);
-		}
+			push_back(val);
 	}
 }
 
@@ -217,8 +219,6 @@ void vector<T, Alloc>::insert (ft::vector<T, Alloc>::iterator position,
 	
 	distance = position - begin();
 	size = this->size();
-	if (size + n > capacity())
-		reserve(capacity() * 2);
 	resize(size + n, val);
 	tmp = _end;
 	for (difference_type i = size - 1; i >= distance; i--)

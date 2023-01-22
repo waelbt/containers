@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:56 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/20 19:51:13 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/21 19:39:35 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,11 +130,9 @@ namespace ft
 					for(pointer i = _begin; i < _end; i++)
 						_alloc.construct(i, *(first++));
 				}
-				else
-				{
+				else {
 					for(InputIterator i = first; i != last; i++)
-						push_back(*i);
-				}
+						push_back(*i);}
 			}
 			void assign (size_type n, const value_type& val);
 			void push_back (const value_type& val);
@@ -151,8 +149,8 @@ namespace ft
 					difference_type range = std::distance(first, last);
 					size_type		previous_size = size();
 
-					if (previous_size + range > capacity())
-						reserve(capacity() * 2);
+					// if (previous_size + range > capacity())
+					// 	reserve(capacity() * 2);
 					resize(previous_size + range);
 					tmp = end();
 					for (difference_type i = previous_size - 1; i >= start; i--)
