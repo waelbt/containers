@@ -1,29 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map.hpp                                            :+:      :+:    :+:   */
+/*   less.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/20 23:45:29 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/22 04:48:13 by waboutzo         ###   ########.fr       */
+/*   Created: 2023/01/22 04:48:58 by waboutzo          #+#    #+#             */
+/*   Updated: 2023/01/22 21:39:39 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAP_HPP
-#define MAP_HPP
+#ifndef LESS_HPP
+#define LESS_HPP
 
 namespace ft
 {
-	template < class Key,                                     		// map::key_type
-        class T,                                       		// map::mapped_type
-        class Compare = std::less<Key>,                    	// map::key_compare
-        class Alloc = std::allocator<pair<const Key,T> >   	// map::allocator_type
-        >
-	class map
+	template <class _Arg1, class _Arg2, class _Result>
+	struct  binary_function
 	{
-		/*i will implement the red-black-tree first*/
-	};	
+    	typedef _Arg1   first_argument_type;
+    	typedef _Arg2   second_argument_type;
+    	typedef _Result result_type;
+	};
+
+	template <class T>
+	struct less : binary_function<T, T, bool>
+	{
+		bool operator() (const T& x, const T& y) const{
+		return x < y;
+		}
+	};
 } // namespace ft
 
 #endif

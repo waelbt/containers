@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:56 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/21 19:39:35 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/24 23:55:20 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,19 +83,15 @@ namespace ft
 			const_iterator begin() const;
 			iterator end();
 			const_iterator end() const;
-
 			reverse_iterator rbegin(){
 				return reverse_iterator(end());}
-		
 			const_reverse_iterator rbegin() const{
 				return const_reverse_iterator(end());}
-			
 			reverse_iterator rend(){
 				return reverse_iterator(begin());}
-		
 			const_reverse_iterator rend() const{
 				return const_reverse_iterator(begin());}
-			/******* Iterators ************/
+			/******* capacity ************/
 			size_type size() const;
 			size_type max_size() const;
 			size_type capacity() const;
@@ -149,8 +145,6 @@ namespace ft
 					difference_type range = std::distance(first, last);
 					size_type		previous_size = size();
 
-					// if (previous_size + range > capacity())
-					// 	reserve(capacity() * 2);
 					resize(previous_size + range);
 					tmp = end();
 					for (difference_type i = previous_size - 1; i >= start; i--)
