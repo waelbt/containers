@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 17:24:29 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/21 19:37:34 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/26 20:39:20 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,9 +145,9 @@ namespace ft
 	{
 		public:
 			typedef Iterator iterator_type;
-  			typedef typename iterator_traits<Iterator>::difference_type difference_type;
-  			typedef typename iterator_traits<Iterator>::reference reference;
-  			typedef typename iterator_traits<Iterator>::pointer pointer;
+  			typedef typename ft::iterator_traits<Iterator>::difference_type difference_type;
+  			typedef typename ft::iterator_traits<Iterator>::reference reference;
+  			typedef typename ft::iterator_traits<Iterator>::pointer pointer;
 		protected:
 			Iterator _iter_adapt;
 		public:

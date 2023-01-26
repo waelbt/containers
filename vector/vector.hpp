@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:56 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/24 23:55:20 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/26 19:20:26 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ namespace ft
                  const allocator_type& alloc = allocator_type());
 			template <class InputIterator>
          	vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type(), SFINA(InputIterator)) : _begin(NULL), _end(NULL), _end_cap(NULL),_alloc(alloc){
-				if (!IS_INPUT(iterator_traits<InputIterator>::iterator_category))
+				if (!IS_INPUT(ft::iterator_traits<InputIterator>::iterator_category))
 				{
 					difference_type size;
 
@@ -110,7 +110,7 @@ namespace ft
 			template <class InputIterator>
   			void assign (InputIterator first, typename ft::enable_if<!ft::is_integral<InputIterator>::value , InputIterator>::type last){
 				this->clear();
-				if (!IS_INPUT(iterator_traits<InputIterator>::iterator_category))
+				if (!IS_INPUT(ft::iterator_traits<InputIterator>::iterator_category))
 				{
 					size_type size;
 
@@ -140,7 +140,7 @@ namespace ft
 			{
 				iterator tmp;
 
-				if (!IS_INPUT(iterator_traits<InptIter>::iterator_category)){
+				if (!IS_INPUT(ft::iterator_traits<InptIter>::iterator_category)){
 					difference_type start = position - begin();
 					difference_type range = std::distance(first, last);
 					size_type		previous_size = size();
