@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 04:47:27 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/26 19:47:47 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/28 18:37:22 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@
 	class Node 
 	{
 		public:
-			T _key;
+			T _value;
 			Node *_left;
 			Node *_right;
 	
-			Node(T key) : _key(key), _left(), _right(){}
-			Node(const Node& obj) : _key(obj._key){
+			Node(T key) : _value(key), _left(), _right(){}
+			Node(const Node& obj) : _value(obj._value){
 				*this = obj;}
 			Node& operator=(const Node& obj){
 				_left = obj._left;
@@ -37,32 +37,32 @@
 			}
 			~Node(){}
 	};
-	
-	template <typename T, class Alloc = std::allocator<Node<T> > >
+
+	template <typename T, class Alloc = std::allocator<T> >
 	class BST
 	{
 		public:
-			typedef		T 										pair;
-			typedef Alloc										node_allocater;
-			typedef typename node_allocater::template rebind<T>::other	pair_allocater;
-			// typedef		Compare				key_compare;
-			typedef		Node<pair>	node_type;
-			typedef		Node<pair>*	pointer;
-			typedef		Node<pair>&	reffrence;
-			// key_compare comp;
+			typedef		T 					value_type;
+			typedef 	Alloc               allocator_type;
+			typedef 	typename allocator_type::template rebind<Node<T> >::other	node_allocater;
+			typedef		Node<value_type>	node_type;
+			typedef		Node<value_type>*	pointer;
+			typedef		Node<value_type>&	reffrence;
+			
 		private :
 			pointer	root;
 			node_allocater _alloc_node;
-			pair_allocater _alloc_pair;
+
 			pointer		insert(pointer node, T key)
 			{
 				if (!node)
 				{
-					node = new node_type(key);
+					node = _alloc_node.allocate(1);
+					_alloc_node.construct(node, key);
 				}
-				else if (key <= node->_key)
+				else if (key <= node->_value)
 					node->_left = insert(node->_left, key);
-				else if (key > node->_key)
+				else if (key > node->_value)
 					node->_right = insert(node->_right, key);
 				return node;
 			}
@@ -70,7 +70,7 @@
 				if (!root)
 					return;
 	   			inorder_print(root->_left, level + 3);
-	    		std::cout << std::string(level, ' ') << root->_key << "\n";
+	    		std::cout << std::string(level, ' ') << root->_value << "\n";
 	    		inorder_print(root->_right, level + 3);
 			}
 			void breadthFirstTraversal(pointer root){
@@ -86,7 +86,7 @@
 						std::cout << " ";
 					else
 						std::cout << std::endl;
-					std::cout << current.first->_key;
+					std::cout << current.first->_value;
 					last_level = current.second;
 					if (current.first->_left)
 						queue.push_back(std::make_pair(current.first->_left, level + 1));
@@ -99,7 +99,7 @@
 			}
 		public:
 			BST() : root() {}
-			void insert(pair key){
+			void insert(T key){
 				root = insert(root, key);
 			}
 			void inorder(){
@@ -107,8 +107,8 @@
 			}
 			void breadthFirstTraversal(){
 				breadthFirstTraversal(root);}
-			~BST(){};
-	};
-// }
-
+			~BST(){
+				// tan7yd leaks
+			};
+	};				
 #endif

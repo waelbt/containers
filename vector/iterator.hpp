@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 17:24:29 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/26 20:39:20 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/27 20:18:54 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ namespace ft
         typedef T& reference;
         typedef std::random_access_iterator_tag iterator_category;
 	};
+
 				/*	iterator	*/
 	template <class T>
   	class iterator
