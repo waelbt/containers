@@ -6,12 +6,16 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 23:26:50 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/28 18:51:14 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/30 05:50:37 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RBT_HPP
-#define RBT_HPP
+# define RBT_HPP
+
+
+# define RED 0 
+# define BLACK 1
 
 namespace ft
 {
@@ -30,7 +34,7 @@ namespace ft
 			pointer		_left;
 			pointer		_right;
 
-		Node(value_type val) : _value(val), _black(0), _parent(), _left(), _right() {}
+		Node(value_type val) : _value(val), _black(RED), _parent(), _left(), _right() {}
 		Node(const_reffrence obj) {*this = obj;}
 		const_reffrence operator=(const_reffrence obj){
 			if (this != &obj)
@@ -68,8 +72,40 @@ namespace ft
 			node_allocater _alloc;
 		public:
 			RBT(const allocator_type& alloc = allocator_type()) : _root(), _alloc(alloc) {}
-			
-	};
+			void left_rotate(pointer& node){
+				pointer tmp;
+
+				tmp = node->_right;
+				node->_right = tmp->_left;
+				if(tmp->_left)
+					tmp->_left->_parent = node;
+				tmp->_parent = node->_parent;
+				if (!node->_parent)
+					node = tmp;
+				else if (node == node->_parent->_left)
+					node->_parent->_left = tmp;
+				else if (tmp == node->_parent->_right)
+					tmp->_left = node;
+				node->_parent = tmp;
+			}
+			void right_rotate(pointer& node)
+			{
+				pointer tmp;
+
+				tmp = node->_left;
+				node->_left = tmp->_right;
+				if (tmp->_right)
+					tmp->_right->_parent = node;
+				tmp->_parent = node->_parent;
+				if (!node->_parent)
+					node = tmp;
+				else if (node == node->_parent->_right)
+					node->_parent->_right = tmp;
+				else if (tmp == node->_parent->_left)
+					tmp->_right = node;
+				node->_parent = tmp;
+			}
+		};
 } // namespace ft	
 
 
