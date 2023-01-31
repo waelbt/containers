@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 04:47:27 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/29 23:06:05 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/01/31 07:21:55 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,3 +112,65 @@
 			};
 	};				
 #endif
+
+
+// void	insert_fixedup(pointer& new_node)
+// 			{
+// 				pointer uncle;
+
+// 				while (new_node->_parent && !new_node->_parent->_black)
+// 				{
+// 					if (!new_node->_parent->_parent)
+// 						break;
+// 					if (new_node->_parent == new_node->_parent->_parent->_left)
+// 					{
+// 						uncle = new_node->_parent->_parent->_right;
+// 						if (!uncle)
+// 							break;
+// 						if (!uncle->_black)
+// 						{
+// 							// recolor
+// 							new_node->_parent->_black = true;
+// 							uncle->_black = true;
+// 							new_node->_parent->_parent->_black = false;
+// 							new_node = new_node->_parent->_parent;
+// 						}
+// 						else
+// 						{
+// 							if (new_node == new_node->_parent->_right)
+// 							{
+// 								new_node = new_node->_parent;
+// 								left_rotate(new_node);
+// 								new_node->_parent->_black = true;
+// 								new_node->_parent->_parent->_black = true;
+// 								right_rotate(new_node->_parent->_parent);
+// 							}
+// 						}
+// 					}
+// 					else
+// 					{
+// 						uncle = new_node->_parent->_parent->_left;
+// 						if (!uncle)
+// 							break;
+// 						if (!uncle->_black)
+// 						{
+// 							// recolor
+// 							new_node->_parent->_black = true;
+// 							uncle->_black = true;
+// 							new_node->_parent->_parent->_black = false;
+// 							new_node = new_node->_parent->_parent;
+// 						}
+// 						else
+// 						{
+// 							if (new_node == new_node->_parent->_right)
+// 							{
+// 								new_node = new_node->_parent;
+// 								left_rotate(new_node);
+// 								new_node->_parent->_black = true;
+// 								new_node->_parent->_parent->_black = true;
+// 								right_rotate(new_node->_parent->_parent);
+// 							}
+// 						}
+// 					}
+// 				}
+// 			}
