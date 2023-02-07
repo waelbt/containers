@@ -6,18 +6,18 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 23:26:50 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/31 09:51:53 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/07 13:09:25 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RBT_HPP
 # define RBT_HPP
 
-#define BLACK   "\033[30m"      /* Black */
+#define BLACK   "\033[m"      /* Black */
 #define RED     "\033[31m"      /* Red */
 
-namespace ft
-{
+// namespace ft
+// {
 	template <typename T>
 	class Node 
 	{
@@ -66,7 +66,7 @@ namespace ft
 			//const_reverse_iteator
 			// typedef		typename node_allocater::reffrence							reffrence;
 			// typedef		typename node_allocater::const_reffrence					const_reffrence;
-		private:
+		public:
 			pointer 		_root;
 			node_allocater _alloc;
 		public:
@@ -237,7 +237,7 @@ namespace ft
 				return search(node->_left, key);
 			}
 		};
-} // namespace ft	
+// } // namespace ft	
 
 
 

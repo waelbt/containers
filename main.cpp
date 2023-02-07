@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:40 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/31 09:50:07 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/07 12:57:27 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 // // # include <utility>
 // // # include "utility/pair.hpp"
 #include "red-black-tree/rbt.hpp"
-
+#include "fancy_tree.hpp"
 
 // RB-INSERT(T, k)
 //     
@@ -89,7 +89,7 @@ int main(void)
 {
     // const ft::vector<int> a;
     // ft::vector<int>::iterator =  a.begin();
-    ft::RBT<int> a;
+    RBT<int> a;
     a.insert(5);
     a.insert(10);
     a.insert(8);
@@ -99,8 +99,8 @@ int main(void)
 	a.insert(9);
     // a.insert(3);
     // a.insert(0);
-
-    a.breadthFirstTraversal();
+	fancy_tree<int> tree;
+	tree.print_tree(a._root, V_VIEW);
 	// a.left_rotate(a._root);
 	// a.right_rotate(a._root);
 	// std::cout << "\n*********" << std::endl;
