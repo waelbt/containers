@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:40 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/08 09:06:52 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/08 16:57:39 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ int main(void)
     a.insert(5);
     a.insert(10);
   	a.insert(8);
+	// a.rotate(a.getROOT(), 1);
 	a.insert(2);
 	a.insert(12);
 	a.insert(6);
@@ -82,6 +83,8 @@ int main(void)
     // a.insert(0);
 	fancy_tree<int> tree;
 	tree.print_tree(a.getROOT(), V_VIEW);
+	// a.rotate(a.getROOT(), 0);
+	// tree.print_tree(a.getROOT(), V_VIEW);
 	// a.left_rotate(a._root);
 	// a.right_rotate(a._root);
 	// std::cout << "\n*********" << std::endl;

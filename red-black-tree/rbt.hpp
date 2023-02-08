@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 23:26:50 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/08 10:54:28 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/08 17:01:42 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,14 +60,7 @@
 			typedef		typename node_allocater::const_pointer 						const_pointer;
 			typedef		typename node_allocater::difference_type					difference_type;
 			typedef 	typename node_allocater::size_type 							size_type;
-			struct		right_tag{};
-			struct		left_tag{};
-			//iterator
-			//const_iterator
-			//reverse_iteator
-			//const_reverse_iteator
-			// typedef		typename node_allocater::reffrence							reffrence;
-			// typedef		typename node_allocater::const_reffrence					const_reffrence;
+
 		private:
 			pointer 		_root;
 			pointer			_nill;
@@ -86,37 +79,17 @@
 
 				new_node = construct_node(key);
 				bst_insertion(_root, new_node);
-				insert_fixedup(new_node);
+				while (!new_node->_parent->_black)
+				{
+ 					if (new_node->_parent == new_node->_parent->_parent->_right)
+						fixe_tree(new_node, false);
+					else
+						fixe_tree(new_node, true);
+				}
 				_root->_black = true;
 			}
 			pointer search(value_type key){
 				return search(_root, key);
-			}
-			void skip_to_next_level(std::pair<pointer, int> current)
-			{
-				static int last_level = -1;
-				if (last_level == current.second)
-					std::cout << " ";
-				if ((last_level != current.second) && current.first->_parent)
-					std::cout << std::endl;
-				last_level = current.second;
-			}
-			void breadthFirstTraversal(){
-				std::deque<std::pair<pointer, int> > queue;
-				queue.push_back(std::make_pair(_root, 0));
-				while (!queue.empty())
-				{
-					std::pair<pointer, int> current = queue.front();
-					queue.pop_front();
-					skip_to_next_level(current);
-					std::cout << ((current.first->_black) ? BLACK : RED) << current.first->_value;
-					if (current.first->_parent)
-						std::cout << '(' << current.first->_parent->_value << ')' << " ";
-					if (current.first->_left)
-						queue.push_back(std::make_pair(current.first->_left, (current.second + 1)));
-					if (current.first->_right)
-						queue.push_back(std::make_pair(current.first->_right, (current.second + 1)));
-				}
 			}
 		public:
 			pointer construct_node(value_type key)
@@ -130,13 +103,21 @@
 				node->_parent = _nill;
 				return node;
 			}
-			void rotate(pointer node, left_tag){
-				pointer tmp;
+			void recoloring(pointer& node, pointer& uncle)
+			{
+				uncle->_black = true;
+				node->_parent->_black = true;
+				node->_parent->_parent->_black = false;
+				node = node->_parent->_parent;
+			}
 
-				tmp = node->_right;
-				node->_right = tmp->_left;
-				if(tmp->_left)
-					tmp->_left->_parent = node;
+			void rotate(pointer node, int side){
+				pointer tmp;
+	
+				tmp = getchild(node, !side);
+				getchild(node, !side) = getchild(tmp, side);
+				if(getchild(tmp, side))
+					getchild(tmp, side)->_parent = node;
 				tmp->_parent = node->_parent;
 				if (node->_parent == _nill)
 					_root = tmp;
@@ -144,94 +125,47 @@
 					node->_parent->_left = tmp;
 				else 
 					node->_parent->_right = tmp;
-				tmp->_left = node;
+				getchild(tmp, side) = node;
 				node->_parent = tmp;
 			}
-			void rotate(pointer node, right_tag)
-			{
-				pointer tmp;
 
-				tmp = node->_left;
-				node->_left = tmp->_right;
-				if(tmp->_right)
-					tmp->_right->_parent = node;
-				tmp->_parent = node->_parent;
-				if (node->_parent == _nill)
-					_root = tmp;
-				else if (node == node->_parent->_right)
-					node->_parent->_right = tmp;
-				else 
-					node->_parent->_left = tmp;
-				tmp->_right = node;
-				node->_parent = tmp;
-			}
 			void	bst_insertion(pointer& node, pointer& new_node)
 			{
-				if (node == _nill)
-					node = new_node;
-				else if (new_node->_value <= node->_value)
-				{
-					new_node->_parent = node;
+				if (node == _nill){
+					node = new_node; return ;}
+				new_node->_parent = node;
+				if (new_node->_value <= node->_value)
 					bst_insertion(node->_left, new_node);
-				}
 				else if (new_node->_value > node->_value)
-				{
-					new_node->_parent = node;
 					bst_insertion(node->_right, new_node);
-				}
 			}
-			void	insert_fixedup(pointer& new_node)
+			
+			pointer& getchild(pointer& node, int side) {
+				if (side)
+					return node->_left;
+				return node->_right;
+			}
+
+			void fixe_tree(pointer& new_node, int side)
 			{
 				pointer uncle;
 
-				while (!new_node->_parent->_black)
+				uncle = getchild(new_node->_parent->_parent, !side);
+				if (!uncle->_black)
+					recoloring(new_node, uncle);
+				else
 				{
- 					if (new_node->_parent == new_node->_parent->_parent->_right)
+					if (new_node == getchild(new_node->_parent, !side))
 					{
-						uncle = new_node->_parent->_parent->_left;
-						if (!uncle->_black)
-						{
-							uncle->_black = true;
-							new_node->_parent->_black = true;
-							new_node->_parent->_parent->_black = false;
-							new_node = new_node->_parent->_parent;
-						}
-						else
-						{
-							if (new_node == new_node->_parent->_left)
-							{
-								new_node = new_node->_parent;
-								rotate(new_node, right_tag());
-							}
-							new_node->_parent->_black = true;
-							new_node->_parent->_parent->_black = false;
-							rotate(new_node->_parent->_parent, left_tag());
-						}
+						new_node = new_node->_parent;
+						rotate(new_node, side);
 					}
-					else if (new_node->_parent == new_node->_parent->_parent->_left)
-					{
-						uncle = new_node->_parent->_parent->_right;
-						if (!uncle->_black)
-						{
-							uncle->_black = true;
-							new_node->_parent->_black = true;
-							new_node->_parent->_parent->_black = false;
-							new_node = new_node->_parent->_parent;
-						}
-						else
-						{
-							if (new_node == new_node->_parent->_right)
-							{
-								new_node = new_node->_parent;
-								rotate(new_node, left_tag());
-							}
-							new_node->_parent->_black = true;
-							new_node->_parent->_parent->_black = false;
-							rotate(new_node->_parent->_parent, right_tag());
-						}
-					}
+					new_node->_parent->_black = true;
+					new_node->_parent->_parent->_black = false;
+					rotate(new_node->_parent->_parent, !side);
 				}
 			}
+
 			pointer search(pointer node, value_type key)
 			{
 				if (node == NULL || node->_value == key)
