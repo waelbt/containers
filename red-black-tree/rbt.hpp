@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 23:26:50 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/07 13:09:25 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/08 09:07:30 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,18 @@
 			//const_reverse_iteator
 			// typedef		typename node_allocater::reffrence							reffrence;
 			// typedef		typename node_allocater::const_reffrence					const_reffrence;
-		public:
+		private:
 			pointer 		_root;
+			pointer			_nill;
 			node_allocater _alloc;
 		public:
-			RBT(const allocator_type& alloc = allocator_type()) : _root(), _alloc(alloc) {}
+			RBT(const allocator_type& alloc = allocator_type()) : _alloc(alloc) {
+				_nill = _alloc.allocate(1);
+				_alloc.construct(_nill, value_type());
+				_nill->_black = true;
+				_root = _nill;
+			}
+			pointer getROOT() const{return _root;}
 			void insert(T key)
 			{
 				pointer new_node;
@@ -109,13 +116,16 @@
 						queue.push_back(std::make_pair(current.first->_right, (current.second + 1)));
 				}
 			}
-		private:
+		public:
 			pointer construct_node(value_type key)
 			{
 				pointer node;
 
 				node = _alloc.allocate(1);
 				_alloc.construct(node, key);
+				node->_left = _nill;
+				node->_right = _nill;
+				node->_parent = _nill;
 				return node;
 			}
 			void left_rotate(pointer node){
@@ -126,7 +136,7 @@
 				if(tmp->_left)
 					tmp->_left->_parent = node;
 				tmp->_parent = node->_parent;
-				if (!node->_parent)
+				if (node->_parent == _nill)
 					_root = tmp;
 				else if (node == node->_parent->_left)
 					node->_parent->_left = tmp;
@@ -144,7 +154,7 @@
 				if(tmp->_right)
 					tmp->_right->_parent = node;
 				tmp->_parent = node->_parent;
-				if (!node->_parent)
+				if (node->_parent == _nill)
 					_root = tmp;
 				else if (node == node->_parent->_right)
 					node->_parent->_right = tmp;
@@ -155,7 +165,7 @@
 			}
 			void	bst_insertion(pointer& node, pointer& new_node)
 			{
-				if (!node)
+				if (node == _nill)
 					node = new_node;
 				else if (new_node->_value <= node->_value)
 				{
@@ -172,45 +182,37 @@
 			{
 				pointer uncle;
 
-				while (new_node->_parent && !new_node->_parent->_black)
+				while (!new_node->_parent->_black)
 				{
-					if (!new_node->_parent->_parent)
-						break;
-					if (new_node->_parent == new_node->_parent->_parent->_left)
-					{
-						uncle = new_node->_parent->_parent->_right;
-						if (!uncle)
-							break;
-						if (!uncle->_black)
-						{
-							// recolor
-							new_node->_parent->_black = true;
-							uncle->_black = true;
-							new_node->_parent->_parent->_black = false;
-							new_node = new_node->_parent->_parent;
-						}
-						else
-						{
-							if (new_node == new_node->_parent->_right)
-							{
-								new_node = new_node->_parent;
-								left_rotate(new_node);
-								new_node->_parent->_black = true;
-								new_node->_parent->_parent->_black = true;
-								right_rotate(new_node->_parent->_parent);
-							}
-						}
-					}
-					else
+ 					if (new_node->_parent == new_node->_parent->_parent->_right)
 					{
 						uncle = new_node->_parent->_parent->_left;
-						if (!uncle)
-							break;
 						if (!uncle->_black)
 						{
-							// recolor
-							new_node->_parent->_black = true;
 							uncle->_black = true;
+							new_node->_parent->_black = true;
+							new_node->_parent->_parent->_black = false;
+							new_node = new_node->_parent->_parent;
+						}
+						else
+						{
+							if (new_node == new_node->_parent->_left)
+							{
+								new_node = new_node->_parent;
+								right_rotate(new_node);
+							}
+							new_node->_parent->_black = true;
+							new_node->_parent->_parent->_black = false;
+							left_rotate(new_node->_parent->_parent);
+						}
+					}
+					else if (new_node->_parent == new_node->_parent->_parent->_left)
+					{
+						uncle = new_node->_parent->_parent->_right;
+						if (!uncle->_black)
+						{
+							uncle->_black = true;
+							new_node->_parent->_black = true;
 							new_node->_parent->_parent->_black = false;
 							new_node = new_node->_parent->_parent;
 						}
@@ -220,10 +222,10 @@
 							{
 								new_node = new_node->_parent;
 								left_rotate(new_node);
-								new_node->_parent->_black = true;
-								new_node->_parent->_parent->_black = true;
-								right_rotate(new_node->_parent->_parent);
 							}
+							new_node->_parent->_black = true;
+							new_node->_parent->_parent->_black = false;
+							right_rotate(new_node->_parent->_parent);
 						}
 					}
 				}
