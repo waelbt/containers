@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 23:26:50 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/08 09:07:30 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/08 10:54:28 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@
 			typedef		typename node_allocater::const_pointer 						const_pointer;
 			typedef		typename node_allocater::difference_type					difference_type;
 			typedef 	typename node_allocater::size_type 							size_type;
+			struct		right_tag{};
+			struct		left_tag{};
 			//iterator
 			//const_iterator
 			//reverse_iteator
@@ -128,7 +130,7 @@
 				node->_parent = _nill;
 				return node;
 			}
-			void left_rotate(pointer node){
+			void rotate(pointer node, left_tag){
 				pointer tmp;
 
 				tmp = node->_right;
@@ -145,7 +147,7 @@
 				tmp->_left = node;
 				node->_parent = tmp;
 			}
-			void right_rotate(pointer node)
+			void rotate(pointer node, right_tag)
 			{
 				pointer tmp;
 
@@ -199,11 +201,11 @@
 							if (new_node == new_node->_parent->_left)
 							{
 								new_node = new_node->_parent;
-								right_rotate(new_node);
+								rotate(new_node, right_tag());
 							}
 							new_node->_parent->_black = true;
 							new_node->_parent->_parent->_black = false;
-							left_rotate(new_node->_parent->_parent);
+							rotate(new_node->_parent->_parent, left_tag());
 						}
 					}
 					else if (new_node->_parent == new_node->_parent->_parent->_left)
@@ -221,11 +223,11 @@
 							if (new_node == new_node->_parent->_right)
 							{
 								new_node = new_node->_parent;
-								left_rotate(new_node);
+								rotate(new_node, left_tag());
 							}
 							new_node->_parent->_black = true;
 							new_node->_parent->_parent->_black = false;
-							right_rotate(new_node->_parent->_parent);
+							rotate(new_node->_parent->_parent, right_tag());
 						}
 					}
 				}
