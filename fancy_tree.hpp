@@ -51,6 +51,11 @@
 #define NEW_LINE std::endl
 #define PRINT std::cout
 
+
+#define BLACK   "\033[m"      /* Black */
+#define RED     "\033[31m"      /* Red */
+
+
 template <typename T>
 class fancy_tree
 {

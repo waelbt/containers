@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:40 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/08 16:57:39 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/09 16:37:01 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,28 +68,21 @@
 
 int main(void)
 {
-    // const ft::vector<int> a;
-    // ft::vector<int>::iterator =  a.begin();
+	fancy_tree<int> tree;
     RBT<int> a;
+
     a.insert(5);
     a.insert(10);
   	a.insert(8);
-	// a.rotate(a.getROOT(), 1);
 	a.insert(2);
 	a.insert(12);
 	a.insert(6);
 	a.insert(9);
     a.insert(3);
-    // a.insert(0);
-	fancy_tree<int> tree;
+	a.insert(21);
+	a.insert(23);
+	a.insert(0);
+	a.insert(-1);
 	tree.print_tree(a.getROOT(), V_VIEW);
-	// a.rotate(a.getROOT(), 0);
-	// tree.print_tree(a.getROOT(), V_VIEW);
-	// a.left_rotate(a._root);
-	// a.right_rotate(a._root);
-	// std::cout << "\n*********" << std::endl;
-		// a.breadthFirstTraversal();
-    // a.left_rotate(NULL);
-    //a.breadthFirstTraversal();
     return 0;
 }

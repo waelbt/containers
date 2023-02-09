@@ -6,15 +6,13 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 23:26:50 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/08 17:01:42 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/09 16:34:29 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RBT_HPP
 # define RBT_HPP
 
-#define BLACK   "\033[m"      /* Black */
-#define RED     "\033[31m"      /* Red */
 
 // namespace ft
 // {
@@ -72,7 +70,12 @@
 				_nill->_black = true;
 				_root = _nill;
 			}
-			pointer getROOT() const{return _root;}
+
+			pointer getROOT() const
+			{
+				return _root;
+			}
+
 			void insert(T key)
 			{
 				pointer new_node;
@@ -88,10 +91,12 @@
 				}
 				_root->_black = true;
 			}
-			pointer search(value_type key){
+
+			pointer search(value_type key)
+			{
 				return search(_root, key);
 			}
-		public:
+		private:
 			pointer construct_node(value_type key)
 			{
 				pointer node;
@@ -103,6 +108,7 @@
 				node->_parent = _nill;
 				return node;
 			}
+
 			void recoloring(pointer& node, pointer& uncle)
 			{
 				uncle->_black = true;
@@ -139,7 +145,7 @@
 				else if (new_node->_value > node->_value)
 					bst_insertion(node->_right, new_node);
 			}
-			
+
 			pointer& getchild(pointer& node, int side) {
 				if (side)
 					return node->_left;
@@ -174,6 +180,7 @@
        				return search(node->_right, key);
 				return search(node->_left, key);
 			}
+
 		};
 // } // namespace ft	
 
