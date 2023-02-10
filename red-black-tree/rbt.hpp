@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 23:26:50 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/09 16:34:29 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/10 02:16:13 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@
 				return _root;
 			}
 
-			void insert(T key)
+			void insert(value_type key)
 			{
 				pointer new_node;
 
@@ -91,6 +91,11 @@
 				}
 				_root->_black = true;
 			}
+			
+			// void deletion (value_type key)
+			// {
+				
+			// }
 
 			pointer search(value_type key)
 			{
@@ -107,6 +112,17 @@
 				node->_right = _nill;
 				node->_parent = _nill;
 				return node;
+			}
+			
+
+			bool _(pointer& x)
+			{
+				return (x == _nill);}
+			void delete_node(pointer& node)
+			{
+				_alloc.destroy(node);
+				_alloc.deallocate(node);
+				node = _nill;
 			}
 
 			void recoloring(pointer& node, pointer& uncle)
@@ -125,7 +141,7 @@
 				if(getchild(tmp, side))
 					getchild(tmp, side)->_parent = node;
 				tmp->_parent = node->_parent;
-				if (node->_parent == _nill)
+				if (_(node->_parent))
 					_root = tmp;
 				else if (node == node->_parent->_left)
 					node->_parent->_left = tmp;
@@ -137,13 +153,36 @@
 
 			void	bst_insertion(pointer& node, pointer& new_node)
 			{
-				if (node == _nill){
+				if (_(node)){
 					node = new_node; return ;}
 				new_node->_parent = node;
 				if (new_node->_value <= node->_value)
 					bst_insertion(node->_left, new_node);
 				else if (new_node->_value > node->_value)
 					bst_insertion(node->_right, new_node);
+			}
+
+			void bst_deletion(pointer& node, value_type value)
+			{
+				pointer tmp;
+
+				if (node != _nill)
+				{
+					if (value == node->_value)
+					{
+						if (_(node->_left) && _(node->_right))
+							delete_node(node);
+						else
+						{
+							tmp = node;
+							node = (_(node->_left)) ? node->_left : node->_right; 
+						}
+					}
+					else if (value < node->_value)
+						bst_deletion(node->_left, value);
+					else if (value > node->_value)
+						bst_deletion(node->_right, value);
+				}
 			}
 
 			pointer& getchild(pointer& node, int side) {
@@ -174,7 +213,7 @@
 
 			pointer search(pointer node, value_type key)
 			{
-				if (node == NULL || node->_value == key)
+				if (node == _nill || node->_value == key)
        				return node;
     			if (node->_value < key)
        				return search(node->_right, key);
@@ -187,3 +226,4 @@
 
 
 #endif
+
