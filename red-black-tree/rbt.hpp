@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 23:26:50 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/10 02:16:13 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/10 03:08:04 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,10 @@
 				_root->_black = true;
 			}
 			
-			// void deletion (value_type key)
-			// {
-				
-			// }
+			void deletion (value_type key)
+			{
+				bst_deletion(_root, key);	
+			}
 
 			pointer search(value_type key)
 			{
@@ -117,11 +117,13 @@
 
 			bool _(pointer& x)
 			{
-				return (x == _nill);}
+				return (x == _nill);
+			}
+
 			void delete_node(pointer& node)
 			{
 				_alloc.destroy(node);
-				_alloc.deallocate(node);
+				_alloc.deallocate(node, 1);
 				node = _nill;
 			}
 
@@ -162,6 +164,20 @@
 					bst_insertion(node->_right, new_node);
 			}
 
+			pointer tree_minimum(pointer node)
+			{
+				while (node->_left != _nill)
+					node = node->_left;
+				return node;
+			}
+
+			pointer tree_maxmum(pointer node)
+			{
+				while (node->_right != _nill)
+					node = node->_right;
+				return node;
+			}
+
 			void bst_deletion(pointer& node, value_type value)
 			{
 				pointer tmp;
@@ -172,10 +188,17 @@
 					{
 						if (_(node->_left) && _(node->_right))
 							delete_node(node);
-						else
+						else if (_(node->_left) || _(node->_right))
 						{
 							tmp = node;
-							node = (_(node->_left)) ? node->_left : node->_right; 
+							node = (!_(node->_left)) ? node->_right : node->_left;
+							delete_node(tmp);
+						}
+						else 
+						{
+							tmp = tree_minimum(node->_right);
+							node->_value = tmp->_value;
+							bst_deletion(node->_right, tmp->_value);
 						}
 					}
 					else if (value < node->_value)
