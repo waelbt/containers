@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 23:26:50 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/10 03:08:04 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/10 22:14:03 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,15 @@
 			
 			void deletion (value_type key)
 			{
-				bst_deletion(_root, key);	
+				pointer	node;
+				pointer x;
+				bool	color;
+
+				node = search(key);
+				if (node != _nill)
+				{ 
+					x = delete_node(node, color);
+				}
 			}
 
 			pointer search(value_type key)
@@ -114,17 +122,57 @@
 				return node;
 			}
 			
+			void transplant(pointer u, pointer v)
+			{
+				if (_(u->_parent))
+					_root = v;
+				else if (u == u->_parent->_left)
+					u->_parent->_left = v;
+				else
+					u->_parent->_right = v;
+				v->_parent = u->_parent;
+			}
 
 			bool _(pointer& x)
 			{
 				return (x == _nill);
 			}
 
-			void delete_node(pointer& node)
+			void connect(pointer& node1, pointer& node2, bool side)
 			{
-				_alloc.destroy(node);
-				_alloc.deallocate(node, 1);
-				node = _nill;
+				pointer& child = getchild(node1, side);
+				child = getchild(node2, side);
+				child->_parent = node1;
+			}
+
+			pointer delete_node(pointer& node, bool& color)
+			{
+				pointer tmp = node;
+				pointer x;
+
+				color = tmp->_black;
+				if (!_(node->_right) && !_(node->_left))
+				{
+					tmp = tree_minimum(node->_right);
+					color = node->_black;
+					x = tmp->_right;
+					if (tmp != node->_right)
+					{
+						transplant(tmp, tmp->_right);
+						connect(tmp, node, false);
+					}
+					else
+						x->_parent = tmp;
+					transplant(node, tmp);
+					connect(tmp, node, true);
+					tmp->_black = color;
+				}
+				else
+				{
+					x = getchild(node, _(node->_right));
+					transplant(node, getchild(node, _(node->_right)));
+				}
+				return x;
 			}
 
 			void recoloring(pointer& node, pointer& uncle)
@@ -135,7 +183,7 @@
 				node = node->_parent->_parent;
 			}
 
-			void rotate(pointer node, int side){
+			void rotate(pointer node, bool side){
 				pointer tmp;
 	
 				tmp = getchild(node, !side);
@@ -178,43 +226,43 @@
 				return node;
 			}
 
-			void bst_deletion(pointer& node, value_type value)
-			{
-				pointer tmp;
+			// void bst_deletion(pointer& node, value_type value)
+			// {
+			// 	pointer tmp;
 
-				if (node != _nill)
-				{
-					if (value == node->_value)
-					{
-						if (_(node->_left) && _(node->_right))
-							delete_node(node);
-						else if (_(node->_left) || _(node->_right))
-						{
-							tmp = node;
-							node = (!_(node->_left)) ? node->_right : node->_left;
-							delete_node(tmp);
-						}
-						else 
-						{
-							tmp = tree_minimum(node->_right);
-							node->_value = tmp->_value;
-							bst_deletion(node->_right, tmp->_value);
-						}
-					}
-					else if (value < node->_value)
-						bst_deletion(node->_left, value);
-					else if (value > node->_value)
-						bst_deletion(node->_right, value);
-				}
-			}
+			// 	if (node != _nill)
+			// 	{
+			// 		if (value == node->_value)
+			// 		{
+			// 			if (_(node->_left) && _(node->_right))
+			// 				delete_node(node);
+			// 			else if (_(node->_left) || _(node->_right))
+			// 			{ 
+			// 				tmp = node;
+			// 				node = (_(node->_left)) ? node->_right : node->_left;
+			// 				delete_node(tmp);
+			// 			}
+			// 			else 
+			// 			{
+			// 				tmp = tree_minimum(node->_right);
+			// 				node->_value = tmp->_value;
+			// 				bst_deletion(node->_right, tmp->_value);
+			// 			}
+			// 		}
+			// 		else if (value < node->_value)
+			// 			bst_deletion(node->_left, value);
+			// 		else if (value > node->_value)
+			// 			bst_deletion(node->_right, value);
+			// 	}
+			// }
 
-			pointer& getchild(pointer& node, int side) {
+			pointer& getchild(pointer& node, bool side) {
 				if (side)
 					return node->_left;
 				return node->_right;
 			}
 
-			void fixe_tree(pointer& new_node, int side)
+			void fixe_tree(pointer& new_node, bool side)
 			{
 				pointer uncle;
 
