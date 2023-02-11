@@ -6,14 +6,15 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 23:26:50 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/10 22:14:03 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/11 19:39:44 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RBT_HPP
 # define RBT_HPP
 
-
+# define _RIGHT 0
+# define _LEFT  1
 // namespace ft
 // {
 	template <typename T>
@@ -58,7 +59,8 @@
 			typedef		typename node_allocater::const_pointer 						const_pointer;
 			typedef		typename node_allocater::difference_type					difference_type;
 			typedef 	typename node_allocater::size_type 							size_type;
-
+			struct		delete_tag {};
+			struct		insert_tag {};
 		private:
 			pointer 		_root;
 			pointer			_nill;
@@ -85,9 +87,9 @@
 				while (!new_node->_parent->_black)
 				{
  					if (new_node->_parent == new_node->_parent->_parent->_right)
-						fixe_tree(new_node, false);
+						fixup(new_node, _RIGHT, insert_tag());
 					else
-						fixe_tree(new_node, true);
+						fixup(new_node, _LEFT, insert_tag());
 				}
 				_root->_black = true;
 			}
@@ -96,13 +98,94 @@
 			{
 				pointer	node;
 				pointer x;
-				bool	color;
+				bool	black;
 
 				node = search(key);
 				if (node != _nill)
 				{ 
-					x = delete_node(node, color);
+					x = delete_node(node, black);
+					if (black)
+					{
+						fixup(x, 0, delete_tag());
+					}
 				}
+			}
+
+			void fixup(pointer node, bool left, delete_tag)
+			{
+				while (node != _root && node->_black)
+				{
+					pointer tmp;
+
+					if (node == node->_parent->_left)
+					{
+						std::cout << "test" << std::endl;
+						tmp = node->_parent->_right; // sibling
+						if (!tmp->_black)
+						{
+							std::cout << "tes" << std::endl;
+							tmp->_black = true;
+							node->_parent->_black = false;
+							rotate(node->_parent, _LEFT);
+							tmp = node->_parent->_right;
+						}
+						if (tmp->_left->_black && tmp->_right->_black)
+						{
+							std::cout << "te" << std::endl;
+							tmp->_black = false;
+							node = node->_parent;
+						}
+						else
+						{
+							if (tmp->_right->_black)
+							{
+								std::cout << "t" << std::endl;
+								tmp->_left->_black = true;
+								tmp->_black = false;
+								rotate(tmp, _RIGHT);
+								tmp = node->_parent->_right;
+							}
+							std::cout << "tddawdes1" << std::endl;
+							tmp->_black = node->_parent->_black;
+							node->_parent->_black = true;
+							tmp->_right->_black = true;
+							rotate(node->_parent, _LEFT);
+							node = _root;
+						}
+					}
+					else
+					{
+						tmp = node->_parent->_left; // sibling
+						if (!tmp->_black)
+						{
+							tmp->_black = true;
+							node->_parent->_black = false;
+							rotate(node->_parent, _RIGHT);
+							tmp = node->_parent->_left;
+						}
+						if (tmp->_right->_black && tmp->_left->_black)
+						{
+							tmp->_black = false;
+							node = node->_parent;
+						}
+						else
+						{
+							if (tmp->_left->_black)
+							{
+								tmp->_right->_black = true;
+								tmp->_black = false;
+								rotate(tmp, _LEFT);
+								tmp = node->_parent->_left;
+							}
+							tmp->_black = node->_parent->_black;
+							node->_parent->_black = true;
+							tmp->_left->_black = true;
+							rotate(node->_parent, _RIGHT);
+							node = _root;
+						}
+					}
+				}
+				node->_black = true;
 			}
 
 			pointer search(value_type key)
@@ -138,34 +221,34 @@
 				return (x == _nill);
 			}
 
-			void connect(pointer& node1, pointer& node2, bool side)
+			void connect(pointer& node1, pointer& node2, bool left)
 			{
-				pointer& child = getchild(node1, side);
-				child = getchild(node2, side);
+				pointer& child = getchild(node1, left);
+				child = getchild(node2, left);
 				child->_parent = node1;
 			}
 
-			pointer delete_node(pointer& node, bool& color)
+			pointer delete_node(pointer& node, bool& black)
 			{
 				pointer tmp = node;
 				pointer x;
 
-				color = tmp->_black;
+				black = tmp->_black;
 				if (!_(node->_right) && !_(node->_left))
 				{
 					tmp = tree_minimum(node->_right);
-					color = node->_black;
+					black = node->_black;
 					x = tmp->_right;
 					if (tmp != node->_right)
 					{
 						transplant(tmp, tmp->_right);
-						connect(tmp, node, false);
+						connect(tmp, node, _RIGHT);
 					}
 					else
 						x->_parent = tmp;
 					transplant(node, tmp);
-					connect(tmp, node, true);
-					tmp->_black = color;
+					connect(tmp, node, _LEFT);
+					tmp->_black = black;
 				}
 				else
 				{
@@ -183,13 +266,13 @@
 				node = node->_parent->_parent;
 			}
 
-			void rotate(pointer node, bool side){
+			void rotate(pointer node, bool left){
 				pointer tmp;
 	
-				tmp = getchild(node, !side);
-				getchild(node, !side) = getchild(tmp, side);
-				if(getchild(tmp, side))
-					getchild(tmp, side)->_parent = node;
+				tmp = getchild(node, !left);
+				getchild(node, !left) = getchild(tmp, left);
+				if(getchild(tmp, left))
+					getchild(tmp, left)->_parent = node;
 				tmp->_parent = node->_parent;
 				if (_(node->_parent))
 					_root = tmp;
@@ -197,7 +280,7 @@
 					node->_parent->_left = tmp;
 				else 
 					node->_parent->_right = tmp;
-				getchild(tmp, side) = node;
+				getchild(tmp, left) = node;
 				node->_parent = tmp;
 			}
 
@@ -226,61 +309,32 @@
 				return node;
 			}
 
-			// void bst_deletion(pointer& node, value_type value)
-			// {
-			// 	pointer tmp;
-
-			// 	if (node != _nill)
-			// 	{
-			// 		if (value == node->_value)
-			// 		{
-			// 			if (_(node->_left) && _(node->_right))
-			// 				delete_node(node);
-			// 			else if (_(node->_left) || _(node->_right))
-			// 			{ 
-			// 				tmp = node;
-			// 				node = (_(node->_left)) ? node->_right : node->_left;
-			// 				delete_node(tmp);
-			// 			}
-			// 			else 
-			// 			{
-			// 				tmp = tree_minimum(node->_right);
-			// 				node->_value = tmp->_value;
-			// 				bst_deletion(node->_right, tmp->_value);
-			// 			}
-			// 		}
-			// 		else if (value < node->_value)
-			// 			bst_deletion(node->_left, value);
-			// 		else if (value > node->_value)
-			// 			bst_deletion(node->_right, value);
-			// 	}
-			// }
-
-			pointer& getchild(pointer& node, bool side) {
-				if (side)
-					return node->_left;
-				return node->_right;
+			pointer& getchild(pointer& node, bool left)
+			{
+				return (((left)) ? (node->_left) : (node->_right));
 			}
 
-			void fixe_tree(pointer& new_node, bool side)
+			void fixup(pointer& node, bool left, insert_tag)
 			{
 				pointer uncle;
 
-				uncle = getchild(new_node->_parent->_parent, !side);
+				uncle = getchild(node->_parent->_parent, !left);
 				if (!uncle->_black)
-					recoloring(new_node, uncle);
+					recoloring(node, uncle);
 				else
 				{
-					if (new_node == getchild(new_node->_parent, !side))
+					if (node == getchild(node->_parent, !left))
 					{
-						new_node = new_node->_parent;
-						rotate(new_node, side);
+						node = node->_parent;
+						rotate(node, left);
 					}
-					new_node->_parent->_black = true;
-					new_node->_parent->_parent->_black = false;
-					rotate(new_node->_parent->_parent, !side);
+					node->_parent->_black = true;
+					node->_parent->_parent->_black = false;
+					rotate(node->_parent->_parent, !left);
 				}
 			}
+
+		
 
 			pointer search(pointer node, value_type key)
 			{

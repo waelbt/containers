@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:40 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/10 21:15:55 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/11 17:56:21 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,13 @@ int main(void)
     a.insert(12);
   	a.insert(19);
 	a.insert(18);
+	a.insert(17);
 	a.insert(23);
 	a.insert(8);
 	// a.insert(13);
 	tree.print_tree(a.getROOT(), V_VIEW);
     a.deletion(15);
+	a.deletion(12);
 	tree.print_tree(a.getROOT(), V_VIEW);
     return 0;
 }
