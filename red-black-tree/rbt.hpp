@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 23:26:50 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/11 19:39:44 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/11 19:48:36 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,86 +106,50 @@
 					x = delete_node(node, black);
 					if (black)
 					{
-						fixup(x, 0, delete_tag());
+						while (x != _root && x->_black)
+						{
+							if (x == x->_parent->_left)
+								fixup(x, _RIGHT, delete_tag());
+							else
+								fixup(x, _LEFT, delete_tag());
+						}
+						x->_black = true;
 					}
 				}
 			}
 
-			void fixup(pointer node, bool left, delete_tag)
+			void fixup(pointer& node, bool right, delete_tag)
 			{
-				while (node != _root && node->_black)
-				{
 					pointer tmp;
 
-					if (node == node->_parent->_left)
+					tmp = getchild(node->_parent, right); // sibling
+					if (!tmp->_black) // sibling is red
 					{
-						std::cout << "test" << std::endl;
-						tmp = node->_parent->_right; // sibling
-						if (!tmp->_black)
-						{
-							std::cout << "tes" << std::endl;
-							tmp->_black = true;
-							node->_parent->_black = false;
-							rotate(node->_parent, _LEFT);
-							tmp = node->_parent->_right;
-						}
-						if (tmp->_left->_black && tmp->_right->_black)
-						{
-							std::cout << "te" << std::endl;
-							tmp->_black = false;
-							node = node->_parent;
-						}
-						else
-						{
-							if (tmp->_right->_black)
-							{
-								std::cout << "t" << std::endl;
-								tmp->_left->_black = true;
-								tmp->_black = false;
-								rotate(tmp, _RIGHT);
-								tmp = node->_parent->_right;
-							}
-							std::cout << "tddawdes1" << std::endl;
-							tmp->_black = node->_parent->_black;
-							node->_parent->_black = true;
-							tmp->_right->_black = true;
-							rotate(node->_parent, _LEFT);
-							node = _root;
-						}
+						tmp->_black = true;
+						node->_parent->_black = false;
+						rotate(node->_parent, !right);
+						tmp = getchild(node->_parent, right);
+					}
+					if (getchild(tmp, !right)->_black && getchild(tmp, right)->_black) // child of sibling both black
+					{
+						tmp->_black = false;
+						node = node->_parent;
 					}
 					else
 					{
-						tmp = node->_parent->_left; // sibling
-						if (!tmp->_black)
+						if (getchild(tmp, right)->_black)
 						{
-							tmp->_black = true;
-							node->_parent->_black = false;
-							rotate(node->_parent, _RIGHT);
-							tmp = node->_parent->_left;
-						}
-						if (tmp->_right->_black && tmp->_left->_black)
-						{
+							getchild(tmp, !right)->_black = true;
 							tmp->_black = false;
-							node = node->_parent;
+							rotate(tmp, right);
+							tmp = node->_parent->_right;
 						}
-						else
-						{
-							if (tmp->_left->_black)
-							{
-								tmp->_right->_black = true;
-								tmp->_black = false;
-								rotate(tmp, _LEFT);
-								tmp = node->_parent->_left;
-							}
-							tmp->_black = node->_parent->_black;
-							node->_parent->_black = true;
-							tmp->_left->_black = true;
-							rotate(node->_parent, _RIGHT);
-							node = _root;
-						}
+						tmp->_black = node->_parent->_black;
+						node->_parent->_black = true;
+						getchild(tmp, right)->_black = true;
+						rotate(node->_parent, !right);
+						node = _root;
 					}
-				}
-				node->_black = true;
 			}
 
 			pointer search(value_type key)
