@@ -6,12 +6,12 @@
 #include <cmath>
 
 //header file that contains Node definition
-#include "red-black-tree/rbt.hpp"
+#include "map/rbt.hpp"
 
 /*===================Node====================*/
 
 // Node class
-#define NODE Node<T>
+#define NODE ft::Node<T>
 
 // Node class attributes
 #define LEFT _left				// left attribute

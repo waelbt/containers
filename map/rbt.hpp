@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 23:26:50 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/12 16:01:15 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/12 16:37:19 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 # define _RIGHT 0
 # define _LEFT  1
 
-// namespace ft
-// {
+namespace ft
+{
 	template <typename T>
 	class Node 
 	{
@@ -63,6 +63,9 @@
 			typedef 	typename node_allocater::size_type 							size_type;
 			struct		delete_tag {};
 			struct		insert_tag {};
+			struct		min_tag {static const bool value = true;};
+			struct		max_tag {static const bool value = false;};
+
 		private:
 			pointer 		_root;
 			pointer			_nill;
@@ -202,7 +205,7 @@
 				black = tmp->_black;
 				if (!_(node->_right) && !_(node->_left))
 				{
-					tmp = tree_minimum(node->_right);
+					tmp = getter(node->_right, min_tag());
 					black = node->_black;
 					x = tmp->_right;
 					if (tmp != node->_right)
@@ -261,17 +264,10 @@
 					bst_insertion(node->_right, new_node);
 			}
 
-			pointer tree_minimum(pointer node)
+			pointer getter(pointer node, min_tag)
 			{
-				while (node->_left != _nill)
-					node = node->_left;
-				return node;
-			}
-
-			pointer tree_maxmum(pointer node)
-			{
-				while (node->_right != _nill)
-					node = node->_right;
+				while (!_(getchild(node, min_tag::value)))
+					node = getchild(node, min_tag::value);
 				return node;
 			}
 
@@ -310,7 +306,7 @@
 			}
 
 		};
-// } // namespace ft	
+} // namespace ft	
 
 
 
