@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 04:48:58 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/22 21:39:39 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/12 23:44:57 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ namespace ft
 	};
 
 	template <class T>
-	struct less : binary_function<T, T, bool>
+	struct less : ft::binary_function<T, T, bool>
 	{
 		bool operator() (const T& x, const T& y) const{
 		return x < y;

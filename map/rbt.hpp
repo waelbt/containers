@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 23:26:50 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/12 21:58:39 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/12 22:40:48 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 # define _RIGHT 0
 # define _LEFT  1
 
-namespace ft
-{
+// namespace ft
+// {
 	template <typename T>
 	class Node 
 	{
@@ -53,6 +53,7 @@ namespace ft
 	class RBT
 	{
 		public:
+
 			typedef		T 															value_type;
 			typedef 	Alloc               										allocator_type;
 			typedef 	typename allocator_type::template rebind<Node<T> >::other	node_allocater;
@@ -67,10 +68,13 @@ namespace ft
 			struct		max_tag {static const bool value = false;};
 
 		private:
+	
 			pointer 		_root;
 			pointer			_nill;
 			node_allocater _alloc;
+
 		public:
+
 			RBT(const allocator_type& alloc = allocator_type()) : _alloc(alloc) {
 				_nill = _alloc.allocate(1);
 				_alloc.construct(_nill, value_type());
@@ -98,16 +102,7 @@ namespace ft
 				}
 				_root->_black = true;
 			}
-			
-			void destroy_node(pointer& node)
-			{
-				if (node)
-				{
-					_alloc.destroy(node);
-					_alloc.deallocate(node, 1);
-				}
-				node = NULL;
-			}
+
 			void deletion (value_type key)
 			{
 				pointer	node;
@@ -133,26 +128,20 @@ namespace ft
 				}
 			}
 
-			void delete_tree(pointer& node)
+			pointer search(value_type key) const
 			{
-				if (node->_left != _nill)
-					delete_tree(node->_left);
-				if (node->_right != _nill)
-					delete_tree(node->_right);
-				destroy_node(node);
+				return search(_root, key);
 			}
+
 			~RBT()
 			{
 				if(_root != _nill)
 					delete_tree(_root);
 				destroy_node(_nill);
 			}
-	
-			pointer search(value_type key)
-			{
-				return search(_root, key);
-			}
+
 		private:
+
 			pointer construct_node(value_type key)
 			{
 				pointer node;
@@ -176,7 +165,7 @@ namespace ft
 				v->_parent = u->_parent;
 			}
 
-			bool _(pointer& x)
+			bool _(pointer& x) const
 			{
 				return (x == _nill);
 			}
@@ -189,7 +178,7 @@ namespace ft
 				child->_parent = node1;
 			}
 
-			void delete_node(pointer& node, pointer& x,bool& black)
+			void delete_node(pointer& node, pointer& x, bool& black)
 			{
 				pointer tmp = node;
 
@@ -255,14 +244,14 @@ namespace ft
 			}
 
 			template <typename tag>
-			pointer getter(pointer node, tag)
+			pointer getter(pointer node, tag) const
 			{
 				while (!_(getchild(node, tag::value)))
 					node = getchild(node, tag::value);
 				return node;
 			}
 
-			pointer& getchild(pointer& node, bool isLeft)
+			pointer& getchild(pointer& node, bool isLeft) const
 			{
 				return (((isLeft)) ? (node->_left) : (node->_right));
 			}
@@ -321,7 +310,7 @@ namespace ft
 				}
 			}
 			
-			pointer search(pointer node, value_type key)
+			pointer search(pointer node, value_type key) const
 			{
 				if (node == _nill || node->_value == key)
        				return node;
@@ -330,8 +319,27 @@ namespace ft
 				return search(node->_left, key);
 			}
 
+			void destroy_node(pointer& node)
+			{
+				if (node)
+				{
+					_alloc.destroy(node);
+					_alloc.deallocate(node, 1);
+				}
+				node = NULL;
+			}
+
+			void delete_tree(pointer& node)
+			{
+				if (node->_left != _nill)
+					delete_tree(node->_left);
+				if (node->_right != _nill)
+					delete_tree(node->_right);
+				destroy_node(node);
+			}
+
 		};
-} // namespace ft	
+// } // namespace ft	
 
 
 

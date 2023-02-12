@@ -11,7 +11,7 @@
 /*===================Node====================*/
 
 // Node class
-#define NODE ft::Node<T>
+#define NODE Node<T>
 
 // Node class attributes
 #define LEFT _left				// left attribute
