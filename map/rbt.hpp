@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 23:26:50 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/12 21:41:18 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/12 21:58:39 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,15 @@ namespace ft
 				_root->_black = true;
 			}
 			
+			void destroy_node(pointer& node)
+			{
+				if (node)
+				{
+					_alloc.destroy(node);
+					_alloc.deallocate(node, 1);
+				}
+				node = NULL;
+			}
 			void deletion (value_type key)
 			{
 				pointer	node;
@@ -108,7 +117,7 @@ namespace ft
 				node = search(key);
 				if (node != _nill)
 				{ 
-					delete_node(node, x, black);
+					delete_node(node ,x , black);
 					if (black)
 					{
 						while (x != _root && x->_black)
@@ -120,9 +129,25 @@ namespace ft
 						}
 						x->_black = true;
 					}
+					destroy_node(node);
 				}
 			}
 
+			void delete_tree(pointer& node)
+			{
+				if (node->_left != _nill)
+					delete_tree(node->_left);
+				if (node->_right != _nill)
+					delete_tree(node->_right);
+				destroy_node(node);
+			}
+			~RBT()
+			{
+				if(_root != _nill)
+					delete_tree(_root);
+				destroy_node(_nill);
+			}
+	
 			pointer search(value_type key)
 			{
 				return search(_root, key);
