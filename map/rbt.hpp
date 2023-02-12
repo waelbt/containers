@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 23:26:50 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/12 21:01:13 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/12 21:34:36 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ namespace ft
 				node = search(key);
 				if (node != _nill)
 				{ 
-					x = delete_node(node, black);
+					delete_node(node, x, black);
 					if (black && x != _nill)
 					{
 						while (x != _root && x->_black)
@@ -193,14 +193,14 @@ namespace ft
 			void connect(pointer& node1, pointer& node2, bool isLeft)
 			{
 				pointer& child = getchild(node1, isLeft);
+
 				child = getchild(node2, isLeft);
 				child->_parent = node1;
 			}
 
-			pointer delete_node(pointer& node, bool& black)
+			void delete_node(pointer& node, pointer& x,bool& black)
 			{
 				pointer tmp = node;
-				pointer x;
 
 				black = tmp->_black;
 				if (!_(node->_right) && !_(node->_left))
@@ -217,14 +217,13 @@ namespace ft
 						x->_parent = tmp;
 					transplant(node, tmp);
 					connect(tmp, node, _RIGHT);
-					tmp->_black = black;
+					tmp->_black = node->_black;
 				}
 				else
 				{
 					x = getchild(node, _(node->_right));
 					transplant(node, getchild(node, _(node->_right)));
 				}
-				return x;
 			}
 
 			void recoloring(pointer& node, pointer& uncle)
