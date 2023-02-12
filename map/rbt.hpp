@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 23:26:50 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/12 20:58:42 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/12 21:01:13 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,18 +205,18 @@ namespace ft
 				black = tmp->_black;
 				if (!_(node->_right) && !_(node->_left))
 				{
-					tmp = getter(node->_right, min_tag());
+					tmp = getter(node->_left, max_tag());
 					black = tmp->_black;
-					x = tmp->_right;
-					if (tmp != node->_right)
+					x = tmp->_left;
+					if (tmp != node->_left)
 					{
-						transplant(tmp, tmp->_right);
-						connect(tmp, node, _RIGHT);
+						transplant(tmp, tmp->_left);
+						connect(tmp, node, _LEFT);
 					}
 					else
 						x->_parent = tmp;
 					transplant(node, tmp);
-					connect(tmp, node, _LEFT);
+					connect(tmp, node, _RIGHT);
 					tmp->_black = black;
 				}
 				else
@@ -264,10 +264,11 @@ namespace ft
 					bst_insertion(node->_right, new_node);
 			}
 
-			pointer getter(pointer node, min_tag)
+			template <typename tag>
+			pointer getter(pointer node, tag)
 			{
-				while (!_(getchild(node, min_tag::value)))
-					node = getchild(node, min_tag::value);
+				while (!_(getchild(node, tag::value)))
+					node = getchild(node, tag::value);
 				return node;
 			}
 
