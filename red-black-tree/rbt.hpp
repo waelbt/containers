@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 23:26:50 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/11 19:48:36 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/12 16:01:15 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # define _RIGHT 0
 # define _LEFT  1
+
 // namespace ft
 // {
 	template <typename T>
@@ -47,6 +48,7 @@
 		}
 		~Node(){/*i will implement it later*/}	
 	};
+
 	template <typename T, class Alloc = std::allocator<T> >
 	class RBT
 	{
@@ -87,9 +89,9 @@
 				while (!new_node->_parent->_black)
 				{
  					if (new_node->_parent == new_node->_parent->_parent->_right)
-						fixup(new_node, _RIGHT, insert_tag());
+						FixUp(new_node, _RIGHT, insert_tag());
 					else
-						fixup(new_node, _LEFT, insert_tag());
+						FixUp(new_node, _LEFT, insert_tag());
 				}
 				_root->_black = true;
 			}
@@ -104,52 +106,52 @@
 				if (node != _nill)
 				{ 
 					x = delete_node(node, black);
-					if (black)
+					if (black && x != _nill)
 					{
 						while (x != _root && x->_black)
 						{
 							if (x == x->_parent->_left)
-								fixup(x, _RIGHT, delete_tag());
+								FixUp(x, _RIGHT, delete_tag());
 							else
-								fixup(x, _LEFT, delete_tag());
+								FixUp(x, _LEFT, delete_tag());
 						}
 						x->_black = true;
 					}
 				}
 			}
 
-			void fixup(pointer& node, bool right, delete_tag)
+			void FixUp(pointer& node, bool isRight, delete_tag)
 			{
-					pointer tmp;
+				pointer tmp;
 
-					tmp = getchild(node->_parent, right); // sibling
-					if (!tmp->_black) // sibling is red
+				tmp = getchild(node->_parent, isRight);
+				if (!tmp->_black)
+				{
+					tmp->_black = true;
+					node->_parent->_black = false;
+					rotate(node->_parent, !isRight);
+					tmp = getchild(node->_parent, isRight);
+				}
+				if (tmp->_right->_black && tmp->_left->_black)
+				{
+					tmp->_black = false;
+					node = node->_parent;
+				}
+				else
+				{
+					if (getchild(tmp, isRight)->_black)
 					{
-						tmp->_black = true;
-						node->_parent->_black = false;
-						rotate(node->_parent, !right);
-						tmp = getchild(node->_parent, right);
-					}
-					if (getchild(tmp, !right)->_black && getchild(tmp, right)->_black) // child of sibling both black
-					{
+						getchild(tmp, !isRight)->_black = true;
 						tmp->_black = false;
-						node = node->_parent;
+						rotate(tmp, isRight);
+						tmp = getchild(tmp, isRight);
 					}
-					else
-					{
-						if (getchild(tmp, right)->_black)
-						{
-							getchild(tmp, !right)->_black = true;
-							tmp->_black = false;
-							rotate(tmp, right);
-							tmp = node->_parent->_right;
-						}
-						tmp->_black = node->_parent->_black;
-						node->_parent->_black = true;
-						getchild(tmp, right)->_black = true;
-						rotate(node->_parent, !right);
-						node = _root;
-					}
+					tmp->_black = node->_parent->_black;
+					node->_parent->_black = true;
+					getchild(tmp, isRight)->_black = true;
+					rotate(node->_parent, !isRight);
+					node = _root;
+				}
 			}
 
 			pointer search(value_type key)
@@ -185,10 +187,10 @@
 				return (x == _nill);
 			}
 
-			void connect(pointer& node1, pointer& node2, bool left)
+			void connect(pointer& node1, pointer& node2, bool isLeft)
 			{
-				pointer& child = getchild(node1, left);
-				child = getchild(node2, left);
+				pointer& child = getchild(node1, isLeft);
+				child = getchild(node2, isLeft);
 				child->_parent = node1;
 			}
 
@@ -230,13 +232,13 @@
 				node = node->_parent->_parent;
 			}
 
-			void rotate(pointer node, bool left){
+			void rotate(pointer node, bool isLeft){
 				pointer tmp;
-	
-				tmp = getchild(node, !left);
-				getchild(node, !left) = getchild(tmp, left);
-				if(getchild(tmp, left))
-					getchild(tmp, left)->_parent = node;
+
+				tmp = getchild(node, !isLeft);
+				getchild(node, !isLeft) = getchild(tmp, isLeft);
+				if(getchild(tmp, isLeft))
+					getchild(tmp, isLeft)->_parent = node;
 				tmp->_parent = node->_parent;
 				if (_(node->_parent))
 					_root = tmp;
@@ -244,7 +246,7 @@
 					node->_parent->_left = tmp;
 				else 
 					node->_parent->_right = tmp;
-				getchild(tmp, left) = node;
+				getchild(tmp, isLeft) = node;
 				node->_parent = tmp;
 			}
 
@@ -273,32 +275,30 @@
 				return node;
 			}
 
-			pointer& getchild(pointer& node, bool left)
+			pointer& getchild(pointer& node, bool isLeft)
 			{
-				return (((left)) ? (node->_left) : (node->_right));
+				return (((isLeft)) ? (node->_left) : (node->_right));
 			}
 
-			void fixup(pointer& node, bool left, insert_tag)
+			void FixUp(pointer& node, bool isLeft, insert_tag)
 			{
 				pointer uncle;
 
-				uncle = getchild(node->_parent->_parent, !left);
+				uncle = getchild(node->_parent->_parent, !isLeft);
 				if (!uncle->_black)
 					recoloring(node, uncle);
 				else
 				{
-					if (node == getchild(node->_parent, !left))
+					if (node == getchild(node->_parent, !isLeft))
 					{
 						node = node->_parent;
-						rotate(node, left);
+						rotate(node, isLeft);
 					}
 					node->_parent->_black = true;
 					node->_parent->_parent->_black = false;
-					rotate(node->_parent->_parent, !left);
+					rotate(node->_parent->_parent, !isLeft);
 				}
 			}
-
-		
 
 			pointer search(pointer node, value_type key)
 			{
