@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 23:26:50 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/12 21:34:36 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/12 21:38:47 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ namespace ft
 				if (node != _nill)
 				{ 
 					delete_node(node, x, black);
-					if (black && x != _nill)
+					if (black)
 					{
 						while (x != _root && x->_black)
 						{
