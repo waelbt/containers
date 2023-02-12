@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 23:26:50 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/12 21:38:47 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/12 21:41:18 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,9 @@ namespace ft
 				while (!new_node->_parent->_black)
 				{
  					if (new_node->_parent == new_node->_parent->_parent->_right)
-						FixUp(new_node, _RIGHT, insert_tag());
+						FixUp(new_node, _RIGHT);
 					else
-						FixUp(new_node, _LEFT, insert_tag());
+						FixUp(new_node, _LEFT);
 				}
 				_root->_black = true;
 			}
@@ -120,40 +120,6 @@ namespace ft
 						}
 						x->_black = true;
 					}
-				}
-			}
-
-			void FixUp(pointer& node, bool isRight, delete_tag)
-			{
-				pointer tmp;
-
-				tmp = getchild(node->_parent, isRight);
-				if (!tmp->_black)
-				{
-					tmp->_black = true;
-					node->_parent->_black = false;
-					rotate(node->_parent, !isRight);
-					tmp = getchild(node->_parent, isRight);
-				}
-				if (tmp->_right->_black && tmp->_left->_black)
-				{
-					tmp->_black = false;
-					node = node->_parent;
-				}
-				else
-				{
-					if (getchild(tmp, isRight)->_black)
-					{
-						getchild(tmp, !isRight)->_black = true;
-						tmp->_black = false;
-						rotate(tmp, isRight);
-						tmp = getchild(tmp, isRight);
-					}
-					tmp->_black = node->_parent->_black;
-					node->_parent->_black = true;
-					getchild(tmp, isRight)->_black = true;
-					rotate(node->_parent, !isRight);
-					node = _root;
 				}
 			}
 
@@ -276,7 +242,7 @@ namespace ft
 				return (((isLeft)) ? (node->_left) : (node->_right));
 			}
 
-			void FixUp(pointer& node, bool isLeft, insert_tag)
+			void FixUp(pointer& node, bool isLeft, insert_tag = insert_tag())
 			{
 				pointer uncle;
 
@@ -296,6 +262,40 @@ namespace ft
 				}
 			}
 
+			void FixUp(pointer& node, bool isRight, delete_tag)
+			{
+				pointer tmp;
+
+				tmp = getchild(node->_parent, isRight);
+				if (!tmp->_black)
+				{
+					tmp->_black = true;
+					node->_parent->_black = false;
+					rotate(node->_parent, !isRight);
+					tmp = getchild(node->_parent, isRight);
+				}
+				if (tmp->_right->_black && tmp->_left->_black)
+				{
+					tmp->_black = false;
+					node = node->_parent;
+				}
+				else
+				{
+					if (getchild(tmp, isRight)->_black)
+					{
+						getchild(tmp, !isRight)->_black = true;
+						tmp->_black = false;
+						rotate(tmp, isRight);
+						tmp = getchild(tmp, isRight);
+					}
+					tmp->_black = node->_parent->_black;
+					node->_parent->_black = true;
+					getchild(tmp, isRight)->_black = true;
+					rotate(node->_parent, !isRight);
+					node = _root;
+				}
+			}
+			
 			pointer search(pointer node, value_type key)
 			{
 				if (node == _nill || node->_value == key)
