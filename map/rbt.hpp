@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 23:26:50 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/12 16:37:19 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/12 20:58:42 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,7 +206,7 @@ namespace ft
 				if (!_(node->_right) && !_(node->_left))
 				{
 					tmp = getter(node->_right, min_tag());
-					black = node->_black;
+					black = tmp->_black;
 					x = tmp->_right;
 					if (tmp != node->_right)
 					{
