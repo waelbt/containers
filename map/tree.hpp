@@ -17,6 +17,8 @@
 # define _LEFT  1
 
 #include "../utility/less.hpp"
+#include "tree_iterator.hpp"
+
 // namespace ft
 // {
 	template <typename T>
@@ -33,9 +35,9 @@
 			pointer		_parent;
 			pointer		_left;
 			pointer		_right;
-			// pointer		_nill;
+			pointer		_nill;
 
-		Node(value_type val) : _value(val), _black(false), _parent(), _left(), _right() {}
+		Node(value_type val) : _value(val), _black(false), _parent(), _left(), _right(), _nill() {}
 		Node(const_reffrence obj) {*this = obj;}
 		const_reffrence operator=(const_reffrence obj){
 			if (this != &obj)
@@ -45,7 +47,7 @@
 				_left = obj._left;
 				_right = obj._right;
 				_parent = obj._parent;
-				// _nill = obj._nill;
+				_nill = obj._nill;
 			}
 			return *this;
 		}
@@ -66,6 +68,7 @@
 			typedef		typename node_allocater::const_pointer 						const_pointer;
 			typedef		typename node_allocater::difference_type					difference_type;
 			typedef 	typename node_allocater::size_type 							size_type;
+			typedef 	ft::tree_iterator<value_type, node_type> 						iterator;
 			struct		delete_tag {};
 			struct		insert_tag {};
 			struct		min_tag {static const bool value = true;};
@@ -130,6 +133,10 @@
 					destroy_node(node);
 				}
 			}
+			iterator begin()
+			{
+				return getter(_root, min_tag());
+			}
 
 			pointer search(value_type key) const
 			{
@@ -154,7 +161,7 @@
 				node->_left = _nill;
 				node->_right = _nill;
 				node->_parent = _nill;
-				// node->_nill = _nill;
+				node->_nill = _nill;
 				return node;
 			}
 			
@@ -210,7 +217,7 @@
 				}
 			}
 
-			void recoloring(pointer& node, pointer& uncle)
+			void color_flipping(pointer& node, pointer& uncle)
 			{
 				uncle->_black = true;
 				node->_parent->_black = true;
@@ -266,7 +273,7 @@
 
 				uncle = getchild(node->_parent->_parent, !isLeft);
 				if (!uncle->_black)
-					recoloring(node, uncle);
+					color_flipping(node, uncle);
 				else
 				{
 					if (node == getchild(node->_parent, !isLeft))

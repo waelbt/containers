@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 05:19:27 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/14 07:03:36 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/14 08:00:06 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,30 +40,65 @@ namespace ft
 			{return (_ptr == rhs._ptr);}
     		bool operator!= (const tree_iterator& rhs) const
 			{return (_ptr != rhs._ptr);}
-			tree_iterator operator++() 
+			tree_iterator& operator++() 
 			{
 				pointer tmp;
 
-    			if (_ptr->_right != NULL)
+    			if (_ptr->_right != _ptr->_nill)
       			{
         			_ptr = _ptr->_right;
-        			while (_ptr->_left != NULL) {
+        			while (_ptr->_right !=  _ptr->_nill) {
           				_ptr = _ptr->_left;
         			}
       			}
     			else
       			{
-        			tmp = _ptr->parent;
-        			while (tmp != NULL && _ptr == tmp->_right)
+        			tmp = _ptr->_parent;
+        			while (tmp != _ptr->_nill && _ptr == tmp->_right)
           			{
             			_ptr = tmp;
-            			tmp = tmp->parent;
+            			tmp = tmp->_parent;
           			}
         			_ptr = tmp;
       			}
 				return *this;
 			}
-			// tree_iterator operator++(int) {}
+			tree_iterator operator++(int) {
+				tree_iterator tmp(*this);
+
+				++(*this);
+				return tmp;
+			}
+			
+			tree_iterator& operator--() 
+			{
+				pointer tmp;
+
+    			if (_ptr->_left != _ptr->_nill)
+      			{
+        			_ptr = _ptr->_left;
+        			while (_ptr->_right !=  _ptr->_nill) {
+          				_ptr = _ptr->_right;
+        			}
+      			}
+    			else
+      			{
+        			tmp = _ptr->_parent;
+        			while (tmp != _ptr->_nill && _ptr == tmp->_left)
+          			{
+            			_ptr = tmp;
+            			tmp = tmp->_parent;
+          			}
+        			_ptr = tmp;
+      			}
+				return *this;
+			}
+			tree_iterator operator--(int) {
+				tree_iterator tmp(*this);
+
+				--(*this);
+				return tmp;
+			}
 			// tree_iterator operator--() {}
 			// tree_iterator operator--(int) {}
 	};
