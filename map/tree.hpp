@@ -54,7 +54,7 @@
 		~Node(){/*i will implement it later*/}	
 	};
 
-	template <typename T, class Compare = ft::less<T>, class Alloc = std::allocator<T> >
+	template <typename T, class Compare, class Alloc = std::allocator<T> >
 	class TREE
 	{
 		public:
@@ -78,7 +78,8 @@
 			pointer 		_root;
 			pointer			_nill;
 			node_allocater _alloc;
-			key_compare	   comp;
+			key_compare	   _comp;
+			size_type		_size;
 		public:
 
 			TREE(const allocator_type& alloc = allocator_type()) : _alloc(alloc) {
@@ -86,27 +87,45 @@
 				_alloc.construct(_nill, value_type());
 				_nill->_black = true;
 				_root = _nill;
+				_size = 0;
 			}
 
+			TREE(const TREE& x) 
+			{
+				_root = new node_type(x._root);
+				_nill = new node_type(x._nill);
+				_alloc = x._alloc;
+				_comp = x._comp;
+				_size = x._size;
+			}
 			pointer getROOT() const
 			{
 				return _root;
+			}
+
+			size_type size() const
+			{
+				return _size;
 			}
 
 			void insert(value_type key)
 			{
 				pointer new_node;
 
-				new_node = construct_node(key);
-				bst_insertion(_root, new_node);
-				while (!new_node->_parent->_black)
+				if (search(key) != _nill)
 				{
- 					if (new_node->_parent == new_node->_parent->_parent->_right)
-						FixUp(new_node, _RIGHT);
-					else
-						FixUp(new_node, _LEFT);
+					new_node = construct_node(key);
+					bst_insertion(_root, new_node);
+					while (!new_node->_parent->_black)
+					{
+ 						if (new_node->_parent == new_node->_parent->_parent->_right)
+							FixUp(new_node, _RIGHT);
+						else
+							FixUp(new_node, _LEFT);
+					}
+					_root->_black = true;
+					_size++;
 				}
-				_root->_black = true;
 			}
 
 			void deletion (value_type key)
@@ -131,11 +150,18 @@
 						x->_black = true;
 					}
 					destroy_node(node);
+					_size--;
 				}
 			}
+
 			iterator begin()
 			{
 				return getter(_root, min_tag());
+			}
+
+			iterator end()
+			{
+				return _nill;
 			}
 
 			pointer search(value_type key) const
@@ -150,6 +176,10 @@
 				destroy_node(_nill);
 			}
 
+			bool empty() const
+			{
+				return (_(_root));
+			}
 		private:
 
 			pointer construct_node(value_type key)
@@ -248,7 +278,7 @@
 				if (_(node)){
 					node = new_node; return ;}
 				new_node->_parent = node;
-				if (comp(new_node->_value, node->_value))
+				if (_comp(new_node->_value, node->_value))
 					bst_insertion(node->_left, new_node);
 				else
 					bst_insertion(node->_right, new_node);
@@ -325,9 +355,9 @@
 			{
 				if (node != _nill)
 				{
-    				if (comp(key, node->_value))
+    				if (_comp(key, node->_value))
        					return search(node->_left, key);
-					else if (comp(node->_value, key))
+					else if (_comp(node->_value, key))
 						return search(node->_right, key);
 				}
        			return node;

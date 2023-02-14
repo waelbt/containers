@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:40 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/14 08:01:28 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/14 09:06:17 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,29 @@
 // }
 
 
-
-
-int main(void)
+int main ()
 {
-	fancy_tree<int> tree;
-	TREE<int> a;
-	
-	TREE<int>::iterator it;
-	a.insert(15);
-	a.insert(12);
-	a.insert(19);
-	a.insert(18);
-	a.insert(17);
-	a.insert(23);
-	a.insert(8);
-	a.insert(13);
-	tree.print_tree(a.getROOT(), V_VIEW);
-	return 0;
+  std::map<int,int> mymap;
+
+  std::cout << mymap.max_size() << std::endl;
+
+  return 0;
 }
+
+// int main(void)
+// {
+// 	fancy_tree<int> tree;
+// 	TREE<int> a;
+	
+// 	TREE<int>::iterator it;
+// 	a.insert(15);
+// 	a.insert(12);
+// 	a.insert(19);
+// 	a.insert(18);
+// 	a.insert(17);
+// 	a.insert(23);
+// 	a.insert(8);
+// 	a.insert(13);
+// 	tree.print_tree(a.getROOT(), V_VIEW);
+// 	return 0;
+// }
