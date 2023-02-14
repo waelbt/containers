@@ -1,21 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rbt.hpp                                            :+:      :+:    :+:   */
+/*   tree.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 23:26:50 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/12 22:40:48 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/14 03:39:36 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RBT_HPP
-# define RBT_HPP
+#ifndef TREE_HPP
+# define TREE_HPP
 
 # define _RIGHT 0
 # define _LEFT  1
 
+#include "../utility/less.hpp"
 // namespace ft
 // {
 	template <typename T>
@@ -32,6 +33,7 @@
 			pointer		_parent;
 			pointer		_left;
 			pointer		_right;
+			// pointer		_nill;
 
 		Node(value_type val) : _value(val), _black(false), _parent(), _left(), _right() {}
 		Node(const_reffrence obj) {*this = obj;}
@@ -43,20 +45,22 @@
 				_left = obj._left;
 				_right = obj._right;
 				_parent = obj._parent;
+				// _nill = obj._nill;
 			}
 			return *this;
 		}
 		~Node(){/*i will implement it later*/}	
 	};
 
-	template <typename T, class Alloc = std::allocator<T> >
-	class RBT
+	template <typename T, class Compare = ft::less<T>, class Alloc = std::allocator<T> >
+	class TREE
 	{
 		public:
 
 			typedef		T 															value_type;
 			typedef 	Alloc               										allocator_type;
 			typedef 	typename allocator_type::template rebind<Node<T> >::other	node_allocater;
+			typedef		Compare                                  					key_compare;
 			typedef		typename node_allocater::value_type							node_type;
 			typedef		typename node_allocater::pointer 							pointer;
 			typedef		typename node_allocater::const_pointer 						const_pointer;
@@ -68,14 +72,13 @@
 			struct		max_tag {static const bool value = false;};
 
 		private:
-	
 			pointer 		_root;
 			pointer			_nill;
 			node_allocater _alloc;
-
+			key_compare	   comp;
 		public:
 
-			RBT(const allocator_type& alloc = allocator_type()) : _alloc(alloc) {
+			TREE(const allocator_type& alloc = allocator_type()) : _alloc(alloc) {
 				_nill = _alloc.allocate(1);
 				_alloc.construct(_nill, value_type());
 				_nill->_black = true;
@@ -133,7 +136,7 @@
 				return search(_root, key);
 			}
 
-			~RBT()
+			~TREE()
 			{
 				if(_root != _nill)
 					delete_tree(_root);
@@ -151,6 +154,7 @@
 				node->_left = _nill;
 				node->_right = _nill;
 				node->_parent = _nill;
+				// node->_nill = _nill;
 				return node;
 			}
 			
@@ -237,9 +241,9 @@
 				if (_(node)){
 					node = new_node; return ;}
 				new_node->_parent = node;
-				if (new_node->_value <= node->_value)
+				if (comp(new_node->_value, node->_value))
 					bst_insertion(node->_left, new_node);
-				else if (new_node->_value > node->_value)
+				else
 					bst_insertion(node->_right, new_node);
 			}
 
@@ -312,11 +316,14 @@
 			
 			pointer search(pointer node, value_type key) const
 			{
-				if (node == _nill || node->_value == key)
-       				return node;
-    			if (node->_value < key)
-       				return search(node->_right, key);
-				return search(node->_left, key);
+				if (node != _nill)
+				{
+    				if (comp(key, node->_value))
+       					return search(node->_left, key);
+					else if (comp(node->_value, key))
+						return search(node->_right, key);
+				}
+       			return node;
 			}
 
 			void destroy_node(pointer& node)

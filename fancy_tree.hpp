@@ -6,7 +6,7 @@
 #include <cmath>
 
 //header file that contains Node definition
-#include "map/rbt.hpp"
+#include "map/tree.hpp"
 
 /*===================Node====================*/
 
