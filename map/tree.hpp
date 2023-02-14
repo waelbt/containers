@@ -19,6 +19,9 @@
 #include "../utility/less.hpp"
 #include "tree_iterator.hpp"
 
+//select pair
+//select key 
+
 // namespace ft
 // {
 	template <typename T>
@@ -108,6 +111,10 @@
 				return _size;
 			}
 
+			size_type max_size() const
+			{
+				return _alloc. max_size();
+			}
 			void insert(value_type key)
 			{
 				pointer new_node;
@@ -124,7 +131,6 @@
 							FixUp(new_node, _LEFT);
 					}
 					_root->_black = true;
-					_size++;
 				}
 			}
 
@@ -150,7 +156,6 @@
 						x->_black = true;
 					}
 					destroy_node(node);
-					_size--;
 				}
 			}
 
@@ -164,7 +169,7 @@
 				return _nill;
 			}
 
-			pointer search(value_type key) const
+			pointer search(const value_type& key) const
 			{
 				return search(_root, key);
 			}
@@ -172,8 +177,13 @@
 			~TREE()
 			{
 				if(_root != _nill)
-					delete_tree(_root);
+					clear();
 				destroy_node(_nill);
+			}
+
+			void clear()
+			{
+				clear(_root);
 			}
 
 			bool empty() const
@@ -192,6 +202,7 @@
 				node->_right = _nill;
 				node->_parent = _nill;
 				node->_nill = _nill;
+				_size++;
 				return node;
 			}
 			
@@ -369,16 +380,17 @@
 				{
 					_alloc.destroy(node);
 					_alloc.deallocate(node, 1);
+					_size--;
 				}
 				node = NULL;
 			}
 
-			void delete_tree(pointer& node)
+			void clear(pointer& node)
 			{
 				if (node->_left != _nill)
-					delete_tree(node->_left);
+					clear(node->_left);
 				if (node->_right != _nill)
-					delete_tree(node->_right);
+					clear(node->_right);
 				destroy_node(node);
 			}
 

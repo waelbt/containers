@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:40 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/14 09:06:17 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/14 09:35:46 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@
 
 int main ()
 {
-  std::map<int,int> mymap;
+  ft::map<int,int> mymap;
 
   std::cout << mymap.max_size() << std::endl;
-
+ mymap.find(0);
   return 0;
 }
 

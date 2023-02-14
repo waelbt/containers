@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 23:45:29 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/14 09:08:19 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/14 09:39:13 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ namespace ft
 			  		}
 			};
 			typedef 	TREE<value_type, value_compare, allocator_type> tree_type;
+			typedef 	typename tree_type::iterator 						iterator;
 		private:
 			tree_type		_tree;
 			key_compare		_comp;
@@ -85,13 +86,33 @@ namespace ft
 			{
 				return _tree.size();
 			}
+
 			size_type max_size() const
 			{
 				return _tree.max_size();
 			}
-			mapped_type& operator[] (const key_type& k)
+			void swap (map& x)
 			{
+				ft::swap(_tree, x._tree);
+				ft::swap(_comp, x._comp);
+				ft::swap(_alloc, x._alloc);
+			}
+
+			void clear()
+			{
+				_tree.clear();
+			}
+			// mapped_type& operator[] (const key_type& k)
+			// {
 				
+			// }
+			// iterator find (const key_type& k)
+			// {
+			// 	return _tree.search(k);
+			// }
+			allocator_type get_allocator() const
+			{
+				return _alloc;
 			}
 			~map(){}
 	};	
