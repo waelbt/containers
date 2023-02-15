@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:40 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/15 05:19:40 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/15 05:50:02 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int main ()
 {
   ft::map<int,std::string> mymap;
   ft::map<int,std::string>::const_iterator it = mymap.begin();
+  ft::map<int,std::string>::iterator it1 = it;
   // ft::pair<ft::map<int,std::string>::iterator, bool> ins_pair = mymap.insert(ft::make_pair(64, "64str"));
   // std::cout << (*ins_pair.first).first << std::endl;
   // std::cout << (*ins_pair.first).second << std::endl;

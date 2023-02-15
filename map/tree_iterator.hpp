@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 05:19:27 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/15 05:27:15 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/15 05:50:37 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,11 @@ namespace ft
 		public:
 			tree_iterator() : _ptr(NULL) {}
 			tree_iterator(iter_pointer ptr) : _ptr(ptr) {}
-			tree_iterator(const tree_iterator& obj) : _ptr(obj._ptr){}
-			operator tree_iterator<const value_type, Node>(){
-        		return tree_iterator<const value_type, Node>(_ptr);}
+			const iter_pointer& base() const {return _ptr;}
+			template<typename U>
+			tree_iterator(const tree_iterator<U, Node>& obj) : _ptr(obj.base()){} // 4alat
+			// operator tree_iterator<const value_type, Node>(){
+        	// 	return tree_iterator<const value_type, Node>(_ptr);}
 			tree_iterator& operator=(const tree_iterator& obj){
 				_ptr = obj._ptr;
 				return *this;}
