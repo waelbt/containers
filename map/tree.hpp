@@ -18,7 +18,6 @@
 
 #include "../utility/less.hpp"
 #include "tree_iterator.hpp"
-
 //select pair
 //select key 
 
@@ -57,6 +56,20 @@
 		~Node(){/*i will implement it later*/}	
 	};
 
+	// template <class pair>
+	// class selectPair
+	// {
+	// 	public:
+ 	// 		typedef typename pair::first_type first_type;
+ 	// 		typedef typename pair::second_type second_type;
+
+	// 		const first_type& operator() (const pair& x) const
+	// 		{
+	// 			return x.first;;
+	// 		}
+	// };
+	
+	// , class Selector = selectPair<T>
 	template <typename T, class Compare, class Alloc = std::allocator<T> >
 	class TREE
 	{
@@ -71,7 +84,8 @@
 			typedef		typename node_allocater::const_pointer 						const_pointer;
 			typedef		typename node_allocater::difference_type					difference_type;
 			typedef 	typename node_allocater::size_type 							size_type;
-			typedef 	ft::tree_iterator<value_type, node_type> 						iterator;
+			typedef 	ft::tree_iterator<value_type, node_type> 					iterator;
+			typedef 	ft::tree_iterator<const value_type, node_type> 				const_iterator;
 			struct		delete_tag {};
 			struct		insert_tag {};
 			struct		min_tag {static const bool value = true;};
@@ -84,23 +98,43 @@
 			key_compare	   _comp;
 			size_type		_size;
 		public:
-
-			TREE(const allocator_type& alloc = allocator_type()) : _alloc(alloc) {
-				_nill = _alloc.allocate(1);
-				_alloc.construct(_nill, value_type());
-				_nill->_black = true;
+			TREE(const allocator_type& alloc = allocator_type()) : _alloc(alloc){
+				_nill = construct_nill();
 				_root = _nill;
 				_size = 0;
 			}
 
-			TREE(const TREE& x) 
+			TREE(const TREE& x)
 			{
-				_root = new node_type(x._root);
-				_nill = new node_type(x._nill);
 				_alloc = x._alloc;
+				_nill = construct_nill();
+				_root = copy(x._root, x._nill, _nill);
 				_comp = x._comp;
 				_size = x._size;
 			}
+
+			TREE& operator=(const TREE& x)
+			{
+				if (_root != _nill)
+					this->clear();
+				_root = copy(x._root, x._nill, _nill);
+				_comp = x._comp;
+				_size = x._size;
+				return *this;
+			}
+
+			pointer copy(pointer node, pointer obj_Nill, pointer& _nill)
+			{
+				pointer new_node;
+
+				if (node == obj_Nill)
+					return _nill;
+				new_node = construct_node(node->_value);
+				new_node->_left = copy(node->_left, obj_Nill, _nill);
+				new_node->_right = copy(node->_right, obj_Nill, _nill);
+				return new_node;
+			}
+
 			pointer getROOT() const
 			{
 				return _root;
@@ -115,23 +149,22 @@
 			{
 				return _alloc. max_size();
 			}
-			void insert(value_type key)
+
+			iterator insert(value_type key)
 			{
 				pointer new_node;
 
-				if (search(key) != _nill)
+				new_node = construct_node(key);
+				bst_insertion(_root, new_node);
+				while (!new_node->_parent->_black)
 				{
-					new_node = construct_node(key);
-					bst_insertion(_root, new_node);
-					while (!new_node->_parent->_black)
-					{
- 						if (new_node->_parent == new_node->_parent->_parent->_right)
-							FixUp(new_node, _RIGHT);
-						else
-							FixUp(new_node, _LEFT);
-					}
-					_root->_black = true;
+ 					if (new_node->_parent == new_node->_parent->_parent->_right)
+						FixUp(new_node, _RIGHT);
+					else
+						FixUp(new_node, _LEFT);
 				}
+				_root->_black = true;
+				return new_node;
 			}
 
 			void deletion (value_type key)
@@ -169,6 +202,16 @@
 				return _nill;
 			}
 
+			const_iterator begin() const
+			{
+				return getter(_root, min_tag());
+			}
+
+			const_iterator end() const
+			{
+				return _nill;
+			}
+
 			pointer search(const value_type& key) const
 			{
 				return search(_root, key);
@@ -192,7 +235,17 @@
 			}
 		private:
 
-			pointer construct_node(value_type key)
+			pointer construct_nill()
+			{
+				pointer node;
+
+				node = _alloc.allocate(1);
+				_alloc.construct(node, value_type());
+				node->_black = true;
+				return node;
+			}
+
+			pointer construct_node(value_type& key)
 			{
 				pointer node;
 
@@ -298,8 +351,11 @@
 			template <typename tag>
 			pointer getter(pointer node, tag) const
 			{
-				while (!_(getchild(node, tag::value)))
-					node = getchild(node, tag::value);
+				if (node != _nill)
+				{
+					while (!_(getchild(node, tag::value)))
+						node = getchild(node, tag::value);
+				}
 				return node;
 			}
 
@@ -397,7 +453,4 @@
 		};
 // } // namespace ft	
 
-
-
 #endif
-

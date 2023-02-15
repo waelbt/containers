@@ -6,13 +6,15 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 05:19:27 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/14 08:00:06 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/15 05:27:15 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TREE_ITERATOR
 # define TREE_ITERATOR
 
+# include <iostream>
+# include "../vector/type_traits.hpp"
 namespace ft
 {
 	template<class T, class Node>
@@ -20,21 +22,24 @@ namespace ft
 	{
 		public:
 			typedef std::bidirectional_iterator_tag iterator_category;
-			typedef T								value_type;
+			typedef ft::remove_cv<T>				value_type;
 			typedef ptrdiff_t						difference_type;
-			typedef value_type&                     reference;
-			typedef Node* 							pointer;
+			typedef T&                     			reference;
+			typedef typename Node::pointer 			iter_pointer;
+			typedef T* 								pointer;
 		private:
-			pointer _ptr;
+			iter_pointer _ptr;
 		public:
 			tree_iterator() : _ptr(NULL) {}
-			tree_iterator(pointer ptr) : _ptr(ptr) {}
+			tree_iterator(iter_pointer ptr) : _ptr(ptr) {}
 			tree_iterator(const tree_iterator& obj) : _ptr(obj._ptr){}
+			operator tree_iterator<const value_type, Node>(){
+        		return tree_iterator<const value_type, Node>(_ptr);}
 			tree_iterator& operator=(const tree_iterator& obj){
 				_ptr = obj._ptr;
 				return *this;}
-			pointer operator->()  { return _ptr; }
-			reference operator*(){
+			pointer operator->() const{ return &(_ptr->_value); }
+			reference operator*() const{
 				return _ptr->_value;}
 			bool operator== (const tree_iterator& rhs) const
 			{return (_ptr == rhs._ptr);}
@@ -42,7 +47,7 @@ namespace ft
 			{return (_ptr != rhs._ptr);}
 			tree_iterator& operator++() 
 			{
-				pointer tmp;
+				iter_pointer tmp;
 
     			if (_ptr->_right != _ptr->_nill)
       			{
@@ -72,7 +77,7 @@ namespace ft
 			
 			tree_iterator& operator--() 
 			{
-				pointer tmp;
+				iter_pointer tmp;
 
     			if (_ptr->_left != _ptr->_nill)
       			{

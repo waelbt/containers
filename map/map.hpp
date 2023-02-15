@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 23:45:29 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/14 09:39:13 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/15 05:32:13 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ namespace ft
 	template < class Key,                                     		// map::key_type
         class T,                                       		// map::mapped_type
         class Compare = ft::less<Key>,                    	// map::key_compare
-        class Alloc = std::allocator<pair<const Key,T> >   	// map::allocator_type
+        class Alloc = std::allocator<pair<Key,T> >   	// map::allocator_type
         >
 	class map
 	{
 		public :
 			typedef		Key													key_type;
 			typedef		T 													mapped_type;
-			typedef		ft::pair<const key_type, mapped_type>				value_type;
+			typedef		ft::pair<key_type, mapped_type>						value_type;
 			typedef		Compare												key_compare;
 			typedef		Alloc												allocator_type;
 			typedef		typename allocator_type::reference					reference;
@@ -44,7 +44,7 @@ namespace ft
 			typedef typename allocator_type::size_type 			size_type;
 			class 	value_compare : ft::binary_function<value_type, value_type, bool>
 			{   
-				friend class map;
+				// friend class map;
 				protected:
 			  		key_compare comp;
 					value_compare (key_compare c) : comp(c) {}
@@ -57,6 +57,7 @@ namespace ft
 			};
 			typedef 	TREE<value_type, value_compare, allocator_type> tree_type;
 			typedef 	typename tree_type::iterator 						iterator;
+			typedef 	typename tree_type::const_iterator 					const_iterator;
 		private:
 			tree_type		_tree;
 			key_compare		_comp;
@@ -68,20 +69,27 @@ namespace ft
 			: _tree(), _comp(comp), _alloc(alloc)
 			{
 				for (; first != last; first++)
+				{
 					_tree.insert(*first);
+				}
 			}
+
 			map (const map& x) : _tree(x._tree), _comp(x._comp), _alloc(x._alloc)
 			{				
 			}
+
 			map& operator= (const map& x)
 			{
 				_tree = x._tree;
 				_comp = x._comp;
+				return *this;
 			}
+
 			bool empty() const
 			{
 				return _tree.empty();
 			}
+
 			size_type size() const
 			{
 				return _tree.size();
@@ -101,6 +109,40 @@ namespace ft
 			void clear()
 			{
 				_tree.clear();
+			}
+
+			iterator begin()
+			{
+				return _tree.begin();
+			}
+
+			iterator end()
+			{
+				return _tree.end();
+			}
+
+			const_iterator begin() const
+			{
+				return _tree.begin();
+			}
+
+			const_iterator end() const
+			{
+				return _tree.end();
+			}
+
+			iterator find (const key_type& k)
+			{
+				return _tree.search(ft::make_pair(k, mapped_type()));
+			}
+
+			pair<iterator,bool> insert (const value_type& val)
+			{
+				iterator tmp = find(val.first);
+
+				if (tmp != end()) 
+					return ft::make_pair(tmp, false);
+				return ft::make_pair(_tree.insert(val), true);
 			}
 			// mapped_type& operator[] (const key_type& k)
 			// {
