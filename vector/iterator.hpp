@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 17:24:29 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/29 23:18:45 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/15 19:40:28 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,14 +156,13 @@ namespace ft
 			explicit reverse_iterator(Iterator obj) : _iter_adapt(obj){}
 			template <class T>
 			reverse_iterator(const reverse_iterator<T>& other) : _iter_adapt(other.base()) {}
-			template <class T>
-			reverse_iterator& operator=(const reverse_iterator<T>& other)
+			reverse_iterator& operator=(const reverse_iterator& other)
 			{
-     			_iter_adapt = other.base();
+     			_iter_adapt = other._iter_adapt;
         		return *this;}
-			operator reverse_iterator<const Iterator>(){
-        		return reverse_iterator<const Iterator>(_iter_adapt);}
-			Iterator base() const {return _iter_adapt;} 
+			// operator reverse_iterator<const Iterator>(){
+        	// 	return reverse_iterator<const Iterator>(_iter_adapt);}
+			Iterator& base() const {return _iter_adapt;} 
     		reference operator*() const {Iterator tmp = _iter_adapt; return *(--tmp);} 
     		pointer  operator->() const {return &(operator*());} 
     		reverse_iterator& operator++() {--_iter_adapt; return *this;} 

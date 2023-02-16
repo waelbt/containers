@@ -37,9 +37,8 @@
 			pointer		_parent;
 			pointer		_left;
 			pointer		_right;
-			pointer		_nill;
 
-		Node(value_type val) : _value(val), _black(false), _parent(), _left(), _right(), _nill() {}
+		Node(value_type val) : _value(val), _black(false), _parent(), _left(), _right() {}
 		Node(const_reffrence obj) {*this = obj;}
 		const_reffrence operator=(const_reffrence obj){
 			if (this != &obj)
@@ -49,7 +48,6 @@
 				_left = obj._left;
 				_right = obj._right;
 				_parent = obj._parent;
-				_nill = obj._nill;
 			}
 			return *this;
 		}
@@ -135,9 +133,14 @@
 				return new_node;
 			}
 
-			pointer getROOT() const
+			pointer getRoot() const
 			{
 				return _root;
+			}
+
+			pointer getNill() const
+			{
+				return _nill;
 			}
 
 			size_type size() const
@@ -164,7 +167,7 @@
 						FixUp(new_node, _LEFT);
 				}
 				_root->_black = true;
-				return new_node;
+				return iterator(new_node, _nill, _root);
 			}
 
 			void deletion (value_type key)
@@ -194,22 +197,22 @@
 
 			iterator begin()
 			{
-				return getter(_root, min_tag());
+				return iterator(getter(_root, min_tag()), _nill, _root);
 			}
 
 			iterator end()
 			{
-				return _nill;
+				return iterator(_nill, _nill, _root);
 			}
 
 			const_iterator begin() const
 			{
-				return getter(_root, min_tag());
+				return  const_iterator(getter(_root, min_tag()), _nill, _root);
 			}
 
 			const_iterator end() const
 			{
-				return _nill;
+				return const_iterator(_nill, _nill, _root);
 			}
 
 			pointer search(const value_type& key) const
@@ -254,7 +257,6 @@
 				node->_left = _nill;
 				node->_right = _nill;
 				node->_parent = _nill;
-				node->_nill = _nill;
 				_size++;
 				return node;
 			}
@@ -337,14 +339,14 @@
 				node->_parent = tmp;
 			}
 
-			void	bst_insertion(pointer& node, pointer& new_node)
+			void	bst_insertion(pointer& node, pointer new_node)
 			{
 				if (_(node)){
 					node = new_node; return ;}
 				new_node->_parent = node;
 				if (_comp(new_node->_value, node->_value))
 					bst_insertion(node->_left, new_node);
-				else
+				else if (_comp(node->_value, new_node->_value))
 					bst_insertion(node->_right, new_node);
 			}
 

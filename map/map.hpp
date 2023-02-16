@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 23:45:29 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/15 05:32:13 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/16 02:53:14 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include "tree.hpp"
 # include "../utility/less.hpp"
 # include "../utility/pair.hpp"
+#include "../fancy_tree.hpp"
+
 
 namespace ft
 {

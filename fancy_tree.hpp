@@ -17,7 +17,7 @@
 #define LEFT _left				// left attribute
 #define RIGHT _right			// right attribute
 #define PARENT _parent			// parent attribute (can be ignnored)
-#define CONTENT _value			// data attribute + element of pair(if exists)
+#define CONTENT _value.first			// data attribute + element of pair(if exists)
 
 /*===========================================*/
 
@@ -49,7 +49,7 @@
 
 // frequently used
 #define NEW_LINE std::endl
-#define PRINT std::cout
+#define PRINT std::cerr
 
 
 #define BLACK   "\033[m"      /* Black */
