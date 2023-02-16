@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:40 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/16 01:16:07 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/16 16:07:20 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,21 @@
 
 int main(void)
 {
+	TREE<int, std::less<int> >  a;
+
+	a.search(5);
 	// fancy_tree<int> tree;
-	// ft::map<int, int> mymap;
-	
+	// std::map<int, int> mymap;
+	// std::cout << mymap.max_size() << std::endl;
 	// TREE<int>::iterator it;
-	// mymap.insert(ft::make_pair(5, 4));
-	// mymap.insert(ft::make_pair(5, 4));
-	// mymap.insert(ft::make_pair(5, 4));
-	// mymap.insert(ft::make_pair(5, 4));
-	// mymap.insert(ft::make_pair(5, 4));
-	// mymap.insert(ft::make_pair(5, 4)23);
-	// mymap.insert(ft::make_pair(5, 4));
-	// mymap.insert(ft::make_pair(5, 4));
+	// mymap.insert(std::make_pair(5, 4));
+	// mymap.insert(std::make_pair(5, 4));
+	// mymap.insert(std::make_pair(5, 4));
+	// mymap.insert(std::make_pair(5, 4));
+	// mymap.insert(std::make_pair(5, 4));
+	// mymap.insert(std::make_pair(5, 4)23);
+	// mymap.insert(std::make_pair(5, 4));
+	// mymap.insert(std::make_pair(5, 4));
 	// tree.print_tree(mymap._tree.getROOT(), V_VIEW);
 	return 0;
 }

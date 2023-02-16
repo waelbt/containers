@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 05:19:27 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/16 02:36:46 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/16 17:14:42 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,14 @@ namespace ft
 			typedef T* 								pointer;
 		private:
 			iter_pointer _ptr;
-			iter_pointer& _nill;
-			iter_pointer _root;
+			const iter_pointer& _nill;
 		public:
 			tree_iterator() : _ptr(NULL) {}
-			tree_iterator(iter_pointer ptr, iter_pointer& nill, iter_pointer root) : _ptr(ptr) , _nill(nill), _root(root){}
+			tree_iterator(iter_pointer ptr,const iter_pointer& nill) : _ptr(ptr) , _nill(nill){}
 			iter_pointer& base() const {return _ptr;}
-			tree_iterator(const tree_iterator& obj) : _ptr(obj._ptr), _nill(obj._nill), _root(obj._root){}
+			tree_iterator(const tree_iterator& obj) : _ptr(obj._ptr), _nill(obj._nill){}
 			operator tree_iterator<const value_type, Node>(){
-        		return tree_iterator<const value_type, Node>(_ptr, _nill, _root);}
+        		return tree_iterator<const value_type, Node>(_ptr, _nill);}
 			tree_iterator& operator=(const tree_iterator& obj){
 				_ptr = obj._ptr;
 				return *this;}

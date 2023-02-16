@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 23:45:29 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/16 02:53:14 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/16 17:05:33 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,14 @@ namespace ft
 	template < class Key,                                     		// map::key_type
         class T,                                       		// map::mapped_type
         class Compare = ft::less<Key>,                    	// map::key_compare
-        class Alloc = std::allocator<pair<Key,T> >   	// map::allocator_type
+        class Alloc = std::allocator<pair<const Key,T> >   	// map::allocator_type
         >
 	class map
 	{
 		public :
 			typedef		Key													key_type;
 			typedef		T 													mapped_type;
-			typedef		ft::pair<key_type, mapped_type>						value_type;
+			typedef		ft::pair<const key_type, mapped_type>						value_type;
 			typedef		Compare												key_compare;
 			typedef		Alloc												allocator_type;
 			typedef		typename allocator_type::reference					reference;
@@ -135,14 +135,20 @@ namespace ft
 
 			iterator find (const key_type& k)
 			{
+				iterator a = _tree.search(ft::make_pair(k, mapped_type()));
+				return a;
+			}
+
+			const_iterator find (const key_type& k) const
+			{
 				return _tree.search(ft::make_pair(k, mapped_type()));
 			}
+
 
 			pair<iterator,bool> insert (const value_type& val)
 			{
 				iterator tmp = find(val.first);
-
-				if (tmp != end()) 
+				if (tmp != end())
 					return ft::make_pair(tmp, false);
 				return ft::make_pair(_tree.insert(val), true);
 			}

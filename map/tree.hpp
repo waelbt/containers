@@ -39,7 +39,7 @@
 			pointer		_right;
 
 		Node(value_type val) : _value(val), _black(false), _parent(), _left(), _right() {}
-		Node(const_reffrence obj) {*this = obj;}
+		Node(const_reffrence obj) : _value(obj._value), _black(obj._black), _parent(obj._parent),_left(obj._left), _right(obj._right) {}
 		const_reffrence operator=(const_reffrence obj){
 			if (this != &obj)
 			{
@@ -83,7 +83,7 @@
 			typedef		typename node_allocater::difference_type					difference_type;
 			typedef 	typename node_allocater::size_type 							size_type;
 			typedef 	ft::tree_iterator<value_type, node_type> 					iterator;
-			typedef 	ft::tree_iterator<const value_type, node_type> 				const_iterator;
+			typedef 	ft::tree_iterator<const value_type, node_type> 			const_iterator;
 			struct		delete_tag {};
 			struct		insert_tag {};
 			struct		min_tag {static const bool value = true;};
@@ -133,10 +133,10 @@
 				return new_node;
 			}
 
-			pointer getRoot() const
-			{
-				return _root;
-			}
+			// pointer getRoot() const
+			// {
+			// 	return _root;
+			// }
 
 			pointer getNill() const
 			{
@@ -153,7 +153,7 @@
 				return _alloc. max_size();
 			}
 
-			iterator insert(value_type key)
+			iterator insert(const value_type& key)
 			{
 				pointer new_node;
 
@@ -167,7 +167,7 @@
 						FixUp(new_node, _LEFT);
 				}
 				_root->_black = true;
-				return iterator(new_node, _nill, _root);
+				return iterator(new_node, _nill);
 			}
 
 			void deletion (value_type key)
@@ -197,28 +197,34 @@
 
 			iterator begin()
 			{
-				return iterator(getter(_root, min_tag()), _nill, _root);
+				return iterator(getter(_root, min_tag()), _nill);
 			}
 
 			iterator end()
 			{
-				return iterator(_nill, _nill, _root);
+				return iterator(_nill, _nill);
 			}
 
 			const_iterator begin() const
 			{
-				return  const_iterator(getter(_root, min_tag()), _nill, _root);
+				return  const_iterator(getter(_root, min_tag()), _nill);
 			}
 
 			const_iterator end() const
 			{
-				return const_iterator(_nill, _nill, _root);
+				return const_iterator(_nill, _nill);
 			}
 
-			pointer search(const value_type& key) const
+			iterator search(const value_type& key)
 			{
-				return search(_root, key);
+				return iterator(search(_root, key), _nill);
 			}
+
+			const_iterator search(const value_type& key) const
+			{
+				return const_iterator(search(_root, key), _nill);
+			}
+
 
 			~TREE()
 			{
@@ -248,7 +254,7 @@
 				return node;
 			}
 
-			pointer construct_node(value_type& key)
+			pointer construct_node(const value_type& key)
 			{
 				pointer node;
 
@@ -420,7 +426,7 @@
 				}
 			}
 			
-			pointer search(pointer node, value_type key) const
+			pointer& search(pointer& node, const value_type& key)
 			{
 				if (node != _nill)
 				{
@@ -432,6 +438,18 @@
        			return node;
 			}
 
+			const pointer& search(const pointer& node, const value_type& key) const
+			{
+				if (node != _nill)
+				{
+    				if (_comp(key, node->_value))
+       					return search(node->_left, key);
+					else if (_comp(node->_value, key))
+						return search(node->_right, key);
+				}
+       			return node;
+			}
+			
 			void destroy_node(pointer& node)
 			{
 				if (node)
