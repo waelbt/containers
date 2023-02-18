@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 23:45:29 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/18 03:04:37 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/18 04:29:04 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include "tree.hpp"
 # include "../utility/less.hpp"
 # include "../utility/pair.hpp"
-// #include "../fancy_tree.hpp"
 
 
 namespace ft
@@ -57,9 +56,12 @@ namespace ft
 			    		return comp(x.first, y.first);
 			  		}
 			};
-			typedef 	TREE<value_type, value_compare, allocator_type> tree_type;
+			typedef 	TREE<value_type, value_compare, allocator_type> 	tree_type;
 			typedef 	typename tree_type::iterator 						iterator;
 			typedef 	typename tree_type::const_iterator 					const_iterator;
+			typedef 	typename tree_type::reverse_iterator 				reverse_iterator;
+			typedef 	typename tree_type::const_reverse_iterator			const_reverse_iterator;
+		
 		private:
 			tree_type		_tree;
 			key_compare		_comp;
@@ -133,6 +135,26 @@ namespace ft
 				return _tree.end();
 			}
 
+			// reverse_iterator rbegin()
+			// {
+			// 	return _tree.rbegin();
+			// }
+
+			// reverse_iterator rend()
+			// {
+			// 	return _tree.end();
+			// }
+
+			// const_reverse_iterator rbegin() const
+			// {
+			// 	return _tree.rbegin();
+			// }
+
+			// const_reverse_iterator rend() const
+			// {
+			// 	return _tree.rend();
+			// }
+
 			iterator find (const key_type& k)
 			{
 				return _tree.search(ft::make_pair(k, mapped_type()));
@@ -153,6 +175,24 @@ namespace ft
 				return ft::make_pair(_tree.insert(val), true);
 			}
 
+			iterator insert (iterator position, const value_type& val)
+			{
+				(void) position;
+				return (insert(val).first);
+			}
+
+			template <class InputIterator>
+			void insert (InputIterator first, InputIterator last)
+			{
+				for (;first!=last;first++)
+					insert(*first);
+			}
+
+			void erase (iterator position)
+			{
+				_tree.deletion((*position));
+			}
+			
 			// mapped_type& operator[] (const key_type& k)
 			// {
 				

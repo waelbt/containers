@@ -18,6 +18,8 @@
 
 #include "../utility/less.hpp"
 #include "tree_iterator.hpp"
+# include "../vector/iterator.hpp" //ankhrj reverse_iterator men file deyal vector
+
 //select pair
 //select key 
 
@@ -29,8 +31,8 @@
 		public :
 			typedef T					value_type;
 			typedef	Node<T>*			pointer;
-			typedef	Node<T>&			reffrence;
-			typedef	const Node<T>&		const_reffrence;
+			typedef	Node<T>&			reference;
+			typedef	const Node<T>&		const_reference;
 
 			value_type	_value;
 			bool		_black;
@@ -39,8 +41,8 @@
 			pointer		_right;
 
 		Node(value_type val) : _value(val), _black(false), _parent(), _left(), _right() {}
-		Node(const_reffrence obj) : _value(obj._value), _black(obj._black), _parent(obj._parent),_left(obj._left), _right(obj._right) {}
-		const_reffrence operator=(const_reffrence obj){
+		Node(const_reference obj) : _value(obj._value), _black(obj._black), _parent(obj._parent),_left(obj._left), _right(obj._right) {}
+		const_reference operator=(const_reference obj){
 			if (this != &obj)
 			{
 				_value = obj._value;
@@ -69,7 +71,9 @@
 			typedef		typename node_allocater::difference_type					difference_type;
 			typedef 	typename node_allocater::size_type 							size_type;
 			typedef 	ft::tree_iterator<value_type, node_type> 					iterator;
-			typedef 	ft::tree_iterator<const value_type, node_type> 			const_iterator;
+			typedef 	ft::tree_iterator<const value_type, node_type> 				const_iterator;
+			typedef 	typename ft::reverse_iterator<iterator>						reverse_iterator;
+			typedef 	typename ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 			struct		delete_tag {};
 			struct		insert_tag {};
 			struct		min_tag {static const bool value = true;};
@@ -151,13 +155,13 @@
 				pointer x;
 				bool	black;
 
-				node = search(key);
+				node = search(_root, key);
 				if (node != _nill)
 				{ 
 					delete_node(node ,x , black);
 					if (black)
 					{
-						while (x != _root && x->_black)
+						while (x != _root && x->_black && x != _nill)
 						{
 							if (x == x->_parent->_left)
 								FixUp(x, _RIGHT, delete_tag());
@@ -182,12 +186,32 @@
 
 			const_iterator begin() const
 			{
-				return  const_iterator(getter(_root, min_tag()), _root, _nill);
+				return  const_iterator(end());
 			}
 
-			const_iterator end() const
+			const_iterator rend() const
 			{
-				return const_iterator(_nill, _root, _nill);
+				return const_iterator(begin());
+			}
+
+			reverse_iterator rbegin()
+			{
+				return reverse_iterator(end());
+			}
+
+			reverse_iterator rend()
+			{
+				return reverse_iterator(begin());
+			}
+
+			const_reverse_iterator rbegin() const
+			{
+				return  const_reverse_iterator(getter(_root, min_tag()), _root, _nill);
+			}
+
+			const_reverse_iterator end() const
+			{
+				return const_reverse_iterator(_nill, _root, _nill);
 			}
 
 			iterator search(const value_type& key)
@@ -253,7 +277,7 @@
 				v->_parent = u->_parent;
 			}
 
-			bool _(pointer& x) const
+			bool _(const pointer& x) const
 			{
 				return (x == _nill);
 			}
@@ -336,8 +360,8 @@
 			{
 				if (node != _nill)
 				{
-					while (!_(getchild(node, tag::value)))
-						node = getchild(node, tag::value);
+					while (!_(getchild(node, tag::value))){
+						node = getchild(node, tag::value);}
 				}
 				return node;
 			}
@@ -391,7 +415,7 @@
 						getchild(tmp, !isRight)->_black = true;
 						tmp->_black = false;
 						rotate(tmp, isRight);
-						tmp = getchild(tmp, isRight);
+						tmp = getchild(node->_parent, isRight);
 					}
 					tmp->_black = node->_parent->_black;
 					node->_parent->_black = true;
@@ -444,16 +468,15 @@
 					clear(node->_right);
 				destroy_node(node);
 			}
-			void print(pointer node, const pointer& nill)
-			{
-				if (node == nill)
-				{
-					return ;
-				}
-				std::cerr << node->_value.first << std::endl;
-				print(node->_left, nill);
-				print(node->_right, nill);
-			}
+			// void print(pointer node, const pointer& nill)
+			// {
+			// 	if (node == nill)
+			// 	{
+			// 		return ;
+			// 	}
+			// 	print(node->_left, nill);
+			// 	print(node->_right, nill);
+			// }
 
 		};
 // } // namespace ft	

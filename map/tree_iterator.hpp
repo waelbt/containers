@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 05:19:27 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/18 03:33:26 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/18 04:56:19 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ namespace ft
 			typedef std::bidirectional_iterator_tag iterator_category;
 			typedef typename ft::remove_cv<T>::type	value_type;
 			typedef ptrdiff_t						difference_type;
-			typedef T&                     			reffrence;
+			typedef T&                     			reference;
 			typedef typename Node::pointer 			iter_pointer;
 			typedef T* 								pointer;
 		private:
@@ -44,7 +44,7 @@ namespace ft
 				_nill = obj._nill;
 				return *this;}
 			pointer operator->() const{ return &_ptr->_value; }
-			reffrence operator*() const{
+			reference operator*() const{
 				return  _ptr->_value;}
 			template<class U, class S>
 			friend bool operator== (const tree_iterator<U, Node>& rhs, const tree_iterator<S, Node>& ths)
