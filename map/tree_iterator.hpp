@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 05:19:27 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/16 17:14:42 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/18 02:55:03 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,19 @@ namespace ft
 			typedef T* 								pointer;
 		private:
 			iter_pointer _ptr;
-			const iter_pointer& _nill;
+			iter_pointer _root;
+			iter_pointer _nill;
 		public:
-			tree_iterator() : _ptr(NULL) {}
-			tree_iterator(iter_pointer ptr,const iter_pointer& nill) : _ptr(ptr) , _nill(nill){}
+			tree_iterator() : _ptr(NULL), _root(NULL), _nill(NULL) {}
+			tree_iterator(iter_pointer ptr, iter_pointer root, iter_pointer nill) : _ptr(ptr) ,_root(root), _nill(nill){}
 			iter_pointer& base() const {return _ptr;}
-			tree_iterator(const tree_iterator& obj) : _ptr(obj._ptr), _nill(obj._nill){}
+			tree_iterator(const tree_iterator& obj) : _ptr(obj._ptr), _root(obj._root),_nill(obj._nill){}
 			operator tree_iterator<const value_type, Node>(){
-        		return tree_iterator<const value_type, Node>(_ptr, _nill);}
+        		return tree_iterator<const value_type, Node>(_ptr, _root ,_nill);}
 			tree_iterator& operator=(const tree_iterator& obj){
 				_ptr = obj._ptr;
+				_root = obj._root;
+				_nill = obj._nill;
 				return *this;}
 			pointer operator->() const{ return &_ptr->_value; }
 			reffrence operator*() const{
@@ -55,35 +58,23 @@ namespace ft
 			{
 				iter_pointer tmp;
 
-				// if (_ptr == _nill)
-    			// {
-    			//   _ptr = _root;
-    			//   if (_ptr == _nill)
-    			//     throw std::exception();
-    			//   while (_ptr->_left != _nill) {
-    			//     _ptr = _ptr->_left;
-    			//   }
-    			// }
-				// else
-				// {
-    				if (_ptr->_right != _nill)
-      				{
-        				_ptr = _ptr->_right;
-        				while (_ptr->_left !=  _nill) {
-          					_ptr = _ptr->_left;
-        				}
-      				}
-    				else
-      				{
-        				tmp = _ptr->_parent;
-        				while (tmp != _nill && _ptr == tmp->_right)
-          				{
-            				_ptr = tmp;
-            				tmp = tmp->_parent;
-          				}
-        				_ptr = tmp;
-      				}
-				// }
+    			if (_ptr->_right != _nill)
+      			{
+        			_ptr = _ptr->_right;
+        			while (_ptr->_left !=  _nill) {
+          				_ptr = _ptr->_left;
+        			}
+      			}
+    			else
+      			{
+        			tmp = _ptr->_parent;
+        			while (tmp != _nill && _ptr == tmp->_right)
+          			{
+            			_ptr = tmp;
+            			tmp = tmp->_parent;
+          			}
+        			_ptr = tmp;
+      			}
 				return *this;
 			}
 			tree_iterator operator++(int) {
@@ -96,18 +87,15 @@ namespace ft
 			tree_iterator& operator--() 
 			{
 				iter_pointer tmp;
-				// if (_ptr == _nill)
-    			// {
-				// 	std::cerr << "www" << std::endl;
-    			//   _ptr = _root;
-    			//   if (_ptr == _nill)
-    			//     throw std::exception();
-    			//   while (_ptr->_right != _nill) {
-    			//     _ptr = _ptr->_right;
-    			//   }
-    			// }
-				// else
-				// {
+				if (_ptr == _nill)
+    			{
+    				_ptr = _root;
+    				while (_ptr->_right != _nill) {
+    				  _ptr = _ptr->_right;
+    				}
+    			}
+				else
+				{
     				if (_ptr->_left != _nill)
       				{
         				_ptr = _ptr->_left;
@@ -125,7 +113,7 @@ namespace ft
           				}
         				_ptr = tmp;
       				}
-				// }
+				}
 				return *this;
 			}
 			tree_iterator operator--(int) {

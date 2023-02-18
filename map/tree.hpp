@@ -18,6 +18,7 @@
 
 #include "../utility/less.hpp"
 #include "tree_iterator.hpp"
+
 //select pair
 //select key 
 
@@ -96,10 +97,9 @@
 			key_compare	   _comp;
 			size_type		_size;
 		public:
-			TREE(const allocator_type& alloc = allocator_type()) : _alloc(alloc){
+			TREE(const allocator_type& alloc = allocator_type()) : _alloc(alloc), _size(0){
 				_nill = construct_nill();
 				_root = _nill;
-				_size = 0;
 			}
 
 			TREE(const TREE& x)
@@ -109,6 +109,8 @@
 				_root = copy(x._root, x._nill, _nill);
 				_comp = x._comp;
 				_size = x._size;
+				for(const_iterator it = begin(); it != end(); it++)
+					std::cerr << (*(it)).first << std::endl;
 			}
 
 			TREE& operator=(const TREE& x)
@@ -120,7 +122,6 @@
 				_size = x._size;
 				return *this;
 			}
-
 			pointer copy(pointer node, pointer obj_Nill, pointer& _nill)
 			{
 				pointer new_node;
@@ -138,10 +139,10 @@
 			// 	return _root;
 			// }
 
-			pointer getNill() const
-			{
-				return _nill;
-			}
+			// pointer getNill() const
+			// {
+			// 	return _nill;
+			// }
 
 			size_type size() const
 			{
@@ -156,7 +157,6 @@
 			iterator insert(const value_type& key)
 			{
 				pointer new_node;
-
 				new_node = construct_node(key);
 				bst_insertion(_root, new_node);
 				while (!new_node->_parent->_black)
@@ -167,7 +167,7 @@
 						FixUp(new_node, _LEFT);
 				}
 				_root->_black = true;
-				return iterator(new_node, _nill);
+				return iterator(new_node, _root ,_nill);
 			}
 
 			void deletion (value_type key)
@@ -197,32 +197,32 @@
 
 			iterator begin()
 			{
-				return iterator(getter(_root, min_tag()), _nill);
+				return iterator(getter(_root, min_tag()), _root, _nill);
 			}
 
 			iterator end()
 			{
-				return iterator(_nill, _nill);
+				return iterator(_nill, _root, _nill);
 			}
 
 			const_iterator begin() const
 			{
-				return  const_iterator(getter(_root, min_tag()), _nill);
+				return  const_iterator(getter(_root, min_tag()), _root, _nill);
 			}
 
 			const_iterator end() const
 			{
-				return const_iterator(_nill, _nill);
+				return const_iterator(_nill, _root, _nill);
 			}
 
 			iterator search(const value_type& key)
 			{
-				return iterator(search(_root, key), _nill);
+				return iterator(search(_root, key), _root, _nill);
 			}
 
 			const_iterator search(const value_type& key) const
 			{
-				return const_iterator(search(_root, key), _nill);
+				return const_iterator(search(_root, key), _root, _nill);
 			}
 
 
@@ -372,7 +372,7 @@
 				return (((isLeft)) ? (node->_left) : (node->_right));
 			}
 
-			void FixUp(pointer& node, bool isLeft, insert_tag = insert_tag())
+			void FixUp(pointer node, bool isLeft, insert_tag = insert_tag())
 			{
 				pointer uncle;
 
@@ -469,6 +469,16 @@
 					clear(node->_right);
 				destroy_node(node);
 			}
+			// void print(pointer node, const pointer& nill)
+			// {
+			// 	if (node == nill)
+			// 	{
+			// 		return ;
+			// 	}
+			// 	std::cerr << node->_value.first << std::endl;
+			// 	print(node->_left, nill);
+			// 	print(node->_right, nill);
+			// }
 
 		};
 // } // namespace ft	

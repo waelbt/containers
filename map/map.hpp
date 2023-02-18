@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 23:45:29 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/16 17:05:33 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/18 01:25:56 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,8 +135,7 @@ namespace ft
 
 			iterator find (const key_type& k)
 			{
-				iterator a = _tree.search(ft::make_pair(k, mapped_type()));
-				return a;
+				return _tree.search(ft::make_pair(k, mapped_type()));
 			}
 
 			const_iterator find (const key_type& k) const
@@ -145,13 +144,15 @@ namespace ft
 			}
 
 
-			pair<iterator,bool> insert (const value_type& val)
+			ft::pair<iterator,bool> insert (const value_type& val)
 			{
 				iterator tmp = find(val.first);
+
 				if (tmp != end())
 					return ft::make_pair(tmp, false);
 				return ft::make_pair(_tree.insert(val), true);
 			}
+
 			// mapped_type& operator[] (const key_type& k)
 			// {
 				
@@ -160,6 +161,7 @@ namespace ft
 			// {
 			// 	return _tree.search(k);
 			// }
+
 			allocator_type get_allocator() const
 			{
 				return _alloc;
