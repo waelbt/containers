@@ -18,7 +18,6 @@
 
 #include "../utility/less.hpp"
 #include "tree_iterator.hpp"
-
 //select pair
 //select key 
 
@@ -52,23 +51,9 @@
 			}
 			return *this;
 		}
-		~Node(){/*i will implement it later*/}	
+		~Node(){}
 	};
 
-	// template <class pair>
-	// class selectPair
-	// {
-	// 	public:
- 	// 		typedef typename pair::first_type first_type;
- 	// 		typedef typename pair::second_type second_type;
-
-	// 		const first_type& operator() (const pair& x) const
-	// 		{
-	// 			return x.first;;
-	// 		}
-	// };
-	
-	// , class Selector = selectPair<T>
 	template <typename T, class Compare, class Alloc = std::allocator<T> >
 	class TREE
 	{
@@ -93,8 +78,8 @@
 		private:
 			pointer 		_root;
 			pointer			_nill;
-			node_allocater _alloc;
-			key_compare	   _comp;
+			node_allocater 	_alloc;
+			key_compare	   	_comp;
 			size_type		_size;
 		public:
 			TREE(const allocator_type& alloc = allocator_type()) : _alloc(alloc), _size(0){
@@ -109,8 +94,6 @@
 				_root = copy(x._root, x._nill, _nill);
 				_comp = x._comp;
 				_size = x._size;
-				for(const_iterator it = begin(); it != end(); it++)
-					std::cerr << (*(it)).first << std::endl;
 			}
 
 			TREE& operator=(const TREE& x)
@@ -130,19 +113,11 @@
 					return _nill;
 				new_node = construct_node(node->_value);
 				new_node->_left = copy(node->_left, obj_Nill, _nill);
+				new_node->_left->_parent = new_node;
 				new_node->_right = copy(node->_right, obj_Nill, _nill);
+				new_node->_right->_parent = new_node;
 				return new_node;
 			}
-
-			// pointer getRoot() const
-			// {
-			// 	return _root;
-			// }
-
-			// pointer getNill() const
-			// {
-			// 	return _nill;
-			// }
 
 			size_type size() const
 			{
@@ -469,16 +444,16 @@
 					clear(node->_right);
 				destroy_node(node);
 			}
-			// void print(pointer node, const pointer& nill)
-			// {
-			// 	if (node == nill)
-			// 	{
-			// 		return ;
-			// 	}
-			// 	std::cerr << node->_value.first << std::endl;
-			// 	print(node->_left, nill);
-			// 	print(node->_right, nill);
-			// }
+			void print(pointer node, const pointer& nill)
+			{
+				if (node == nill)
+				{
+					return ;
+				}
+				std::cerr << node->_value.first << std::endl;
+				print(node->_left, nill);
+				print(node->_right, nill);
+			}
 
 		};
 // } // namespace ft	

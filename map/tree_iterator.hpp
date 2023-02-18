@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 05:19:27 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/18 02:55:03 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/18 03:33:26 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ namespace ft
 
     			if (_ptr->_right != _nill)
       			{
+					//getter function
         			_ptr = _ptr->_right;
         			while (_ptr->_left !=  _nill) {
           				_ptr = _ptr->_left;
@@ -96,6 +97,7 @@ namespace ft
     			}
 				else
 				{
+					//getter function
     				if (_ptr->_left != _nill)
       				{
         				_ptr = _ptr->_left;
