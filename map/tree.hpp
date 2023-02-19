@@ -159,7 +159,7 @@
 				if (node != _nill)
 				{ 
 					delete_node(node ,x , black);
-					if (black && x != _nill)
+					if (black)
 					{
 						while (x != _root && x->_black)
 						{
