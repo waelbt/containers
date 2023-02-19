@@ -159,9 +159,9 @@
 				if (node != _nill)
 				{ 
 					delete_node(node ,x , black);
-					if (black)
+					if (black && x != _nill)
 					{
-						while (x != _root && x->_black && x != _nill)
+						while (x != _root && x->_black)
 						{
 							if (x == x->_parent->_left)
 								FixUp(x, _RIGHT, delete_tag());
@@ -408,7 +408,7 @@
 					tmp->_black = false;
 					node = node->_parent;
 				}
-				else
+				else if (tmp != _nill)
 				{
 					if (getchild(tmp, isRight)->_black)
 					{
