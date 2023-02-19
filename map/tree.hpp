@@ -189,9 +189,9 @@
 				return  const_iterator(end());
 			}
 
-			const_iterator rend() const
+			const_iterator end() const
 			{
-				return const_iterator(begin());
+				return const_iterator(_nill, _root, _nill);
 			}
 
 			reverse_iterator rbegin()
@@ -206,12 +206,12 @@
 
 			const_reverse_iterator rbegin() const
 			{
-				return  const_reverse_iterator(getter(_root, min_tag()), _root, _nill);
+				return const_reverse_iterator(end());
 			}
 
-			const_reverse_iterator end() const
+			const_reverse_iterator rend() const
 			{
-				return const_reverse_iterator(_nill, _root, _nill);
+				return const_reverse_iterator(begin());
 			}
 
 			iterator search(const value_type& key)
