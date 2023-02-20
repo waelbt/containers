@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 16:51:49 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/20 19:51:00 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/19 22:25:31 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,6 +181,33 @@ namespace ft
     		++first1; ++first2;
   		}
   		return (first2!=last2);
+	}
+	template <class InputIterator1, class InputIterator2, class Compare>
+	bool lexicographical_compare (InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, InputIterator2 last2, Compare comp)
+	{
+		while (first1!=last1)
+  		{
+    		if (first2 == last2 || !comp(*first1, *first2)) 
+				return false;
+    		else if (comp(*first1, *first2))
+				return true;
+    		++first1;
+			++first2;
+  		}
+  		return (first2!=last2);
+	}
+
+	template <class InputIterator1, class InputIterator2, class Compare>
+  	bool equal ( InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, Compare comp)
+	{
+  		while (first1!=last1)
+		{
+    		if (!comp(*first1,*first2) && !comp(*first2,*first1)){
+ 	   			++first1; ++first2;}
+			else
+				return false;
+  		}
+  		return true;
 	}
 } // namespace ft
 

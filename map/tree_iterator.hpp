@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 05:19:27 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/18 04:56:19 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/19 22:23:19 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ namespace ft
 		public:
 			tree_iterator() : _ptr(NULL), _root(NULL), _nill(NULL) {}
 			tree_iterator(iter_pointer ptr, iter_pointer root, iter_pointer nill) : _ptr(ptr) ,_root(root), _nill(nill){}
-			iter_pointer& base() const {return _ptr;}
+			iter_pointer base() const {return _ptr;}
 			tree_iterator(const tree_iterator& obj) : _ptr(obj._ptr), _root(obj._root),_nill(obj._nill){}
 			operator tree_iterator<const value_type, Node>(){
         		return tree_iterator<const value_type, Node>(_ptr, _root ,_nill);}
@@ -52,7 +52,8 @@ namespace ft
 	
 			template<class U, class S>
 			friend bool operator!= (const tree_iterator<U, Node>& rhs, const tree_iterator<S, Node>& ths)
-			{return (!(rhs == ths));}
+			{
+				return (!(rhs == ths));}
 
 			tree_iterator& operator++() 
 			{

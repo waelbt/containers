@@ -3,3 +3,4 @@ The following function serves as an alternative to the ! operator, as it is not 
 which mean in this case _(pointer) equal to !(pointer)
 
 bool _(pointer& x) { return (x == _nill); // }
+

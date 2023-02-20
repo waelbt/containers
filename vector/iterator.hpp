@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 17:24:29 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/18 04:36:00 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/20 00:23:32 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ namespace ft
         		return *this;}
 			// operator reverse_iterator<const Iterator>(){
         	// 	return reverse_iterator<const Iterator>(_iter_adapt);}
-			Iterator& base() const {return _iter_adapt;} 
+			Iterator base() const {return _iter_adapt;} 
     		reference operator*() const {Iterator tmp = _iter_adapt; return *(--tmp);} 
     		pointer  operator->() const {return &(operator*());} 
     		reverse_iterator& operator++() {--_iter_adapt; return *this;} 

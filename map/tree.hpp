@@ -18,6 +18,7 @@
 
 #include "../utility/less.hpp"
 #include "tree_iterator.hpp"
+# include "../utility/pair.hpp"
 # include "../vector/iterator.hpp" //ankhrj reverse_iterator men file deyal vector
 
 //select pair
@@ -64,7 +65,7 @@
 			typedef		T 															value_type;
 			typedef 	Alloc               										allocator_type;
 			typedef 	typename allocator_type::template rebind<Node<T> >::other	node_allocater;
-			typedef		Compare                                  					key_compare;
+			typedef		Compare                                  					value_compare;
 			typedef		typename node_allocater::value_type							node_type;
 			typedef		typename node_allocater::pointer 							pointer;
 			typedef		typename node_allocater::const_pointer 						const_pointer;
@@ -83,7 +84,7 @@
 			pointer 		_root;
 			pointer			_nill;
 			node_allocater 	_alloc;
-			key_compare	   	_comp;
+			value_compare	 _comp;
 			size_type		_size;
 		public:
 			TREE(const allocator_type& alloc = allocator_type()) : _alloc(alloc), _size(0){
@@ -98,6 +99,15 @@
 				_root = copy(x._root, x._nill, _nill);
 				_comp = x._comp;
 				_size = x._size;
+			}
+
+			void swap (TREE& x)
+			{
+				ft::swap(_root, x._root);
+				ft::swap(_nill, x._nill);
+				ft::swap(_alloc, x._alloc);
+				ft::swap(_comp, x._comp);
+				ft::swap(_size, x._size);
 			}
 
 			TREE& operator=(const TREE& x)
@@ -136,8 +146,10 @@
 			iterator insert(const value_type& key)
 			{
 				pointer new_node;
+				pointer tmp;
 				new_node = construct_node(key);
 				bst_insertion(_root, new_node);
+				tmp = new_node;
 				while (!new_node->_parent->_black)
 				{
  					if (new_node->_parent == new_node->_parent->_parent->_right)
@@ -146,7 +158,7 @@
 						FixUp(new_node, _LEFT);
 				}
 				_root->_black = true;
-				return iterator(new_node, _root ,_nill);
+				return iterator(tmp, _root ,_nill);
 			}
 
 			void deletion (value_type key)
@@ -186,7 +198,7 @@
 
 			const_iterator begin() const
 			{
-				return  const_iterator(end());
+				return  const_iterator(getter(_root, min_tag()), _root, _nill);
 			}
 
 			const_iterator end() const
@@ -235,12 +247,84 @@
 			void clear()
 			{
 				clear(_root);
+				_root = _nill;
 			}
 
 			bool empty() const
 			{
 				return (_(_root));
 			}
+
+			iterator lower_bound (const value_type& k)
+			{
+				pointer node = _root;
+				pointer resultat = _nill;
+				while (node != _nill)
+				{
+					if(!_comp(node->_value, k))
+					{
+						resultat = node;
+						node = node->_left;
+					}
+					else
+						node = node->_right;
+				}
+				return iterator(resultat, _root, _nill);
+			}
+
+			const_iterator lower_bound (const value_type& k) const
+			{
+				pointer node = _root;
+				pointer resultat = _nill;
+				while (node != _nill)
+				{
+					if(!_comp(node->_value, k))
+					{
+						resultat = node;
+						node = node->_left;
+					}
+					else
+						node = node->_right;
+				}
+				return const_iterator(resultat, _root, _nill); 
+			}
+
+			iterator upper_bound (const value_type& k)
+			{
+				pointer node = _root;
+				pointer resultat = _nill;
+
+				while (node != _nill)
+				{
+					if(_comp(k, node->_value))
+					{
+						resultat = node;
+						node = node->_left;
+					}
+					else
+						node = node->_right;
+				}
+				return iterator(resultat, _root, _nill);
+			}
+
+			const_iterator upper_bound (const value_type& k) const
+			{
+				pointer node = _root;
+				pointer resultat = _nill;
+
+				while (node != _nill)
+				{
+					if(_comp(k, node->_value))
+					{
+						resultat = node;
+						node = node->_left;
+					}
+					else
+						node = node->_right;
+				}
+				return const_iterator(resultat, _root, _nill); 
+			}
+
 		private:
 
 			pointer construct_nill()
@@ -295,26 +379,26 @@
 				pointer tmp = node;
 
 				black = tmp->_black;
+				if (_(node->_right) || _(node->_left))
+				{
+					x = getchild(node, _(node->_right));
+					transplant(node, getchild(node, _(node->_right)));
+				}
 				if (!_(node->_right) && !_(node->_left))
 				{
-					tmp = getter(node->_left, max_tag());
+					tmp = getter(node->_right, min_tag());
 					black = tmp->_black;
-					x = tmp->_left;
-					if (tmp != node->_left)
+					x = tmp->_right;
+					if (tmp != node->_right)
 					{
-						transplant(tmp, tmp->_left);
-						connect(tmp, node, _LEFT);
+						transplant(tmp, tmp->_right);
+						connect(tmp, node, _RIGHT);
 					}
 					else
 						x->_parent = tmp;
 					transplant(node, tmp);
-					connect(tmp, node, _RIGHT);
+					connect(tmp, node, _LEFT);
 					tmp->_black = node->_black;
-				}
-				else
-				{
-					x = getchild(node, _(node->_right));
-					transplant(node, getchild(node, _(node->_right)));
 				}
 			}
 
@@ -344,7 +428,7 @@
 				node->_parent = tmp;
 			}
 
-			void	bst_insertion(pointer& node, pointer new_node)
+			void	bst_insertion(pointer& node, pointer& new_node)
 			{
 				if (_(node)){
 					node = new_node; return ;}
@@ -371,12 +455,12 @@
 				return (((isLeft)) ? (node->_left) : (node->_right));
 			}
 
-			void FixUp(pointer node, bool isLeft, insert_tag = insert_tag())
+			void FixUp(pointer& node, bool isLeft, insert_tag = insert_tag())
 			{
 				pointer uncle;
 
 				uncle = getchild(node->_parent->_parent, !isLeft);
-				if (!uncle->_black)
+				if (uncle && !uncle->_black)
 					color_flipping(node, uncle);
 				else
 				{
@@ -385,9 +469,13 @@
 						node = node->_parent;
 						rotate(node, isLeft);
 					}
-					node->_parent->_black = true;
-					node->_parent->_parent->_black = false;
-					rotate(node->_parent->_parent, !isLeft);
+					if (node->_parent)
+						node->_parent->_black = true;
+					if (node->_parent->_parent && node->_parent->_parent != _nill)
+					{
+						node->_parent->_parent->_black = false;
+						rotate(node->_parent->_parent, !isLeft);
+					}
 				}
 			}
 
@@ -396,6 +484,8 @@
 				pointer tmp;
 
 				tmp = getchild(node->_parent, isRight);
+				if (tmp) {
+					node = _root; return ;}
 				if (!tmp->_black)
 				{
 					tmp->_black = true;
@@ -403,14 +493,14 @@
 					rotate(node->_parent, !isRight);
 					tmp = getchild(node->_parent, isRight);
 				}
-				if (tmp->_right->_black && tmp->_left->_black)
+				if (tmp != _nill && tmp->_right->_black && tmp->_left->_black)
 				{
 					tmp->_black = false;
 					node = node->_parent;
 				}
-				else if (tmp != _nill)
+				else
 				{
-					if (getchild(tmp, isRight)->_black)
+					if ((getchild(tmp, isRight)!= _nill) && getchild(tmp, isRight)->_black)
 					{
 						getchild(tmp, !isRight)->_black = true;
 						tmp->_black = false;
@@ -462,11 +552,14 @@
 
 			void clear(pointer& node)
 			{
-				if (node->_left != _nill)
-					clear(node->_left);
-				if (node->_right != _nill)
-					clear(node->_right);
-				destroy_node(node);
+				if (node != _nill)
+				{
+					if (node->_left != _nill)
+						clear(node->_left);
+					if (node->_right != _nill)
+						clear(node->_right);
+					destroy_node(node);
+				}
 			}
 			// void print(pointer node, const pointer& nill)
 			// {
