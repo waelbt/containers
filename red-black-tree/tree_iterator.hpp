@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 05:19:27 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/21 17:10:18 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/22 10:47:42 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,6 @@ namespace ft
 		public:
 			tree_iterator() : _ptr(NULL), _root(NULL), _nill(NULL) {}
 			tree_iterator(iter_pointer ptr, iter_pointer root, iter_pointer nill) : _ptr(ptr) ,_root(root), _nill(nill){}
-			iter_pointer base() const {return _ptr;}
-			iter_pointer root() const {return _root;}
-			iter_pointer nill() const {return _nill;}
 			tree_iterator(const tree_iterator& obj) : _ptr(obj._ptr), _root(obj._root),_nill(obj._nill){}
 			template <typename U>
 			operator tree_iterator<U,Node>() const {

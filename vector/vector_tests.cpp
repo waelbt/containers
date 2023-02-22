@@ -6,15 +6,16 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 10:01:11 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/22 10:33:13 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/22 11:43:02 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.hpp"
 #include <vector>
 
+#define RESULTAT(y, x) ((x) ? (std::cout << y << " \033[1;32mAC\033[0m\n") : (std::cout << y << " \033[1;31mWA\033[0m\n"))
+
 int main(void)
 {
-	std::vector<int> a;
 
 }
