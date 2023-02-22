@@ -6,23 +6,15 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 18:57:53 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/15 03:30:00 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/21 11:37:49 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PAIR_HPP
 # define PAIR_HPP
 
-#include "../vector/type_traits.hpp"
 namespace ft
 {
-	template <typename T>
-	void swap(T& x, T&y)
-	{
-		T tmp(x);
-		x = y;
-		y = tmp;
-	}
 		/*pair*/
 	template<class T1,class T2>
 	struct pair
@@ -35,7 +27,8 @@ namespace ft
 		T2		second;
 			/* constructor */
 		pair() : first(T1()), second(T2()){}
-		template<class U, class V> pair (const pair<U,V>& pr) : first(pr.first), second(pr.second){}
+		template<class U, class V>
+		pair(const pair<U,V>& pr) : first(pr.first), second(pr.second){}
 		pair (const first_type& a, const second_type& b) : first(a), second(b){}
 			/*Assignment operator*/
 		pair& operator= (const pair& pr){

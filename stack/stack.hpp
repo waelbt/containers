@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 15:20:51 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/30 22:15:06 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/21 17:03:51 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,10 @@ namespace ft
 	}
 	template <class T, class Container>
 	bool operator>  (const stack<T,Container>& lhs, const stack<T,Container>& rhs){
-		return !(rhs >= lhs);
+		return !(lhs <= rhs);
 	}
 	template <class T, class Container>
   	bool operator>= (const stack<T,Container>& lhs, const stack<T,Container>& rhs){
-	return !(rhs < lhs);
+	return !(lhs < rhs);
 	}
 }

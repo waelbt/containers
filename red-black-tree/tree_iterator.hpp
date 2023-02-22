@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 05:19:27 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/19 22:23:19 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/21 17:10:18 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define TREE_ITERATOR
 
 # include <iostream>
-# include "../vector/type_traits.hpp"
+# include "../utility/extra.hpp"
 namespace ft
 {
 	template<class T, class Node>
@@ -35,9 +35,13 @@ namespace ft
 			tree_iterator() : _ptr(NULL), _root(NULL), _nill(NULL) {}
 			tree_iterator(iter_pointer ptr, iter_pointer root, iter_pointer nill) : _ptr(ptr) ,_root(root), _nill(nill){}
 			iter_pointer base() const {return _ptr;}
+			iter_pointer root() const {return _root;}
+			iter_pointer nill() const {return _nill;}
 			tree_iterator(const tree_iterator& obj) : _ptr(obj._ptr), _root(obj._root),_nill(obj._nill){}
-			operator tree_iterator<const value_type, Node>(){
-        		return tree_iterator<const value_type, Node>(_ptr, _root ,_nill);}
+			template <typename U>
+			operator tree_iterator<U,Node>() const {
+    			return tree_iterator<U,Node>(_ptr, _root, _nill);
+			}
 			tree_iterator& operator=(const tree_iterator& obj){
 				_ptr = obj._ptr;
 				_root = obj._root;
@@ -98,7 +102,7 @@ namespace ft
     			}
 				else
 				{
-					//getter function
+					//getter 
     				if (_ptr->_left != _nill)
       				{
         				_ptr = _ptr->_left;
@@ -125,8 +129,6 @@ namespace ft
 				--(*this);
 				return tmp;
 			}
-			// tree_iterator operator--() {}
-			// tree_iterator operator--(int) {}
 	};
 }
 

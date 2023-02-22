@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:56 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/01/26 19:20:26 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/21 11:42:14 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,16 @@
 # define	VECTOR_HPP
 
 # include <iostream>
-// # include "type_traits.hpp"
 # include <vector>
 
-#include <stack>
+// #include <stack>
 # include <type_traits>
 # include "iterator.hpp"
-#include "../utility/pair.hpp"
+# include "../utility/eqaul_and_lexico_comp.hpp"
+# include "../utility/iterator_traits.hpp"
+# include "../utility/is_integral.hpp"
+# include "../utility/enable_if.hpp"
+# include "../utility/reverse_iterator.hpp"
 
 # define SFINA(X) typename ft::enable_if<!ft::is_integral<X>::value, X>::type *  = 0
 # define IS_INPUT(X) ((ft::is_same<typename X, std::input_iterator_tag>::value) ? (1) : (0))

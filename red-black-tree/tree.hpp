@@ -16,10 +16,11 @@
 # define _RIGHT 0
 # define _LEFT  1
 
-#include "../utility/less.hpp"
-#include "tree_iterator.hpp"
+# include "../utility/less.hpp"
+# include "tree_iterator.hpp"
 # include "../utility/pair.hpp"
-# include "../vector/iterator.hpp" //ankhrj reverse_iterator men file deyal vector
+# include "../utility/reverse_iterator.hpp"
+# include "../utility/iterator_traits.hpp"
 
 //select pair
 //select key 
@@ -62,7 +63,7 @@
 	{
 		public:
 
-			typedef		T 															value_type;
+			typedef		T															value_type;
 			typedef 	Alloc               										allocator_type;
 			typedef 	typename allocator_type::template rebind<Node<T> >::other	node_allocater;
 			typedef		Compare                                  					value_compare;
@@ -255,7 +256,7 @@
 				return (_(_root));
 			}
 
-			iterator lower_bound (const value_type& k)
+			iterator lower_bound (const value_type& k) const
 			{
 				pointer node = _root;
 				pointer resultat = _nill;
@@ -272,24 +273,7 @@
 				return iterator(resultat, _root, _nill);
 			}
 
-			const_iterator lower_bound (const value_type& k) const
-			{
-				pointer node = _root;
-				pointer resultat = _nill;
-				while (node != _nill)
-				{
-					if(!_comp(node->_value, k))
-					{
-						resultat = node;
-						node = node->_left;
-					}
-					else
-						node = node->_right;
-				}
-				return const_iterator(resultat, _root, _nill); 
-			}
-
-			iterator upper_bound (const value_type& k)
+			iterator upper_bound (const value_type& k) const
 			{
 				pointer node = _root;
 				pointer resultat = _nill;
@@ -307,23 +291,41 @@
 				return iterator(resultat, _root, _nill);
 			}
 
-			const_iterator upper_bound (const value_type& k) const
-			{
-				pointer node = _root;
-				pointer resultat = _nill;
+			
+			// const_iterator lower_bound (const value_type& k) const
+			// {
+			// 	pointer node = _root;
+			// 	pointer resultat = _nill;
+			// 	while (node != _nill)
+			// 	{
+			// 		if(!_comp(node->_value, k))
+			// 		{
+			// 			resultat = node;
+			// 			node = node->_left;
+			// 		}
+			// 		else
+			// 			node = node->_right;
+			// 	}
+			// 	return const_iterator(resultat, _root, _nill);
+			// }
 
-				while (node != _nill)
-				{
-					if(_comp(k, node->_value))
-					{
-						resultat = node;
-						node = node->_left;
-					}
-					else
-						node = node->_right;
-				}
-				return const_iterator(resultat, _root, _nill); 
-			}
+			// const_iterator upper_bound (const value_type& k) const 
+			// {
+			// 	pointer node = _root;
+			// 	pointer resultat = _nill;
+
+			// 	while (node != _nill)
+			// 	{
+			// 		if(_comp(k, node->_value))
+			// 		{
+			// 			resultat = node;
+			// 			node = node->_left;
+			// 		}
+			// 		else
+			// 			node = node->_right;
+			// 	}
+			// 	return const_iterator(resultat, _root, _nill);
+			// }
 
 		private:
 
