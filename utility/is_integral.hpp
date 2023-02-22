@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 11:27:06 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/21 11:37:40 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/22 10:40:27 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 
 namespace ft
 {
-			/* is integral */
 	template <typename T>
 	struct is_integral_traits{
 		static const bool value = false;

@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 13:24:59 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/22 06:30:03 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/22 10:39:52 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ namespace ft
 			typedef		typename allocator_type::const_pointer				const_pointer;
 			typedef 	typename allocator_type::difference_type			difference_type;
 			typedef 	typename allocator_type::size_type 					size_type;
-			typedef 	TREE<value_type, key_compare, allocator_type> 		tree_type;
+			typedef 	ft::TREE<value_type, key_compare, allocator_type> 	tree_type;
 			typedef 	typename tree_type::iterator 						iterator;
 			typedef 	typename tree_type::const_iterator 					const_iterator;
 			typedef 	typename tree_type::reverse_iterator 				reverse_iterator;

@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 11:29:51 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/21 11:38:24 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/22 10:41:09 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "iterator_traits.hpp"
 namespace ft
 {
-				/******** reverse_iterator *******/
+	/******** reverse_iterator *******/
 	template <class Iterator>
   	class reverse_iterator : public Iterator
 	{
@@ -37,8 +37,6 @@ namespace ft
 			{
      			_iter_adapt = other._iter_adapt;
         		return *this;}
-			// operator reverse_iterator<const Iterator>(){
-        	// 	return reverse_iterator<const Iterator>(_iter_adapt);}
 			Iterator base() const {return _iter_adapt;} 
     		reference operator*() const {Iterator tmp = _iter_adapt; return *(--tmp);} 
     		pointer  operator->() const {return &(operator*());} 

@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 11:31:02 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/21 11:31:59 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/22 10:40:23 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 namespace ft
 {
-					/*iterator traits*/
 	template<class Iterator>
 	struct iterator_traits
 	{

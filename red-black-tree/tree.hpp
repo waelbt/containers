@@ -22,11 +22,8 @@
 # include "../utility/reverse_iterator.hpp"
 # include "../utility/iterator_traits.hpp"
 
-//select pair
-//select key 
-
-// namespace ft
-// {
+namespace ft
+{
 	template <typename T>
 	class Node 
 	{
@@ -291,42 +288,6 @@
 				return iterator(resultat, _root, _nill);
 			}
 
-			
-			// const_iterator lower_bound (const value_type& k) const
-			// {
-			// 	pointer node = _root;
-			// 	pointer resultat = _nill;
-			// 	while (node != _nill)
-			// 	{
-			// 		if(!_comp(node->_value, k))
-			// 		{
-			// 			resultat = node;
-			// 			node = node->_left;
-			// 		}
-			// 		else
-			// 			node = node->_right;
-			// 	}
-			// 	return const_iterator(resultat, _root, _nill);
-			// }
-
-			// const_iterator upper_bound (const value_type& k) const 
-			// {
-			// 	pointer node = _root;
-			// 	pointer resultat = _nill;
-
-			// 	while (node != _nill)
-			// 	{
-			// 		if(_comp(k, node->_value))
-			// 		{
-			// 			resultat = node;
-			// 			node = node->_left;
-			// 		}
-			// 		else
-			// 			node = node->_right;
-			// 	}
-			// 	return const_iterator(resultat, _root, _nill);
-			// }
-
 		private:
 
 			pointer construct_nill()
@@ -563,17 +524,7 @@
 					destroy_node(node);
 				}
 			}
-			// void print(pointer node, const pointer& nill)
-			// {
-			// 	if (node == nill)
-			// 	{
-			// 		return ;
-			// 	}
-			// 	print(node->_left, nill);
-			// 	print(node->_right, nill);
-			// }
-
 		};
-// } // namespace ft	
+} // namespace ft	
 
 #endif

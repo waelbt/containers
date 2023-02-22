@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 11:28:41 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/21 11:37:32 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/22 10:40:34 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ namespace ft
 		x = y;
 		y = tmp;
 	}
-				/*is_same*/
+		/*is_same*/
 	template<typename T, typename U>
 	struct is_same {
     	static const bool value = false;
@@ -53,7 +53,7 @@ namespace ft
 	struct is_same<T, T> {
 		static const bool value = true;
 	};
-			/*is charchater*/
+		/*is charchater*/
 	template <class T>
 	struct is_char{
 		static const bool value = false;

@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 17:24:29 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/21 11:37:14 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/22 10:38:37 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include "../utility/extra.hpp"
 namespace ft
 {
-				/*	iterator	*/
 	template <class T>
   	class iterator
 	{
