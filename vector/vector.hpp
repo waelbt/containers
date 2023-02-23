@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 10:55:56 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/21 11:42:14 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/23 17:55:16 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,5 +203,6 @@ namespace ft
 	#include "vector.tpp"
 } // namespace ft
 
+void	vector_test();
 
 #endif

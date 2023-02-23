@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 17:24:29 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/22 10:38:37 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/22 23:54:26 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,11 +106,5 @@ namespace ft
 	template <class T>
 	iterator<T> operator-(ptrdiff_t n, iterator<T>  const& it){
     	return (it - n) ;}
-	template<typename T>
-	std::ostream& operator<<(std::ostream& os, iterator<T> it) {
-    	os << *it;
-    return os;
-	}
-	
 } // namespace ft
 #endif

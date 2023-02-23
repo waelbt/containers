@@ -6,29 +6,23 @@
 #    By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/22 10:01:46 by waboutzo          #+#    #+#              #
-#    Updated: 2023/02/22 10:27:37 by waboutzo         ###   ########.fr        #
+#    Updated: 2023/02/23 18:05:54 by waboutzo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+NAME = containers
 CPPFLAGS = --std=c++98 -Wall -Wextra -Werror
 
-vector:
-	c++ $(CPPFLAGS) vector/vector_tests.cpp -o vector.out
+all: $(NAME)
 
-
-map:
-	c++ $(CPPFLAGS)	map/map_tests.cpp -o map.out
-
-
-stack:
-	c++ $(CPPFLAGS)	stack/stack_tests.cpp -o stack.out
-
-
-set:
-	c++ $(CPPFLAGS)	set/set_tests.cpp -o set.out
-
+$(NAME): main.cpp
+	c++ $(CPPFLAGS) $^ -o $@
 
 clean:
-	rm -f vector.out  map.out  stack.out  set.out 
-	
-.PHONY: vector map stack set clean
+	rm -f $(NAME)
+
+fclean: clean
+
+re: fclean all
+
+.PHONY: all clean fclean re

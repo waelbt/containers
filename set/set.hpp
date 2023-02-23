@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 13:24:59 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/22 10:39:52 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/23 19:07:21 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,14 +204,14 @@ namespace ft
 			}
 
 
-			value_type& operator[] (const value_type& k)
-			{
-				iterator it = find(k);
+			// value_type& operator[] (const value_type& k)
+			// {
+			// 	iterator it = find(k);
 
-				if (it != end())
-					return it->second;
-				return insert(k).first;
-			}
+			// 	if (it != end())
+			// 		return it->second;
+			// 	return insert(k).first;
+			// }
 
 			void swap (set& x)
 			{
