@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 23:45:29 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/22 10:39:41 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/23 19:18:05 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,13 @@ namespace ft
 			    		return comp(x.first, y.first);
 			  		}
 			};
-			typedef 	ft::TREE<value_type, value_compare, allocator_type> tree_type;
-			typedef 	typename tree_type::iterator 						iterator;
-			typedef 	typename tree_type::const_iterator 					const_iterator;
-			typedef 	typename tree_type::reverse_iterator 				reverse_iterator;
-			typedef 	typename tree_type::const_reverse_iterator			const_reverse_iterator;
+			private:
+				typedef 	ft::TREE<value_type, value_compare, allocator_type> tree_type;
+			public:
+				typedef 	typename tree_type::iterator 						iterator;
+				typedef 	typename tree_type::const_iterator 					const_iterator;
+				typedef 	typename tree_type::reverse_iterator 				reverse_iterator;
+				typedef 	typename tree_type::const_reverse_iterator			const_reverse_iterator;
 		
 		private:
 			tree_type		_tree;

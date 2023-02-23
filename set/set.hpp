@@ -6,7 +6,7 @@
 /*   By: waboutzo <waboutzo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 13:24:59 by waboutzo          #+#    #+#             */
-/*   Updated: 2023/02/23 19:07:21 by waboutzo         ###   ########.fr       */
+/*   Updated: 2023/02/23 19:15:15 by waboutzo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,14 @@ namespace ft
 			typedef		typename allocator_type::const_pointer				const_pointer;
 			typedef 	typename allocator_type::difference_type			difference_type;
 			typedef 	typename allocator_type::size_type 					size_type;
+		private:
 			typedef 	ft::TREE<value_type, key_compare, allocator_type> 	tree_type;
+		public:
 			typedef 	typename tree_type::iterator 						iterator;
 			typedef 	typename tree_type::const_iterator 					const_iterator;
 			typedef 	typename tree_type::reverse_iterator 				reverse_iterator;
 			typedef 	typename tree_type::const_reverse_iterator			const_reverse_iterator;
-		private:
+	
 			tree_type		_tree;
 			key_compare		_comp;
 			allocator_type _alloc;
@@ -202,16 +204,6 @@ namespace ft
 					throw std::out_of_range("set");
 				return it->second;
 			}
-
-
-			// value_type& operator[] (const value_type& k)
-			// {
-			// 	iterator it = find(k);
-
-			// 	if (it != end())
-			// 		return it->second;
-			// 	return insert(k).first;
-			// }
 
 			void swap (set& x)
 			{
